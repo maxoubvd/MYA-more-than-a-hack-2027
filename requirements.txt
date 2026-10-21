@@ -1,0 +1,7 @@
+# Core data science libraries
+pandas
+matplotlib
+numpy
+
+# Jupyter kernel for running notebooks
+ipykernel
