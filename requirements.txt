@@ -3,5 +3,12 @@ pandas
 matplotlib
 numpy
 
-# Jupyter kernel for running notebooks
+# Jupyter notebook tools
 ipykernel
+nbformat
+nbclient
+
+# Soccer analytics (FIFA / EPTS)
+kloppy
+
+possession_metrics
