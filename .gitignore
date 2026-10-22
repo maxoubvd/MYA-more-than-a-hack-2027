@@ -31,3 +31,11 @@ Thumbs.db
 
 # Logs and temporary files
 *.log
+
+# Data caches, models and submissions
+data/cache/
+data/models/
+*.npz
+*.parquet
+submissions/*.csv
+!submissions/.gitkeep
