@@ -1,4 +1,4 @@
-"""Package racine de modélisation de l'équipe MYA — More than a Hack 2027."""
+"""Root modeling package for Team MYA — More than a Hack 2027."""
 
 from src import config
 

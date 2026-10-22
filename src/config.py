@@ -1,10 +1,10 @@
-"""Configuration centrale et Source Unique de Vérité (Single Source of Truth) — Équipe MYA.
+"""Central configuration and Single Source of Truth (SSOT) — Team MYA.
 
-Ce module centralise :
-1. La résolution dynamique des chemins d'accès au workspace, aux données brutes et aux répertoires de travail.
-2. Les spécifications géométriques du terrain et les constantes temporelles du match.
-3. Les bornes contractuelles de découpage (frames évaluées, intervalles masqués en 'X', zone morte en 'D').
-4. Les identifiants des équipes, l'alphabet cible des labels et les métadonnées officielles.
+This module centralizes:
+1. Dynamic path resolution for workspace, raw data, and team working directories.
+2. Geometric pitch specifications and match kinematic constants.
+3. Contractual segmentation boundaries (evaluated frames, non-evaluated 'X' masks, 2HT dead zone 'D').
+4. Team identifiers, target label alphabet, and official metadata.
 """
 
 from __future__ import annotations
@@ -14,70 +14,70 @@ from pathlib import Path
 from typing import Dict, Final, List, Tuple
 
 # ==============================================================================
-# 1. RÉSOLUTION DYNAMIQUE DES CHEMINS (PORTABILITÉ TOTALE)
+# 1. DYNAMIC PATH RESOLUTION (FULL PORTABILITY)
 # ==============================================================================
 
 def find_workspace_root(start_path: Path | None = None) -> Path:
-    """Détecte la racine du workspace (contenant les dépôts git du challenge)."""
+    """Detects the root workspace directory containing both competition git repositories."""
     current = (start_path or Path(__file__)).resolve()
     for parent in [current] + list(current.parents):
         if (parent / "more-than-a-hack-2027").exists() and (parent / "MYA-more-than-a-hack-2027").exists():
             return parent
         if (parent / "more-than-a-hack-2027").exists():
             return parent
-    # Fallback par défaut basé sur l'arborescence standard
+    # Default fallback based on standard tree depth
     return current.parent.parent.parent
 
 
-# Racine du workspace global
+# Global workspace root
 WORKSPACE_ROOT: Final[Path] = find_workspace_root()
 
-# Dépôts respectifs
+# Repository roots
 CHALLENGE_DIR: Final[Path] = WORKSPACE_ROOT / "more-than-a-hack-2027"
 MYA_DIR: Final[Path] = WORKSPACE_ROOT / "MYA-more-than-a-hack-2027"
 SRC_DIR: Final[Path] = MYA_DIR / "src"
 
-# Répertoire des données (configurable via variable d'environnement MTAH_DATA_DIR)
+# Data directory (configurable via MTAH_DATA_DIR environment variable)
 DATA_DIR: Final[Path] = Path(os.environ.get("MTAH_DATA_DIR", CHALLENGE_DIR / "data"))
 TACTICAL_DIR: Final[Path] = DATA_DIR / "tactical"
 BROADCAST_DIR: Final[Path] = DATA_DIR / "broadcast"
 
-# Répertoires d'évaluation officielle
+# Official evaluation directories
 EVAL_DIR: Final[Path] = CHALLENGE_DIR / "evaluation"
 GT_DIR: Final[Path] = EVAL_DIR / "gt"
 RESULTS_DIR: Final[Path] = EVAL_DIR / "results"
 
-# Répertoires de travail de l'équipe MYA (créés automatiquement si nécessaire)
-CACHE_DIR: Final[Path] = MYA_DIR / "data" / "cache"
+# Team MYA working directories (created automatically if needed)
+CACHE_DIR: Final[Path] = MYA_DIR / ".cache"
 SUBMISSIONS_DIR: Final[Path] = MYA_DIR / "submissions"
-MODELS_DIR: Final[Path] = MYA_DIR / "data" / "models"
+MODELS_DIR: Final[Path] = MYA_DIR / "models"
 REPORTS_DIR: Final[Path] = MYA_DIR / "reports"
 
 for _dir in [CACHE_DIR, SUBMISSIONS_DIR, MODELS_DIR, REPORTS_DIR]:
     _dir.mkdir(parents=True, exist_ok=True)
 
 # ------------------------------------------------------------------------------
-# Fichiers de données brutes
+# Raw Data Files
 # ------------------------------------------------------------------------------
 
-# Flux Tactique (Référence officielle du challenge)
+# Tactical Feed (Official challenge prediction reference)
 TACTICAL_ATD_TXT: Final[Path] = TACTICAL_DIR / "BAR-ATH_tactical_atd.txt"
 TACTICAL_ATD_XML: Final[Path] = TACTICAL_DIR / "BAR-ATH_tactical_atd.xml"
 TACTICAL_HOMOGRAPHY_CSV: Final[Path] = TACTICAL_DIR / "BAR-ATH_tactical_homography.csv"
 TACTICAL_SMART_TAGGING_XML: Final[Path] = TACTICAL_DIR / "BAR-ATH_tactical_smart_tagging.xml"
 TACTICAL_VIDEO_MP4: Final[Path] = TACTICAL_DIR / "BAR-ATH_tactical-002.mp4"
 
-# Flux Broadcast (Multi-vues synchronisable)
+# Broadcast Feed (Complementary multi-angle tracking)
 BROADCAST_ATD_TXT: Final[Path] = BROADCAST_DIR / "BAR-ATH_broadcast_atd.txt"
 BROADCAST_ATD_XML: Final[Path] = BROADCAST_DIR / "BAR-ATH_broadcast_atd.xml"
 BROADCAST_HOMOGRAPHY_CSV: Final[Path] = BROADCAST_DIR / "BAR-ATH_broadcast_homography.csv"
 BROADCAST_VIDEO_MP4: Final[Path] = BROADCAST_DIR / "BAR-ATH_broadcast-001.mp4"
 
-# Vérité Terrain Publique (5 minutes d'évaluation officielle)
+# Public Ground Truth (5 minutes of official evaluation labels)
 GT_PUBLIC_CSV: Final[Path] = GT_DIR / "BAR-ATH_possession_gt_public.csv"
 GT_PUBLIC_META_JSON: Final[Path] = GT_DIR / "BAR-ATH_possession_gt_public_meta.json"
 
-# Fichiers de cache binaire haute performance (Jalon 1)
+# High-performance binary cache files (Milestone 1)
 TACTICAL_ATD_CACHE_NPZ: Final[Path] = CACHE_DIR / "tactical_atd.npz"
 BROADCAST_ATD_CACHE_NPZ: Final[Path] = CACHE_DIR / "broadcast_atd.npz"
 TACTICAL_HOMOGRAPHY_CACHE_PARQUET: Final[Path] = CACHE_DIR / "tactical_homography.parquet"
@@ -86,71 +86,72 @@ SMART_TAGGING_CACHE_PARQUET: Final[Path] = CACHE_DIR / "smart_tagging.parquet"
 
 
 # ==============================================================================
-# 2. CONSTANTES GÉOMÉTRIQUES & CINÉMATIQUES DU TERRAIN
+# 2. PITCH GEOMETRIC & KINEMATIC CONSTANTS
 # ==============================================================================
 
 GAME: Final[str] = "BAR-ATH"
 
-# Dimensions réelles métriques du terrain (Camp Nou / Stade LaLiga de référence)
-PITCH_LENGTH: Final[float] = 105.3  # Longueur en mètres (axe X)
-PITCH_WIDTH: Final[float] = 68.0   # Largeur en mètres (axe Y)
+# Real metric pitch dimensions (Camp Nou / reference LaLiga stadium)
+PITCH_LENGTH: Final[float] = 105.3  # Length in meters (X axis)
+PITCH_WIDTH: Final[float] = 68.0   # Width in meters (Y axis)
 PITCH_DIMS: Final[Tuple[float, float]] = (PITCH_LENGTH, PITCH_WIDTH)
 
-# Échantillonnage vidéo & cinématique
+# Video & Kinematic sampling
 FPS: Final[float] = 25.0
-DT: Final[float] = 1.0 / FPS       # 0.04 seconde par frame
+DT: Final[float] = 1.0 / FPS       # 0.04 second per frame
 
-# Nombre de slots anonymisés joueurs dans le tracking ATD
+# Number of anonymized tracking player slots in ATD
 NUM_SLOTS: Final[int] = 46
 
 
 # ==============================================================================
-# 3. SPÉCIFICATIONS TEMPORELLES & VOLUMÉTRIE
+# 3. TEMPORAL SPECIFICATIONS & FRAME COUNTS
 # ==============================================================================
 
-# Nombre exact de frames
-TOTAL_FRAMES: Final[int] = 199319                  # Frames de la vidéo tactique (0 à 199 318)
-BROADCAST_TOTAL_FRAMES: Final[int] = 164488        # Frames de la vidéo broadcast
-EVALUATED_FRAMES_COUNT: Final[int] = 158857        # Frames en jeu évaluées
-NON_EVALUATED_FRAMES_COUNT: Final[int] = 40462     # Frames hors-jeu (doivent porter le label X)
+# Exact frame counts
+TOTAL_FRAMES: Final[int] = 199319                  # Total tactical video frames (0 to 199,318)
+BROADCAST_TOTAL_FRAMES: Final[int] = 164488        # Total broadcast video frames
+EVALUATED_FRAMES_COUNT: Final[int] = 158857        # In-play evaluated frames
+NON_EVALUATED_FRAMES_COUNT: Final[int] = 40462     # Out-of-play frames (must be labeled 'X')
+
 
 # ==============================================================================
-# 4. INTERVALLES CONTRACTUELS & JALON 0 (BORNES INCLUSIVES [start, end])
+# 4. CONTRACTUAL INTERVALS & MILESTONE 0 (INCLUSIVE BOUNDS [start, end])
 # ==============================================================================
 
-# 1. Avant-match (11 185 frames) -> Label contractuel strict 'X'
+# 1. Pre-match (11,185 frames) -> Strict contractual label 'X'
 PRE_MATCH_SPAN: Final[Tuple[int, int]] = (0, 11184)
 
-# 2. Première mi-temps évaluée (79 467 frames)
+# 2. First half evaluated play (79,467 frames)
 FIRST_HALF_SPAN: Final[Tuple[int, int]] = (11185, 90651)
 
-# 3. Pause mi-temps (20 156 frames) -> Label contractuel strict 'X'
+# 3. Halftime break (20,156 frames) -> Strict contractual label 'X'
 HALFTIME_SPAN: Final[Tuple[int, int]] = (90652, 110807)
 
-# 4. Seconde mi-temps évaluée (79 390 frames)
+# 4. Second half evaluated play (79,390 frames)
 SECOND_HALF_SPAN: Final[Tuple[int, int]] = (110808, 190197)
 
-# 5. Après-match (9 121 frames) -> Label contractuel strict 'X'
+# 5. Post-match (9,121 frames) -> Strict contractual label 'X'
 POST_MATCH_SPAN: Final[Tuple[int, int]] = (190198, 199318)
 
-# 6. « Zone Morte » début 2nde mi-temps (2 934 frames) -> Forçage déterministe 'D'
-# La 2MT commence contractuellement à 110 808 mais le coup d'envoi n'a lieu qu'à 113 742.
+# 6. Dead Zone pre-2HT kickoff (2,934 frames) -> Deterministic forced 'D'
+# Official 2nd half block starts at 110,808, but actual kickoff is at 113,742.
 DEAD_ZONE_2HT_SPAN: Final[Tuple[int, int]] = (110808, 113741)
 
-# Coups d'envois effectifs
+# Effective match kickoffs
 KICKOFF_1ST_HALF: Final[int] = 11185
 KICKOFF_2ND_HALF: Final[int] = 113742
 
-# Frame de bascule du sens offensif (mi-temps)
+# Halftime canonical flip frame
 HALFTIME_FLIP_FRAME: Final[int] = 110808
 
-# Fenêtre publique d'évaluation (7 500 frames / 5 minutes)
+# Public validation window (7,500 frames / 5 minutes)
 PUBLIC_WINDOW_SPAN: Final[Tuple[int, int]] = (11185, 18684)
 PUBLIC_WINDOW_COUNT: Final[int] = 7500
 
 
 # ==============================================================================
-# 5. ÉQUIPES, MAPPING & ALPHABET OFFICIEL
+# 5. TEAMS, MAPPINGS & TARGET ALPHABET
 # ==============================================================================
 
 HOME_TEAM_NAME: Final[str] = "Barcelona"
@@ -172,11 +173,11 @@ ID_TO_LABEL: Final[Dict[int, str]] = {0: "H", 1: "A", 2: "D", 3: "X"}
 
 
 # ==============================================================================
-# 6. UTILITAIRE DE VÉRIFICATION DE L'ENVIRONNEMENT
+# 6. ENVIRONMENT VERIFICATION UTILITY
 # ==============================================================================
 
 def check_data_assets() -> Dict[str, bool]:
-    """Vérifie la présence physique des principaux assets de données sur disque."""
+    """Checks the physical presence of key raw data assets on disk."""
     assets = {
         "tactical_atd_txt": TACTICAL_ATD_TXT.exists(),
         "tactical_atd_xml": TACTICAL_ATD_XML.exists(),
@@ -196,7 +197,7 @@ if __name__ == "__main__":
     print(f"✅ CHALLENGE_DIR  : {CHALLENGE_DIR}")
     print(f"✅ MYA_DIR        : {MYA_DIR}")
     print(f"✅ CACHE_DIR      : {CACHE_DIR}")
-    print("\n🔍 Vérification des assets :")
+    print("\n🔍 Checking data assets:")
     for asset_name, exists in check_data_assets().items():
-        status = "✅ Trouvé" if exists else "❌ Manquant"
+        status = "✅ Found" if exists else "❌ Missing"
         print(f"  - {asset_name:30s} : {status}")

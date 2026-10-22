@@ -1,4 +1,4 @@
-"""Module d'utilitaires partagés de l'équipe MYA."""
+"""Shared utilities package for Team MYA."""
 
 from src.utils.loaders import (
     load_atd,

@@ -32,9 +32,12 @@ Thumbs.db
 # Logs and temporary files
 *.log
 
-# Data caches, models and submissions
-data/cache/
-data/models/
+# Data directory (ignored if ever created)
+data/
+
+# Local caches, trained models and submissions
+.cache/
+models/
 *.npz
 *.parquet
 submissions/*.csv

@@ -27,6 +27,157 @@ The challenge is to perform dense frame-by-frame prediction of ball possession f
 
 ---
 
+## 💻 Environment Setup & Quickstart Guide (Onboarding Team MYA)
+
+Ce guide pas-à-pas détaille l'installation complète pour reproduire l'environnement d'ingénierie et exécuter les scripts et notebooks de l'équipe MYA.
+
+### Étape 1 : Structure du Workspace Parent
+Le projet repose sur deux dépôts Git frères situés dans un même dossier de travail racine (ex: `More than a hack 2027/`) :
+```text
+More than a hack 2027/               # Dossier racine du workspace
+├── more-than-a-hack-2027/           # Dépôt officiel (données du challenge & scripts d'évaluation)
+└── MYA-more-than-a-hack-2027/       # Dépôt de l'équipe MYA (notre pipeline, modèles, notebooks)
+```
+
+Créez le dossier racine et placez-vous dedans :
+```bash
+mkdir -p "More than a hack 2027"
+cd "More than a hack 2027"
+```
+
+---
+
+### Étape 2 : Cloner le Dépôt Officiel du Challenge
+Clonez le dépôt officiel fourni par les organisateurs :
+```bash
+git clone https://github.com/metrica-sports/more-than-a-hack-2027.git
+```
+
+> [!NOTE]
+> Les scripts d'évaluation officiels (`evaluation/run_evaluation.py`, `evaluation/possession_metrics.py`) et la vérité terrain publique (`evaluation/gt/BAR-ATH_possession_gt_public.csv`) sont déjà inclus dans ce dépôt.
+
+---
+
+### Étape 3 : Installer les Données Téléchargées dans `more-than-a-hack-2027/data/`
+Téléchargez les fichiers bruts du challenge (lien fourni par l'organisation) et placez-les rigoureusement dans `more-than-a-hack-2027/data/` en respectant l'arborescence suivante :
+
+```text
+more-than-a-hack-2027/data/
+├── tactical/                                # Caméra Tactique (Référence officielle de prédiction)
+│   ├── BAR-ATH_tactical_atd.txt             # Tracking optique des 46 slots joueurs + ballon (195 Mo)
+│   ├── BAR-ATH_tactical_atd.xml             # Métadonnées EPTS & correspondances équipes
+│   ├── BAR-ATH_tactical_homography.csv      # Matrices homographiques 3x3 & reprojection_error
+│   ├── BAR-ATH_tactical_smart_tagging.xml   # 638 annotations tactiques SportsCode XML
+│   └── BAR-ATH_tactical-002.mp4             # Vidéo tactique haute résolution (4.9 Go, optionnelle)
+│
+└── broadcast/                               # Caméra Broadcast (Vue multi-angles complémentaire)
+    ├── BAR-ATH_broadcast_atd.txt            # Tracking optique broadcast (136 Mo)
+    ├── BAR-ATH_broadcast_atd.xml            # Métadonnées EPTS broadcast
+    ├── BAR-ATH_broadcast_homography.csv     # Homographies broadcast & validité
+    └── BAR-ATH_broadcast-001.mp4            # Vidéo broadcast (14 Go, optionnelle)
+```
+
+---
+
+### Étape 4 : Cloner le Dépôt de Code de l'Équipe MYA
+Depuis le dossier racine `More than a hack 2027/`, clonez notre dépôt d'équipe à côté du dépôt officiel :
+```bash
+git clone https://github.com/maxoubvd/MYA-more-than-a-hack-2027.git
+cd MYA-more-than-a-hack-2027
+```
+
+---
+
+### Étape 5 : Créer et Activer l'Environnement Virtuel
+Depuis la racine de `MYA-more-than-a-hack-2027/` :
+
+```bash
+# Création de l'environnement virtuel
+python3 -m venv .venv
+```
+
+**Activation :**
+- **Linux / macOS :**
+  ```bash
+  source .venv/bin/activate
+  ```
+- **Windows (PowerShell) :**
+  ```powershell
+  .venv\Scripts\Activate.ps1
+  ```
+- **Windows (Command Prompt) :**
+  ```cmd
+  .venv\Scripts\activate.bat
+  ```
+
+---
+
+### Étape 6 : Installer les Dépendances
+Assurez-vous que l'environnement virtuel est activé, puis installez les dépendances :
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+---
+
+### Étape 7 : Valider l'Installation & la Détection des Données
+Vérifiez immédiatement que la configuration centrale détecte tous les dossiers et assets de données brutes :
+```bash
+python3 src/config.py
+```
+
+**Sortie attendue :**
+```text
+✅ WORKSPACE_ROOT : .../More than a hack 2027
+✅ CHALLENGE_DIR  : .../More than a hack 2027/more-than-a-hack-2027
+✅ MYA_DIR        : .../More than a hack 2027/MYA-more-than-a-hack-2027
+✅ CACHE_DIR      : .../More than a hack 2027/MYA-more-than-a-hack-2027/.cache
+
+🔍 Vérification des assets :
+  - tactical_atd_txt               : ✅ Trouvé
+  - tactical_atd_xml               : ✅ Trouvé
+  - tactical_homography_csv        : ✅ Trouvé
+  - tactical_smart_tagging_xml     : ✅ Trouvé
+  - broadcast_atd_txt              : ✅ Trouvé
+  - broadcast_atd_xml              : ✅ Trouvé
+  - broadcast_homography_csv       : ✅ Trouvé
+  - ground_truth_public_csv        : ✅ Trouvé
+  - ground_truth_public_meta_json  : ✅ Trouvé
+```
+
+---
+
+### Étape 8 : Utilisation Rapide des Chargeurs & du Notebook d'Exploration
+
+#### Utilisation dans un script Python :
+```python
+from src import config
+from src.utils import (
+    load_atd,
+    load_ground_truth,
+    load_homography,
+    load_smart_tagging,
+    load_team_mapping,
+)
+
+# Chargement de la vérité terrain (5 min publiques)
+df_gt = load_ground_truth(public_window_only=True)
+
+# Chargement instantané du tracking ATD (avec cache NPZ automatique)
+atd = load_atd(source="tactical")
+print(f"Tracking players: {atd['players'].shape}")  # (199319, 46, 3)
+```
+
+#### Lancement du Notebook d'Exploration :
+Le notebook complet d'EDA empirique est disponible à l'emplacement [`analysis/data_exploration.ipynb`](analysis/data_exploration.ipynb) :
+1. Ouvrez le notebook dans VS Code ou JupyterLab.
+2. Cliquez sur **Select Kernel** en haut à droite.
+3. Choisissez **Python Environments...** et sélectionnez `.venv` (`.venv/bin/python`).
+4. Toutes les cellules s'exécutent de manière autonome grâce à la résolution dynamique des chemins de `config.py`.
+
+---
+
 ## 🏗️ Project Architecture & Repository Structure
 
 The project follows a modular, reproducible engineering structure separating data exploration, implementation planning, modular source components, and generated submissions:
@@ -107,108 +258,8 @@ MYA-more-than-a-hack-2027/
 
 ---
 
-## 🔄 Technical Pipeline Flowchart
-
-```mermaid
-flowchart TD
-    subgraph S0["Jalon 0 : Hard Constraints & Masking"]
-        A0["Raw Inputs (ATD, XML, CSV)"] --> A1["Deterministic Masking (Ungraded -> X)"]
-        A1 --> A2["Dead Ball Pre-2HT Kickoff (110808-113741 -> D)"]
-    end
-
-    subgraph S1["Jalon 1 : Preprocessing & Standardization"]
-        A2 --> B1["Binary Ingestion & Caching (Parquet / NPZ)"]
-        B1 --> B2["Metric Pitch Scale (105.3m x 68.0m)"]
-        B2 --> B3["Canonical Offensive Axis Alignment (Halftime Flip)"]
-        B3 --> B4["Player Denoising (Savitzky-Golay on 46 slots)"]
-        B4 --> B5["Smart Tagging Alignment (frame = sec * 25)"]
-    end
-
-    subgraph S2["Jalon 2 : Ball Imputation & Dead Ball Detection"]
-        B5 --> C1["Micro-Gap Kinematic Smoothing (Kalman-RTS / PCHIP)"]
-        C1 --> C2["Broadcast Multi-View Fusion (Chamfer + H^-1)"]
-        C2 --> C3["Out-of-Bounds & Reprojection Error Spikes -> D"]
-    end
-
-    subgraph S3["Jalon 3 : Permutation-Invariant Feature Engineering"]
-        C3 --> D1["Dynamic K-Nearest Player Sorting by Team"]
-        D1 --> D2["Fernandez & Bornn Pitch Control Model"]
-        D2 --> D3["Kinematic Differentials & Time-To-Interception (TTI)"]
-        D3 --> D4["Contextual Features (reprojection_error, team centroids)"]
-    end
-
-    subgraph S4["Jalon 4 : Frame-by-Frame Classification"]
-        D4 --> E1["High-Confidence Anchor Generation (> 98% purity)"]
-        E1 --> E2["LightGBM / CatBoost Training (GroupKFold CV)"]
-        E2 --> E3["Calibrated Posterior Probabilities P(H), P(A), P(D)"]
-    end
-
-    subgraph S5["Jalon 5 : Constrained Sequential Decoding"]
-        E3 --> F1["Dynamic Viterbi / HSMM Decoder"]
-        F1 --> F2["Physical Lock: Ball Contested -> Maintain State"]
-    end
-
-    subgraph S6["Jalon 6 : TAS Refinement & Post-Filtering"]
-        F2 --> G1["MS-TCN++ Temporal Convolution (T-MSE Loss)"]
-        G1 --> G2["Minimum Spell Duration Filter (>= 18 frames)"]
-        G2 --> G3["Final Submission Verification (199,319 frames)"]
-    end
-```
-
----
-
-## 🗺️ Implementation Roadmap Summary
-
-| Milestone | Key Objective | Technical Actions | Expected Gain |
-| :---: | :--- | :--- | :--- |
-| **Jalon 0** | **Temporal Hygiene & Masking** | Mask 40,462 non-evaluated frames to `X`; force frames `110 808`–`113 741` to `D` (117.4s guaranteed dead ball). Forward-fill to eliminate `X` in play. | Safe `macroF1` boost, eliminates false starts on `spellF1`. |
-| **Jalon 1** | **Preprocessing, Caching & Normalization** | Convert raw text ATD into binary Parquet/NPZ; project to meters ($105.3 \times 68.0$ m); canonical offensive direction; Savitzky-Golay smoothing on 46 players. | $\times 30$ faster I/O, noise-free velocity derivations. |
-| **Jalon 2** | **Ball Trajectory Imputation** | Interpolate micro-gaps ($\le 15$ frames) via Kalman-RTS; Chamfer alignment of broadcast feed; classify 133 long gaps into `D` or active play. | Resolves ball missingness (from 40.7% to < 5% unhandled). |
-| **Jalon 3** | **Permutation-Invariant Features** | Sort $K=5$ closest players per team; compute Fernandez & Bornn Pitch Control; relative approach speeds, TTI, and homography `reprojection_error`. | Optimal discriminative feature space invariant to slot permutations. |
-| **Jalon 4** | **Frame-by-Frame Classification** | Generate high-confidence anchors on full match (> 98% purity); train multi-class LightGBM/CatBoost; calibrate class probabilities. | High-fidelity raw emission probabilities (`macroF1` $> 0.70$). |
-| **Jalon 5** | **Constrained Temporal Decoding** | Inhomogeneous Viterbi decoder with physical transition matrix; lock transitions during aerial/contested passes without clear control. | Major jump on `spellF1` ($> 0.35$), avoids over-smoothing trap. |
-| **Jalon 6** | **TAS Refinement & Post-Filtering** | MS-TCN++ with T-MSE smoothing loss; prune spurious micro-spells ($< 18$ frames / 0.72s); official evaluation check. | Target `spellF1` $\ge 0.42$ (Podium performance). |
-
----
-
-## 💻 Environment Setup & Quickstart
-
-### 1. Create a Virtual Environment
-From the repository root (`MYA-more-than-a-hack-2027/`):
-```bash
-python3 -m venv .venv
-```
-
-### 2. Activate the Virtual Environment
-- **Linux / macOS:**
-  ```bash
-  source .venv/bin/activate
-  ```
-- **Windows (PowerShell):**
-  ```powershell
-  .venv\Scripts\Activate.ps1
-  ```
-- **Windows (Command Prompt):**
-  ```cmd
-  .venv\Scripts\activate.bat
-  ```
-
-### 3. Install Dependencies
-```bash
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-### 4. Running the Exploration Notebook
-The exploratory notebook is located at [`analysis/data_exploration.ipynb`](analysis/data_exploration.ipynb):
-1. Open the notebook in VS Code or JupyterLab.
-2. Select the kernel associated with `.venv` (`.venv/bin/python`).
-3. Paths are automatically resolved regardless of where the kernel is launched.
-
----
-
 ## 📚 Key Project References
 - Detailed Roadmap & Step-by-Step Guide: [`analysis/Implementation_Plan.md`](analysis/Implementation_Plan.md)
 - Exploratory Data Analysis Notebook: [`analysis/data_exploration.ipynb`](analysis/data_exploration.ipynb)
 - Technical Report: [`analysis/Gemini : Analyse et Benchmark Possession Football.pdf`](analysis/Gemini%20:%20Analyse%20et%20Benchmark%20Possession%20Football.pdf)
-- Official Challenge Repository: `more-than-a-hack-2027/`
+- Official Challenge Repository: [metrica-sports/more-than-a-hack-2027](https://github.com/metrica-sports/more-than-a-hack-2027)
