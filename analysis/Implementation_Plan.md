@@ -1,371 +1,365 @@
-# 📋 Plan d'Implémentation Détaillé — Équipe MYA
-### More than a Hack 2027 (Phase 1 : Prédiction Séquentielle Dense de la Possession de Balle)
+# Plan d'implémentation — équipe MYA
 
-> **Équipe MYA** : Ali ABOUHACHIM-ALAMI, Youssef BENADDI, Maxime BENDAVID  
-> **Match Référent** : FC Barcelona ($H$) vs Athletic Club ($A$) — LaLiga EA Sports 2024-2025  
-> **Données** : 199 319 frames (25 fps), dont 158 857 frames de jeu évaluées  
-> **Métrique Principale** : `spellF1` (Temporal Action Segmentation IoU multi-seuils $\theta \in [0.3, 0.7]$)  
-> **Métrique Secondaire (Tie-Break)** : `macroF1` (F1 non pondéré par frame sur les classes $H, A, D$)  
-> **Score de Référence Officiel à Battre** : `spellF1 = 0.2433` / `macroF1 = 0.6724` (`baseline_smooth50`)
+> **Révision : 25 octobre 2026.** Ce document décrit le travail à réaliser ; il ne déclare aucun jalon terminé et ne présente aucun gain MYA comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
+>
+> **Équipe :** Ali ABOUHACHIM-ALAMI, Youssef BENADDI, Maxime BENDAVID. **Match :** FC Barcelona (`H`) — Athletic Club (`A`). **Référence de sortie :** vidéo tactique, 199 319 images à 25 images/s. **Classement :** `spellF1` ; départage par `macroF1`. **Échéance annoncée :** 17 novembre 2026 ; vérifier l'heure limite dans le courriel des organisateurs.
+>
+> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Les noms de modules ci-dessous sont des emplacements prévus, pas des preuves d'implémentation.
 
----
+## 1. Objectif et décisions de conception
 
-## 🧭 Architecture Globale du Pipeline
+Construire un programme qui transforme les données automatiques du match en un CSV `frame,label`. Chaque image reçoit `H`, `A`, `D` ou `X`. Une possession correspond au contrôle d'une équipe avec ballon vivant ; une passe ou une déviation ne déclenche pas automatiquement un changement d'équipe.
 
-Le diagramme ci-dessous illustre l'enchaînement séquentiel rigoureux des composants techniques, depuis l'ingestion brute jusqu'à la soumission finale :
+La première version exploite le tracking tactique et les indications tactiques. Elle doit fonctionner sans vidéo TV, sans reconstruction complète du ballon, sans modèle visuel et sans réseau profond obligatoire. Elle peut conserver des positions manquantes : l'objectif est de déterminer la possession avec une confiance explicite, pas de produire une trajectoire artificiellement complète.
+
+Principes du socle :
+
+- Vérifier les entrées avant toute prédiction et conserver leur provenance.
+- Séparer les indices de ballon vivant des indices d'équipe en contrôle.
+- Modéliser la continuité et les frontières dès la première version temporelle.
+- Utiliser des pénalités souples lorsque les observations sont incertaines.
+- Comparer les ajouts séparément, en conservant une version de référence régénérable.
+- N'annoncer un bénéfice qu'après mesure ; ne pas viser un nombre de possessions supposé ni un score privé prédit.
 
 ```mermaid
 flowchart TD
-    subgraph S0["Jalon 0 : Hygiène & Contraintes Dures"]
-        A0["Données Brutes (ATD, XML, CSV)"] --> A1["Masquage Déterministe Hors-Jeu (X)"]
-        A1 --> A2["Forçage Dead Ball Début 2MT (D)"]
-    end
-
-    subgraph S1["Jalon 1 : Preprocessing & Standardisation"]
-        A2 --> B1["Parsing & Caching Binaire (Parquet / NPZ)"]
-        B1 --> B2["Projection Métrique (105.3m x 68m)"]
-        B2 --> B3["Standardisation Canonique de l'Axe X"]
-        B3 --> B4["Lissage Cinématique Joueurs (Savitzky-Golay)"]
-        B4 --> B5["Alignement & Résolution Smart Tagging"]
-    end
-
-    subgraph S2["Jalon 2 : Imputation & Trajectoire Ballon"]
-        B5 --> C1["Interpolation Micro-Trous (Kalman-RTS / PCHIP)"]
-        C1 --> C2["Alignement Multi-Vues Broadcast (Chamfer + H)"]
-        C2 --> C3["Détection Sorties de Limites vs Occultations"]
-    end
-
-    subgraph S3["Jalon 3 : Feature Engineering"]
-        C3 --> D1["Invariance Slots : Tri K-Nearest Players"]
-        D1 --> D2["Pitch Control (Fernandez & Bornn)"]
-        D2 --> D3["Features Cinématiques Relatives & TTI"]
-        D3 --> D4["Features Contextuelles (reprojection_error, XML)"]
-    end
-
-    subgraph S4["Jalon 4 : Classification Frame-par-Frame"]
-        D4 --> E1["Génération Ancres Haute Confiance"]
-        E1 --> E2["Entraînement LightGBM / CatBoost"]
-        E2 --> E3["Calibration Probabiliste (P(H), P(A), P(D))"]
-    end
-
-    subgraph S5["Jalon 5 : Décodage Séquentiel (TAS)"]
-        E3 --> F1["Décodeur Viterbi / HSMM Contraint"]
-        F1 --> F2["Verrouillage Possession sur Ballons Disputés"]
-    end
-
-    subgraph S6["Jalon 6 : Raffinement & Post-Traitement"]
-        F2 --> G1["Segmentation MS-TCN++ (Perte T-MSE)"]
-        G1 --> G2["Suppression Micro-Possessions (< 18 frames)"]
-        G2 --> G3["Validation Officielle & CSV 199 319 frames"]
-    end
+    A["J0 : règles et protocole"] --> B["J1 : entrées contrôlées et cache traçable"]
+    B --> C["J2 : référence complète, CSV et scoreur officiel"]
+    C --> D["J3 : observations fiables et caractéristiques"]
+    D --> E["J4 : indices vivant / mort et contrôle des équipes"]
+    E --> F["J5 : mémoire, frontières et décodage temporel"]
+    F --> G["J6 : validation externe et comparaisons"]
+    G --> H["J7 : reproduction et livraison"]
+    G -. "si erreur identifiée et temps disponible" .-> I["Bonus indépendants"]
+    I -. "adoption après validation" .-> H
 ```
 
----
+## 2. Tableau des jalons indispensables
 
-## 📊 Matrice Synthétique des Jalons
+| Jalon | Livrable | Condition de sortie |
+|---|---|---|
+| 0 — Règles et protocole | Registre des sources et séparation des usages | Données autorisées identifiées ; protocole écrit |
+| 1 — Ingestion fiable | Données alignées, masques de qualité et caches vérifiés | Tests de format, de source et d'alignement réussis |
+| 2 — Première chaîne complète | CSV de référence et commande de régénération | Validation officielle et scores publics de référence reproduits |
+| 3 — Caractéristiques fiables | Matrice de caractéristiques, conventions et provenance | Invariance et comportement sur données manquantes vérifiés |
+| 4 — Vivant / mort et contrôle | Scores d'état issus d'indices explicites | Indisponibilité distinguée d'un arrêt et incertitude conservée |
+| 5 — Continuité et frontières | Décodeur temporel simple et réinitialisé par période | Passes, duels, reprises et possessions courtes testés |
+| 6 — Comparaisons et robustesse | Registre d'expériences et décision de conservation | Choix justifiés hors des cinq minutes publiques |
+| 7 — Livraison | `MYA.csv`, dépôt et document technique | Reproduction exacte depuis une installation propre |
 
-| Jalon | Intitulé | Objectif Principal | Livrable Technique Clé | Gain Attendu |
-| :---: | :--- | :--- | :--- | :--- |
-| **0** | **Hygiène Temporelle & Masquage** | Éliminer les erreurs d'alignement et sécuriser les règles contractuelles | Script de masquage déterministe (`X` et `D` garanti) | Sécurise `macroF1`, élimine les faux positifs sur `spellF1` |
-| **1** | **Preprocessing, Caching & Standardisation** | Structurer un dataset propre, métrique et rapide à charger | Pipeline ETL générant `.parquet` / `.npz`, repère métrique $105.3 \times 68.0$ m | Accélération I/O ($\times 30$), suppression du bruit cinématique |
-| **2** | **Imputation & Trajectoire du Ballon** | Résoudre l'aveuglement du ballon (~41 % des frames en jeu) | Modèle hybride Kalman-RTS + Fusion Broadcast 2D | Réduit l'absence du ballon de 40.7 % à < 5 % d'incertitude |
-| **3** | **Feature Engineering Spatial & Contextuel** | Rendre les données invariantes aux 46 slots et injecter la physique du jeu | Tenseurs de features ($K$-plus proches, *Pitch Control*, `reprojection_error`) | Fournit le pouvoir séparateur optimal pour les classifieurs |
-| **4** | **Classification Frame-par-Frame** | Obtenir des probabilités d'état calibrées ($P(H), P(A), P(D)$) | Modèle LightGBM optimisé sur ancres de haute confiance | Prédiction brute haute fidélité (`macroF1` $> 0.70$) |
-| **5** | **Décodage Temporel Séquentiel** | Éliminer le sur-découpage (*flickering*) sans détruire les vraies possessions | Décodeur de Viterbi / HSMM à matrice contrainte | Bond critique sur `spellF1` ($> 0.35$) |
-| **6** | **Raffinement TAS & Soumission** | Lissage aux frontières et suppression des micro-segments résiduels | MS-TCN++ et filtre de durée minimale ($\ge 18$ frames) | Score cible maximal `spellF1` $\ge 0.40$, conformité 100 % |
+## 3. Jalon 0 — Fixer les règles et le protocole avant les modèles
 
----
+### Étape 0.1 — Distinguer les usages des sources
 
-## 🔬 Découpage Exhaustif Étape par Étape
+Le règlement officiel consulté le 25 octobre fait autorité sur les propositions de l'analyse antérieure :
 
-### JALON 0 : Hygiène Temporelle, Masquage Déterministe & Validation Contractuelle
+- Les cinq minutes annotées publiques servent uniquement à vérifier le fonctionnement, l'alignement et le sens des étiquettes. Ne pas les utiliser pour apprendre, calibrer, régler un seuil ou sélectionner une version.
+- Les annotations humaines et les corrections manuelles du match fourni sont interdites, y compris sur le tracking ou les seules transitions. Ne pas créer de constantes propres à certaines images à partir d'une inspection humaine.
+- Des labels et données externes sur d'autres matchs sont utilisables si leur accès, leurs droits et leur provenance permettent la vérification par les organisateurs.
+- L'apprentissage sans labels humains et les pseudo-labels produits automatiquement sur les entrées autorisées restent possibles.
 
-#### Étape 0.1 : Masquage strict des 40 462 frames non évaluées
-* **Description** : Le règlement stipule que les frames hors jeu ne sont pas évaluées. Les prédictions émises sur ces intervalles doivent obligatoirement porter le label `X`.
-* **Intervalles contractuels** :
-  * Avant-match : frames `0` à `11 184` (11 185 frames $\rightarrow$ forçage `X`).
-  * Pause mi-temps : frames `90 652` à `110 807` (20 156 frames $\rightarrow$ forçage `X`).
-  * Après-match : frames `190 198` à `199 318` (9 121 frames $\rightarrow$ forçage `X`).
-* **Validation** : Vérifier que `(submission["label"].iloc[0:11185] == "X").all()` et équivalents pour mi-temps et après-match.
+Sources : [RULES.md](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/RULES.md), [FAQ](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/FAQ.md). En particulier, la calibration sur les cinq minutes proposée dans l'ancien plan est retirée.
 
-#### Étape 0.2 : Forçage déterministe de la « Zone Morte » début 2e Mi-Temps (frames 110 808 à 113 741)
-* **Description** : Découverte majeure de notre analyse empirique : le bloc officiel de 2nde mi-temps commence à la frame `110 808`, mais le coup d'envoi effectif n'a lieu qu'à la frame `113 742`. Durant ces 2 934 frames (117.4 secondes), les joueurs se replacent, la caméra bouge et le ballon n'est pas en jeu.
-* **Action** : Forcer contractuellement toutes les frames de `110 808` à `113 741` au label `D` (*Dead ball*).
-* **Gain** : 2 934 labels exacts garantis sur `macroF1` et zéro faux départ de possession sur `spellF1`.
+### Étape 0.2 — Registre des entrées et des décisions
 
-#### Étape 0.3 : Politique stricte anti-`X` en jeu actif
-* **Description** : Tout label `X` émis sur les 158 857 frames évaluées est comptabilisé comme une abstention pénalisante (faux négatif automatique pour les métriques).
-* **Action** : Implémenter un filtre de garde : si un modèle de prédiction produit une valeur manquante ou indéterminée en cours de jeu, appliquer un *forward-fill* du dernier état valide ($H, A$ ou $D$).
+Pour chaque source, consigner : match, origine, version, droit d'usage, nature automatique ou humaine, usage prévu et emplacement local. Distinguer les labels officiels publics de diagnostic des données autorisées d'apprentissage et de validation externe.
 
-#### Étape 0.4 : Pipeline de Sanity Check et Validation Automatisée
-* **Description** : Déploiement d'une suite de vérifications unitaires reproduisant exactement `validate_submission.py` du dépôt officiel.
-* **Contrôles exécutés** :
-  1. Nombre exact de lignes : 199 319.
-  2. Présence des colonnes exactes : `frame,label`.
-  3. Conformité de l'index : 0 à 199 318 séquentiel.
-  4. Alphabet restreint : uniquement $\{H, A, D, X\}$.
-  5. Absence totale de valeurs nulles (`NaN`).
+Ne publier aucune donnée privée ni aucun dérivé reconstructible. Vider les sorties détaillées des notebooks avant publication et vérifier les fichiers suivis. Ne pas envoyer les données privées ou leurs extraits à un LLM hébergé. Ces contrôles portent sur des contenus réels du projet ; ils doivent figurer dans la préparation du dépôt public.
 
----
+### Étape 0.3 — Définir la preuve attendue
 
-### JALON 1 : Data Preprocessing, Ingestion, Caching & Standardisation
+Trois niveaux séparés : tests synthétiques de fonctionnement ; diagnostic public du programme ; comparaison de méthodes sur d'autres matchs autorisés. Un score public favorable ne justifie ni le réglage ni l'adoption d'une variante. Un test contre des pseudo-labels ne mesure pas une exactitude indépendante.
 
-#### Étape 1.1 : Parser & Stockage Binaire Haute Performance (Parquet / NPZ)
-* **Entrée** : `BAR-ATH_tactical_atd.txt` (fichier texte brut de 199 319 lignes formatées en `frame_id:slot1_x,slot1_y,slot1_s;...:ball_x,ball_y,ball_s`).
-* **Traitement** :
-  * Parser en streaming ligne par ligne en extrayant les tenseurs :
-    * Coordonnées joueurs : matrice NumPy de taille $(199319, 46, 2)$ pour $(x, y)$.
-    * Vitesses scalaires brutes : matrice $(199319, 46)$.
-    * Coordonnées et statut du ballon : matrice $(199319, 3)$ pour $(x, y, s)$.
-  * Sérialiser ces tenseurs au format compressé `.npz` ou tables PyArrow `.parquet`.
-* **Validation** : Temps de chargement divisé par 30 (de ~35 secondes à moins d'une seconde).
+**Livrable :** protocole court et registre des sources. **Validation :** aucun apprentissage ou choix de paramètres ne lit les labels publics de BAR-ATH ; aucun label humain externe ne concerne ce même match.
 
-#### Étape 1.2 : Projection Métrique et Normalisation du Terrain
-* **Entrée** : Coordonnées normalisées dans $[0, 1] \times [0, 1]$.
-* **Traitement** :
-  * Dimensions officielles du Camp Nou / stade de référence : Longueur $L = 105.3\text{ m}$, Largeur $W = 68.0\text{ m}$.
-  * Transformation :
-    $$X_{m} = X_{norm} \times 105.3, \quad Y_{m} = Y_{norm} \times 68.0$$
-  * Origine métrique $(0, 0)$ fixée au centre du terrain ou au coin de corner selon le standard de modélisation.
+## 4. Jalon 1 — Fiabiliser les entrées et la reproduction
 
-#### Étape 1.3 : Standardisation Canonique du Sens Offensif
-* **Problème** : Les deux équipes changent de côté à la mi-temps. Le FC Barcelone ($H$) attaque vers la droite en 1ère période ($X$ croissant) et vers la gauche en 2nde période ($X$ décroissant).
-* **Traitement** :
-  * Pour toutes les frames de la 2nde mi-temps (`frame >= 110808`) :
-    $$X_{canonique} = 105.3 - X_m, \quad Y_{canonique} = 68.0 - Y_m$$
-  * Ainsi, l'équipe à domicile ($H$) attaque systématiquement vers la droite ($X > 0$) sur l'ensemble du jeu.
+Modules prévus : `src/config.py`, `src/utils/loaders.py`, `src/preprocessing/atd_parser.py`, `cache_manager.py` et `coordinates.py`. Faire utiliser les mêmes interfaces au notebook et à la chaîne finale.
 
-#### Étape 1.4 : Débruitage Cinématique des Joueurs (Filtrage Passe-Bas)
-* **Problème** : L'ATD brut généré par vision par ordinateur présente des microsauts de coordonnées (*jitter*) et des vitesses instantanées erratiques ($> 12\text{ m/s}$).
-* **Traitement** :
-  * Identifier les slots actifs ($x \neq \text{NaN}$).
-  * Appliquer un filtre de lissage Savitzky-Golay (fenêtre temporelle de 7 frames / $\approx 0.28\text{ s}$, polynôme d'ordre 2) ou un filtre Butterworth passe-bas récursif d'ordre 2 à fréquence de coupure $6\text{ Hz}$.
-  * Dériver numériquement les vecteurs de vitesse $(v_x, v_y)$ et d'accélération $(a_x, a_y)$ par différences finies centrées :
-    $$v_x(t) = \frac{x(t+1) - x(t-1)}{2 \cdot \Delta t}, \quad \text{avec } \Delta t = 0.04\text{ s}$$
-* **Validation** : Vérifier que 99.9 % des vitesses des joueurs sont bornées dans la limite physiologique $[0, 10.5]\text{ m/s}$.
+### Étape 1.1 — Chemins et environnement
 
-#### Étape 1.5 : Normalisation et Enrichissement du Smart Tagging (`BAR-ATH_tactical_smart_tagging.xml`)
-* **Entrée** : 638 annotations tactiques en secondes.
-* **Traitement** :
-  * Calage temporel : $\text{frame} = \text{round}(\text{secondes} \times 25)$.
-  * Construction de masques binaires frame par frame pour chaque type d'événement (Kick-off, Throw-in, Corner, Free Kick, Goal, Foul, Offside).
-  * Calcul des séries temporelles de distance signée temporelle : temps écoulé depuis le dernier événement ($t - t_{event}$) et temps jusqu'au prochain ($t_{event} - t$).
-  * **Résolution des 26 touches sans équipe (`Team = N/A`)** :
-    * Extraire la frame de la sortie en touche.
-    * Identifier l'équipe du dernier joueur ayant touché la balle à $t - 1\text{s}$ et la position des joueurs le long de la ligne de touche. Attribuer la remise en touche à l'équipe adverse.
+- Déduire la racine MYA de l'emplacement du package ; permettre un dépôt renommé et un dossier officiel configurable.
+- Respecter `MTAH_DATA_DIR` ; éviter les créations de dossiers au simple import.
+- Figer une version de Python, les dépendances et la révision du scoreur officiel. Importer son module local, sans dépendre d'un paquet PyPI `possession_metrics` non identifié.
+- Séparer les dépendances du socle et celles des bonus.
+- Prévoir la correction de `.gitignore` : `/models/` pour les artefacts à la racine, afin de ne pas masquer les nouveaux fichiers de `src/models/`.
+- Prévoir des noms de fichiers compatibles Windows pour les documents partagés. Vérifier les fichiers réellement suivis avant chaque commit.
 
----
+### Étape 1.2 — Décrire chaque source séparément
 
-### JALON 2 : Imputation & Reconstruction de la Trajectoire du Ballon
+| Source | Images | Pistes de joueurs | Métadonnées |
+|---|---:|---:|---|
+| Tactique — socle | 199 319 | 46 | XML tactique |
+| TV — bonus | 164 488 | 51 | XML TV |
 
-#### Étape 2.1 : Segmentation Fonctionnelle des Trous de Ballon (Réalité Empirique 100% Vérifiée)
-* **Constat Quantitatif** : Le ballon est absent sur **64 643 frames** sur les 158 857 frames de jeu (**40,7 %** du temps de jeu), réparties en exactement **150 séquences d'occultation**.
-* **Décomposition Empirique Validée dans le Notebook** :
-  * **Micro-trous ($\le 15$ frames / $\le 0.6\text{ s}$)** :
-    * **16 séquences** (soit **10,7 %** des occurrences d'occultation).
-    * Volume cumulé : seulement **53 frames** (soit **0,08 %** du total des frames sans ballon).
-    * *Nature* : Pertes ponctuelles et brèves du détecteur de vision par ordinateur en jeu actif.
-    * *Traitement* : Lissage cinématique immédiat et sans risque par interpolation PCHIP et filtre de Kalman-RTS.
-  * **Trous moyens ($16 \le x \le 50$ frames / $0.6 < x \le 2.0\text{ s}$)** :
-    * **1 seule séquence** (soit **0,7 %** des occurrences d'occultation).
-    * Volume cumulé : **22 frames** (soit **0,03 %** du total d'absence).
-    * *Nature* : Ballon aérien ou passe longue franchissant temporairement le cadre.
-    * *Traitement* : Interpolation spline ou maintien de trajectoire balistique.
-  * **Trous longs ($> 50$ frames / $> 2.0\text{ s}$)** :
-    * **133 séquences** (soit **88,7 %** des occurrences d'occultation !).
-    * Volume cumulé : **64 568 frames** (soit **99,88 % du volume total d'absence du ballon !**).
-    * *Caractéristiques physiques* : Durée médiane de **289 frames ($\approx 11,6\text{ secondes}$)** et durée maximale de **5 537 frames ($\approx 221,5\text{ s}$ / 3 min 41 s)**.
-    * *Implication méthodologique majeure* : Ce ne sont **pas des artefacts de détection**, mais dans leur quasi-totalité des **arrêts de jeu réels (`D`)** (sorties en touche, corners, six-mètres, fautes, célébrations) où le ballon quitte le terrain ou le champ visuel de la caméra tactique.
-    * *Traitement* : L'interpolation temporelle est impossible sur de telles durées. La solution repose sur :
-      1. La classification déterministe en `D` via les sorties de limites et le spike de `reprojection_error`.
-      2. La fusion prioritaire avec la caméra Broadcast via $H_{broadcast}^{-1}$ pour les phases de jeu vivantes.
+Lire l'appartenance des pistes aux équipes depuis le XML de la source, sans identifiants d'équipe figés. Ne jamais charger la TV avec les dimensions ou le mapping tactiques. Une piste est un fragment de suivi, pas une identité permanente.
 
-#### Étape 2.2 : Imputation Cinématique des Micro-Trous (Kalman-RTS / PCHIP)
-* **Traitement** :
-  * Appliquer un interpolateur cubique préservant la forme (PCHIP - *Piecewise Cubic Hermite Interpolating Polynomial*) sur les 16 micro-séquences et la séquence moyenne ($\le 50$ frames) garantissant l'absence de dépassements oscillatoires aberrants (*overshoot*).
-  * Appliquer un filtre de Kalman cinématique à accélération constante avec lissage rétrograde de Rauch-Tung-Striebel (RTS Smoother).
-* **Sortie** : Trajectoire continue du ballon $(\hat{x}_{ball}, \hat{y}_{ball})$ et estimation de la vitesse du ballon $(\hat{v}_{ball})$ sur l'ensemble des phases de jeu actives.
+### Étape 1.3 — Contrôles qui doivent arrêter le traitement
 
-#### Étape 2.3 : Synchronisation et Recalage Multi-Vues du Flux Broadcast
-* **Données** : `BAR-ATH_broadcast_atd.txt` (164 488 frames), `BAR-ATH_broadcast_homography.csv`.
-* **Traitement** :
-  1. **Alignement Temporel Global** : Corrélation croisée temporelle sur les centroïdes des joueurs pour compenser l'offset de capture (~304 frames).
-  2. **Projection Homographique Inverse** : Pour chaque frame broadcast valide (`valid == 1`), projeter les coordonnées pixel du ballon vers le plan terrain métrique via $H_{broadcast}^{-1}$.
-  3. **Recalage Géométrique Fin (Chamfer Distance)** : Caler l'orientation et l'échelle par minimisation de la distance de Chamfer entre les nuages de points des joueurs vus en Broadcast et en Tactique.
-  4. **Fusion Prioritaire** : Si le ballon est absent en tactique mais présent en broadcast valide, injecter la position recalculée.
-* **Gain** : Récupération estimée de 15 à 20 % de positions réelles de ballon supplémentaires sur les phases de jeu disputées.
+Contrôler le nombre exact d'enregistrements, l'unicité et l'ordre des identifiants, les séparateurs, les dimensions, la correspondance XML–colonnes et les valeurs non finies. Pour l'ATD livré, vérifier `frame_video = frame_id - 1` ; ne pas utiliser les compteurs privés de tracking corrigé.
 
-#### Étape 2.4 : Détection Spatio-Temporelle des Sorties de Balle (`D`)
-* **Traitement** :
-  * Si un trou de ballon supérieur à 15 frames survient après que le ballon a franchi les limites du terrain ($X_m < 0$, $X_m > 105.3$, $Y_m < 0$ ou $Y_m > 68.0$) avec un vecteur vitesse pointant vers l'extérieur :
-    $\rightarrow$ Classifier immédiatement la séquence d'absence en **Arrêt de Jeu (`D`)**.
-  * Si la `reprojection_error` de l'homographie franchit le seuil critique de $1.2\text{ px}$ pendant l'absence :
-    $\rightarrow$ Classifier en `D`.
+Un fichier tronqué, une ligne supplémentaire, un identifiant dupliqué ou un décalage ne doit ni devenir silencieusement un `NaN`, ni être caché par du remplissage. Distinguer une absence explicitement livrée d'une erreur de lecture.
 
----
+Pour l'homographie, contrôler la colonne `frame`, les neuf coefficients, `valid` et les erreurs. Pour le Smart Tagging, normaliser la casse, conserver les champs inconnus et les `N/A`, détecter les bornes incohérentes. Employer une convention documentée d'intervalles `[début, fin[`.
 
-### JALON 3 : Feature Engineering Spatial, Physique & Contextuel
+### Étape 1.4 — Cache et provenance
 
-#### Étape 3.1 : Décomposition Équipes et Invariance aux 46 Slots
-* **Données** : `BAR-ATH_tactical_atd.xml` (association slot $\leftrightarrow$ `teamId`).
-* **Traitement** :
-  * Associer chaque slot actif à son équipe : $0$ pour FC Barcelona ($H$) ou $1$ pour Athletic Club ($A$).
-  * Pour chaque frame et pour chaque équipe, calculer la distance euclidienne de chaque joueur au ballon :
-    $$d_i(t) = \sqrt{(x_{joueur, i}(t) - x_{ball}(t))^2 + (y_{joueur, i}(t) - y_{ball}(t))^2}$$
-  * Trier les joueurs par distance croissante et extraire les $K=5$ plus proches de chaque camp :
-    * Joueurs Home : $H_1, H_2, H_3, H_4, H_5$ (avec $d(H_1) \le d(H_2) \le \dots$)
-    * Joueurs Away : $A_1, A_2, A_3, A_4, A_5$ (avec $d(A_1) \le d(A_2) \le \dots$)
-* **Bénéfice** : Invariance mathématique absolue par permutation des identifiants anonymes.
+Enregistrer avec le cache : source, chemin résolu, signature des entrées, dimensions, version du parseur et conventions de coordonnées. L'invalider après changement de données ou de parseur ; refuser un cache incomplet. Écrire de manière atomique et vérifier l'équivalence lecture directe / cache.
 
-#### Étape 3.2 : Caractéristiques Cinématiques Relatives & TTI
-* Pour chacun des $K$ plus proches joueurs ($H_k$ et $A_k$) :
-  1. Coordonnées relatives : $\Delta x_k = x_{joueur, k} - x_{ball}$, $\Delta y_k = y_{joueur, k} - y_{ball}$.
-  2. Norme de distance : $d_k = \sqrt{\Delta x_k^2 + \Delta y_k^2}$.
-  3. Différentiel de vitesse : $\Delta v_{x, k} = v_{x, joueur} - v_{x, ball}$, $\Delta v_{y, k} = v_{y, joueur} - v_{y, ball}$.
-  4. Vitesse d'approche projetée sur le ballon :
-     $$v_{approach, k} = \frac{\Delta x_k \cdot v_{x, joueur} + \Delta y_k \cdot v_{y, joueur}}{d_k}$$
-  5. Temps estimé d'interception (*Time-to-Interception* - TTI) :
-     $$\text{TTI}_k = \frac{d_k}{\max(\|v_{joueur}\|, 2.0)}$$
-  6. Écart d'interception entre les deux premiers rivaux : $\Delta \text{TTI} = \text{TTI}(A_1) - \text{TTI}(H_1)$.
+### Étape 1.5 — Repères et unités
 
-#### Étape 3.3 : Modélisation Physique du Contrôle de Terrain (*Pitch Control*)
-* **Fondement** : Modèle de Fernandez & Bornn (2018) / Spearman.
-* **Traitement** :
-  * Chaque joueur exerce une zone d'influence modélisée par une distribution normale bivariée orientée selon sa vitesse et proportionnelle à sa distance au ballon.
-  * Calcul de la probabilité ponctuelle de contrôle au point exact du ballon :
-    $$\text{PC}_{ball}^{(H)}(t) \in [0, 1] \quad \text{et} \quad \text{PC}_{ball}^{(A)}(t) = 1 - \text{PC}_{ball}^{(H)}(t)$$
-* **Bénéfice** : Transforme une configuration spatiale complexe de 22 joueurs en un indice scalaire robuste prédisant la possession avec une très haute fidélité.
+Conserver le repère normalisé d'origine et une version métrique `x_m = 105.3 x`, `y_m = 68 y`, avec l'origine au coin correspondant à `(0, 0)`. Les vitesses scalaires sont distinctes des coordonnées et ne doivent pas être multipliées par les dimensions du terrain.
 
-#### Étape 3.4 : Features Contextuelles, Homographie et Métadonnées
-* **Homographie** :
-  * `reprojection_error` instantanée.
-  * Moyenne mobile et dérivée temporelle de l'erreur : $\Delta \text{err}(t) = \text{err}(t) - \text{err}(t-25)$.
-* **Dynamique Collective** :
-  * Barycentre (centroïde) de chaque équipe $(X_c^H, Y_c^H)$ et $(X_c^A, Y_c^A)$.
-  * Compacité d'équipe : dispersion spatiale (écart-type des positions).
-  * Ligne défensive la plus basse et ligne d'attaque la plus haute.
-* **Smart Tagging** :
-  * Présence dans une fenêtre active de remise en jeu ($[\text{start}, \text{end}]$).
-  * Type de phase arrêtée en cours.
+L'homographie transforme les positions normalisées du terrain en pixels. Son inverse sert pour une détection en pixels ; ne pas l'appliquer aux positions ATD déjà exprimées sur le terrain. Toute normalisation du sens offensif doit être justifiée par des métadonnées ou un algorithme, et transformer aussi les vecteurs associés.
 
----
+**Livrable :** données tactiques validées et masques de qualité. **Tests indispensables :** petit fichier valide, tronqué, trop long, désordonné, doublons, observations manquantes, changement de source, cache périmé ; fixture TV de 51 pistes pour prévenir la régression du chargeur générique. Ces fixtures sont synthétiques.
 
-### JALON 4 : Classification Frame-par-Frame & Calibration Probabiliste
+## 5. Jalon 2 — Obtenir très tôt une première soumission complète
 
-#### Étape 4.1 : Protocole d'Apprentissage & Pseudo-Labellisation par Ancres
-* **Enjeu** : Seules 7 500 frames (5 minutes) sont officiellement labellisées. L'apprentissage supervisé direct sur 5 minutes souffre d'un surapprentissage massif (comme prouvé par le piège de la baseline smooth125).
-* **Génération d'Ancres de Haute Confiance (100 % autorisée par le règlement)** :
-  * **Ancre Possession Certaine $H$** : $d(H_1) < 1.0\text{ m}$, $d(A_1) > 2.5\text{ m}$, vitesse cohérente pendant $\ge 20$ frames consécutives $\rightarrow$ Label certain $H$.
-  * **Ancre Possession Certaine $A$** : $d(A_1) < 1.0\text{ m}$, $d(H_1) > 2.5\text{ m}$, vitesse cohérente pendant $\ge 20$ frames consécutives $\rightarrow$ Label certain $A$.
-  * **Ancre Dead Ball Certain $D$** : Ballon hors limites, frames d'interruption du Smart Tagging avec joueurs immobiles $\rightarrow$ Label certain $D$.
-* **Volume d'entraînement généré** : Couvre environ 60 à 70 % des 158 857 frames avec une pureté $> 98 \%$.
+Modules prévus : `src/pipeline.py`, `src/hygiene/masking.py`, `validator.py`, `src/refinement/exporter.py`. Ce jalon précède les modèles avancés.
 
-#### Étape 4.2 : Entraînement des Modèles Tabulaires (LightGBM / CatBoost)
-* **Configuration** :
-  * Objectif : `multiclass` (3 classes : $H, A, D$).
-  * Métrique d'optimisation : `multi_logloss`.
-  * Schéma de validation croisée : GroupKFold temporel par blocs de 15 minutes (pour éviter la fuite d'information par corrélation temporelle locale).
-* **Hyperparamètres clés** :
-  * `learning_rate` : $0.03 - 0.05$.
-  * `max_depth` : 6 à 8.
-  * `class_weight` / pondération : rééquilibrage de la classe minoritaire $D$.
+### Étape 2.1 — Reproduire la référence officielle
 
-#### Étape 4.3 : Calibration Probabiliste des Émissions
-* **Traitement** :
-  * Les sorties brutes des arbres sont calibrées via régression isotonique ou mise à l'échelle de température (*Platt Scaling*) sur l'échantillon de validation public (5 minutes).
-* **Sortie** : Matrice de probabilités denses $P \in \mathbb{R}^{199319 \times 3}$ fournissant $[P_t(H), P_t(A), P_t(D)]$.
+Exécuter le scoreur officiel sur les quatre CSV fournis. Conserver ses sorties avec la révision utilisée. Implémenter ensuite une référence tactique complète reproduisant le principe du joueur le plus proche et son lissage, sans en sélectionner la fenêtre sur les labels publics.
 
----
+| Référence fournie | `spellF1` public | `macroF1` public |
+|---|---:|---:|
+| raw | 0,0378 | 0,5972 |
+| smooth25 | 0,2868 | 0,6200 |
+| smooth50 | 0,3256 | 0,6207 |
+| smooth125 | 0,4242 | 0,5812 |
 
-### JALON 5 : Décodage Temporel Séquentiel & Contraintes Métier (Viterbi / HSMM)
+La référence privée publiée à battre est `smooth50`, avec `spellF1 = 0,2433`. Ces chiffres décrivent les références, pas des objectifs MYA garantis. Le module officiel fait foi ; ne pas réécrire l'appariement en suivant la description erronée « algorithme hongrois » de l'ancien rapport.
 
-#### Étape 5.1 : Formulation du Processus Markovien Caché Contraint
-* **États du système** : $\mathcal{S} = \{H, A, D\}$.
-* **Émissions** : Log-vraisemblances dérivées des probabilités calibrées :
-  $$\ln P(O_t | S_t = s) = \ln P_t(s) - \ln \pi(s)$$
-* **Matrice de Transition Dynamique $T(t)$** :
-  Contrairement à un HMM standard à matrice constante, la matrice de transition s'adapte frame par frame en fonction de l'état cinématique du jeu.
+Source : [évaluation officielle](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/EVALUATION.md).
 
-#### Étape 5.2 : Encodage des Règles Physiques de Football
-1. **Règle de Conservation de Possession** :
-   * Tant qu'aucun joueur adverse n'a stabilisé la balle ($d(A_1) > 1.2\text{ m}$), une passe contestée, une déviation ou un duel aérien maintient la possession de l'équipe précédente :
-     $$P_t(H \rightarrow A) = 0 \quad \text{si } d(A_1, ball) > 1.2\text{ m}$$
-2. **Transition vers Dead Ball ($D$)** :
-   * Une transition vers $D$ est favorisée dès que le ballon franchit les limites ou que `reprojection_error` dépasse les seuils critiques.
-3. **Pénalité de Transition (Inertie temporelle)** :
-   * Forte pénalité logarithmique sur l'autotransition pour décourager les micro-changements d'état de moins de 1 seconde ($P(S_t = s | S_{t-1} = s) \ge 0.98$).
+### Étape 2.2 — Appliquer seulement les informations temporelles officiellement publiées
 
-#### Étape 5.3 : Décodage Global par Programmation Dynamique (Viterbi)
-* **Traitement** :
-  * Résolution globale du chemin le plus probable :
-    $$\hat{S}_{1:T} = \arg\max_{S_{1:T}} \sum_{t=1}^T \Big( \ln P(O_t | S_t) + \ln T_{S_{t-1}, S_t}(t) \Big)$$
-* **Bénéfice direct** : Élimine totalement le phénomène de sur-segmentation (*flickering*) sans détruire les vraies possessions courtes (entre 1.5s et 3.0s), surpassant structurellement le filtre glissant `baseline_smooth50`.
+Convention interne : intervalles demi-ouverts en indices vidéo.
 
----
+| Intervalle | Traitement |
+|---|---|
+| `[0, 11185[` | `X` par convention de sortie |
+| `[11185, 90652[` | Première période évaluée |
+| `[90652, 110808[` | `X` par convention de sortie |
+| `[110808, 190198[` | Deuxième période évaluée |
+| `[190198, 199319[` | `X` par convention de sortie |
+| `[110808, 113742[` | `D`, information publiée dans la FAQ |
 
-### JALON 6 : Raffinement TAS & Filtrage Post-Hoc anti-Sur-Segmentation
+Les images non évaluées sont ignorées par le scoreur ; `X` y est une convention pratique, pas une obligation gagnant des points. Les constantes de ce tableau proviennent des documents officiels et doivent garder cette provenance. Aucune autre correction d'image spécifique ne doit provenir d'un visionnage humain.
 
-#### Étape 6.1 : Réseau de Raffinement Temporel (MS-TCN++)
-* **Architecture** : Réseau卷积 temporel multi-étages (*Multi-Stage Temporal Convolutional Network*).
-* **Fonctionnement** :
-  * Reçoit en entrée la séquence temporelle complète des probabilités issues du Jalon 4.
-  * Couches de convolutions 1D dilatées avec champs récepteurs croissants ($2^0, 2^1, \dots, 2^9$) captant le contexte sur 1 024 frames ($\approx 41\text{ secondes}$).
-  * Entraînement avec la perte de lissage $L_{\text{T-MSE}}$ (*Truncated Mean Squared Error*) qui pénalise explicitement les variations brutales consécutives :
-    $$\mathcal{L}_{\text{T-MSE}} = \frac{1}{T C} \sum_{t, c} \min \left( (\ln P_{t, c} - \ln P_{t-1, c})^2, \, \tau^2 \right)$$
+### Étape 2.3 — Export et abstention
 
-#### Étape 6.2 : Filtrage Déterministe de Durée Minimale (*Spurious Run Removal*)
-* **Problème Mathématique sur `spellF1`** :
-  * Toute micro-possession prédite de moins de quelques dixièmes de seconde ne peut pas atteindre les seuils d'IoU $\theta \in [0.3, 0.7]$ et génère systématiquement **deux faux positifs** (fragmentation de la vraie possession + invention d'une fausse possession).
-* **Algorithme de Post-Traitement** :
-  1. Identifier tous les segments continus de prédiction $H$ et $A$.
-  2. Si un segment a une durée $L < 18\text{ frames}$ ($0.72\text{ seconde}$) :
-     * Remplacer son label par le label dominant de son segment englobant (ou l'état précédent).
-  3. Si un segment $D$ dure moins de $10\text{ frames}$ ($0.4\text{ s}$) sans confirmation spatiale de sortie de touche :
-     * Le résorber par continuité de la possession en cours.
+Produire exactement les colonnes `frame,label`, 199 319 lignes de données, indices de 0 à 199318, sans cellule vide. `X` représente une abstention volontaire, pas une erreur de chargement.
 
-#### Étape 6.3 : Packaging de Soumission et Validation Finale
-* **Génération de la soumission** : Export vers `submissions/MYA_final_submission.csv`.
-* **Évaluation locale sur l'échantillon public de 5 minutes** :
-  * Calcul en direct de `spell_f1_mean` et `macro_f1` via `possession_metrics.py`.
-* **Vérification d'absence de régression** :
-  * S'assurer que le modèle ne reproduit pas le piège de `baseline_smooth125` (qui gonfle artificiellement le score 5 min à 0.42 mais chute à 0.22 sur match complet).
+Documenter son coût : erreur pour `macroF1` sur les images évaluées ; remplissage au sein des blocs de référence pour la métrique temporelle. Un maintien explicite peut être choisi, mais il ne garantit pas une hausse de `macroF1`. Empêcher toute propagation entre les deux périodes et définir le traitement du début de chaque période.
 
----
+**Livrable :** une commande régénérant un premier CSV accepté par `evaluation/validate_submission.py`. Deux exécutions de référence doivent produire les mêmes octets. Le code de validation fourni reste l'autorité.
 
-## 📅 Chronologie d'Exécution & Dépendances
+## 6. Jalon 3 — Construire des caractéristiques fiables et des indices d'incertitude
 
-```mermaid
-gantt
-    title Planning de Développement MYA — More than a Hack 2027
-    dateFormat  YYYY-MM-DD
-    section Fondations
-    Jalon 0 (Hygiène & Masquage)          :done,    j0, 2026-10-21, 2026-10-23
-    Jalon 1 (Preprocessing & Caching)     :active,  j1, 2026-10-23, 2026-10-27
-    section Cinématique
-    Jalon 2 (Trajectoire Ballon & D)      :         j2, 2026-10-27, 2026-11-01
-    section Machine Learning
-    Jalon 3 (Feature Engineering)         :         j3, 2026-11-01, 2026-11-05
-    Jalon 4 (LightGBM & Ancres)           :         j4, 2026-11-05, 2026-11-09
-    section Séquentiel & TAS
-    Jalon 5 (Décodeur Viterbi Contraint)  :         j5, 2026-11-09, 2026-11-13
-    Jalon 6 (MS-TCN++ & Post-traitement)  :         j6, 2026-11-13, 2026-11-16
-    Revue Finale & Soumission             :         sub, 2026-11-16, 2026-11-17
+Modules prévus : `src/preprocessing/player_denoising.py`, `smart_tagging.py`, `src/features/team_assignment.py`, `k_nearest.py`, `relative_kinematics.py`, `collective_dynamics.py`, `context_features.py`, `builder.py`.
+
+### Étape 3.1 — Mesurer les trous sans les interpréter comme des arrêts
+
+Recalculer les absences séparément par période et sur la chronologie originale. Ne pas concaténer les mi-temps avant de compter les segments. Conserver leur longueur, l'âge de la dernière observation et la distance jusqu'à la prochaine, puisque l'analyse est hors ligne.
+
+Les comptes détaillés du premier notebook restent des observations à reproduire, pas une vérité sur la nature des phases. Un trou long ne prouve pas `D`. Présenter toute la distribution, y compris les plus longs trous.
+
+### Étape 3.2 — Cinématique par fragments continus
+
+Détecter les ruptures, changements brusques et pistes possiblement dupliquées. Lisser et dériver seulement à l'intérieur de fragments fiables ; ne pas interpoler un joueur à travers une rupture d'identité ou la mi-temps. Conserver un masque de validité et le nombre de joueurs fiables de chaque équipe.
+
+Les limites physiologiques servent d'alertes de qualité, pas de preuve qu'un filtre est bon parce qu'il a écrêté toutes les vitesses. Comparer les dérivées aux vitesses fournies et documenter les écarts.
+
+### Étape 3.3 — Représentation d'équipe indépendante de l'ordre des pistes
+
+Construire au minimum : distances au ballon des joueurs les plus proches de chaque équipe, écart de proximité H–A, nombre de joueurs proches, activité collective et contrastes entre contexte passé et futur. Gérer les cas sans ballon ou avec trop peu de joueurs par des masques explicites.
+
+Pour `Δr = position_joueur - position_ballon`, une vitesse de fermeture positive peut s'écrire `-Δr · (v_joueur - v_ballon) / max(||Δr||, ε)`, uniquement si les vitesses sont fiables. Le ratio distance / vitesse est un indicateur grossier ; ne pas le présenter comme un temps d'interception physique exact.
+
+Tester l'invariance aux permutations au sein des équipes. Ne pas calculer une vitesse en suivant la même place dans un tri par distance : cette place peut changer de joueur à chaque image.
+
+### Étape 3.4 — Smart Tagging comme indice contextualisé
+
+Encoder les phases offensives pour l'équipe indiquée et les phases défensives avec une polarité opposée. Conserver l'incertitude des bornes et les contradictions entre tags. Encoder les proximités des reprises et leur type ; ne pas supposer qu'une fenêtre de corner est entièrement morte ou entièrement vivante.
+
+Garder les touches `Team = N/A` comme inconnues tant qu'une règle générale et vérifiable n'apporte pas d'indice suffisant. Ne pas attribuer automatiquement la touche à l'adversaire du joueur le plus proche une seconde auparavant.
+
+### Étape 3.5 — Qualité des capteurs
+
+Conserver visibilité, longueur des trous, continuité des pistes, effectif fiable, présence de doublons et désaccords des indices. `reprojection_error` est un indice de confiance géométrique ; aucun seuil isolé ne doit forcer `D`.
+
+**Livrable :** matrice de caractéristiques avec noms, unités, masques et provenance. **Validation :** permutations, cas sans ballon, joueur absent, doublon, rupture de piste, frontière de période et calcul passé/futur sur fixtures synthétiques. Réutiliser ces fonctions dans le notebook pour éviter deux implémentations divergentes.
+
+## 7. Jalon 4 — Séparer ballon vivant et contrôle de l'équipe
+
+Modules prévus : `src/imputation/deadball_detector.py`, `src/models/anchors.py`, `dataset.py`, `tabular.py`. Les modèles appris sont conditionnés à une supervision autorisée ; la version par règles demeure une solution complète.
+
+### Étape 4.1 — Score de ballon vivant
+
+Combiner plusieurs indices : mouvement récent du ballon, proximité des limites, activité collective, phases tactiques et indices de reprise. Prévoir les contre-exemples « ballon absent pendant le jeu » et « ballon visible pendant un arrêt ». L'homographie et le ralentissement des joueurs sont des indices souples, jamais la décision de l'arbitre.
+
+### Étape 4.2 — Score d'équipe et mémoire du contrôle
+
+Combiner proximité, durée de contact plausible, cinématique fiable et contexte tactique. Une déviation ou le passage de la balle près d'un adversaire ne suffit pas à établir un contrôle. Distinguer la dernière équipe en contrôle de la prochaine équipe pouvant remettre le ballon en jeu : une proximité pendant `D` ne doit pas devenir une possession vivante.
+
+Maintenir des scores pour H et A même si le ballon est absent, à partir du contexte disponible, avec une confiance réduite. Ne pas inventer une coordonnée pour satisfaire l'interface.
+
+### Étape 4.3 — Préparer la comparaison règles / apprentissage léger
+
+Si des labels externes compatibles sont disponibles, comparer un petit modèle tabulaire aux règles, puis comparer une sortie ternaire directe à la factorisation :
+
+```text
+P(D) = 1 - P(vivant)
+P(H) = P(vivant) × P(H | vivant)
+P(A) = P(vivant) × P(A | vivant)
 ```
 
----
+Ces probabilités doivent utiliser des conventions et une supervision cohérentes. En l'absence de calibration indépendante, parler de scores et documenter leur échelle. Ne pas imposer une calibration isotonique sur un minuscule échantillon ni une division automatique des scores par des fréquences de classes biaisées.
 
-## 🎯 Tableau de Bord des Métriques Cibles
+Pour les pseudo-labels, conserver origine, couverture, conflit et confiance. Ne pas annoncer 98 % de pureté sans mesure indépendante ; ne pas utiliser leur propre accord comme validation. Les situations ambiguës peuvent rester non supervisées.
 
-| Modèle / Étape | `spellF1` Match Complet | `macroF1` Match Complet | Nombre Possessions Prédites | Statut |
-| :--- | :---: | :---: | :---: | :---: |
-| *Baseline Raw* (sans lissage) | 0.0486 | 0.6532 | ~1 800 (Flickering massif) | Dépassé |
-| *Baseline Smooth25* (1.0 s) | 0.1996 | 0.6752 | ~750 | Dépassé |
-| **Baseline Smooth50 (2.0 s - Référence)** | **0.2433** | **0.6724** | **~480** | **Seuil à battre** |
-| *Baseline Smooth125 (5.0 s)* | 0.2242 | 0.6356 | ~210 (Over-smoothing) | Piège évité |
-| **MYA Jalon 2 (Imputation Ballon)** | $\approx 0.28$ | $\approx 0.68$ | ~450 | Jalon intermédiaire |
-| **MYA Jalon 4 (LightGBM + Pitch Control)** | $\approx 0.32$ | $\ge 0.71$ | ~400 | Jalon intermédiaire |
-| **MYA Jalon 5 (Viterbi Contraint)** | $\approx 0.38$ | $\ge 0.72$ | ~320 | Jalon avancé |
-| **MYA Jalon 6 (Pipeline Final TAS)** | **$\ge 0.42$** | **$\ge 0.73$** | **~280 (Topologique)** | **Objectif Podium** |
+**Livrable :** scores d'observation H/A/D et indicateurs de confiance, plus une référence sans apprentissage. **Validation :** cohérence des scores et cas synthétiques de contrôle, de ballon mort et d'incertitude ; toute sélection de modèle ou de calibration se fait hors des annotations publiques de BAR-ATH.
 
----
-*Document opérationnel établi pour l'équipe MYA — More than a Hack 2027.*
+## 8. Jalon 5 — Modéliser la continuité et les frontières
+
+Modules prévus : `src/sequential/dynamic_matrix.py`, `viterbi.py`, `src/hygiene/guards.py`. Commencer par une méthode temporelle légère, puis un Viterbi à trois états si son apport est démontrable ; HSMM et réseaux supplémentaires restent en bonus.
+
+### Étape 5.1 — Pénalités souples et réinitialisation
+
+Associer aux scores d'observation une pénalité de changement modulée par le contexte. Avec Viterbi, chercher un chemin maximisant la somme des scores d'état et de transition ; préciser s'il s'agit d'un modèle probabiliste ou d'une énergie discriminante.
+
+Une observation absente ou imprécise ne doit pas interdire irréversiblement une récupération. Éviter les transitions H/A fixées à zéro par un unique rayon de 1,2 m, ainsi que les contraintes non symétriques entre équipes. Réinitialiser la mémoire aux séparations de période.
+
+### Étape 5.2 — Frontières candidates et confirmation rétrospective
+
+Détecter des candidats à partir des changements de proximité, de mouvement, des réapparitions et des indices de reprise. Utiliser le contexte futur pour confirmer un contrôle, puis estimer son début au premier indice crédible, plutôt que retarder systématiquement la décision jusqu'à la confirmation. Tester l'effet sur le type et le décalage des frontières.
+
+### Étape 5.3 — Comparer des hypothèses pendant les trous
+
+Pour un trou long, comparer maintien de la possession, récupération adverse et arrêt, en utilisant les observations avant et après. La longueur du trou réduit la confiance ; elle ne décide pas seule de son état. Autoriser la mise à jour d'une hypothèse au retour du ballon.
+
+### Étape 5.4 — Préserver les vraies possessions courtes
+
+Ne supprimer aucun segment uniquement parce qu'il dure moins de 18 images. Toute correction doit tenir compte du contexte et de la confiance et être comparée au résultat sans correction. Une courte possession peut obtenir une IoU parfaite.
+
+**Livrable :** séquence H/A/D cohérente et diagnostics des transitions. **Tests indispensables :** passe conservée, déviation sans contrôle, récupération adverse, récupération pendant une absence, ballon visible mort, reprise, vraie possession courte, première image d'une période et absence de propagation à travers la mi-temps. Les labels des tests sont entièrement synthétiques ou proviennent d'autres matchs autorisés.
+
+## 9. Jalon 6 — Comparer, valider et décider
+
+### Étape 6.1 — Validation externe indépendante
+
+Définir des matchs d'apprentissage, de choix de paramètres et de validation séparés. Vérifier la convention de possession contrôlée, la définition du ballon mort, l'alignement et la provenance des annotations externes. Les événements seuls ne constituent pas automatiquement une vérité terrain dense compatible.
+
+Éviter tout chevauchement des possessions ou des fenêtres de contexte entre apprentissage et validation ; tenir compte des fenêtres futures et des filtres. Dégrader les données externes par trous continus, ruptures de pistes et bruit réaliste, sans supposer qu'un masquage aléatoire indépendant imite les absences réelles.
+
+Si aucune vérité indépendante adaptée n'est disponible, conserver une référence simple, signaler cette limite et ne pas fabriquer de classement de variantes à partir des pseudo-labels. Les cinq minutes publiques restent un contrôle de fonctionnement, y compris pour les étapes bonus.
+
+### Étape 6.2 — Comparaisons par ajout isolé
+
+Comparer, sur la validation autorisée : référence ; indices tactiques ; vivant/mort ; mémoire du contrôle ; décodeur ; puis bonus. Examiner les résultats par type de frontière et niveau de qualité des observations, pas seulement une moyenne globale.
+
+Conserver `spellF1` et son détail par seuil d'IoU, `macroF1`, diagnostics de frontières, fragmentation et temps de calcul. Le bootstrap peut illustrer l'incertitude d'échantillonnage ; il n'autorise pas le réglage sur le public et ne corrige pas un biais de domaine.
+
+### Étape 6.3 — Registre reproductible
+
+Pour chaque expérience : identifiant, hypothèse, commit, configuration, révisions des données et du scoreur, source de supervision, graines, coût, résultats de validation externe, décision et empreinte du CSV. Stocker séparément le diagnostic public et la justification du choix.
+
+Les distributions prédites du match entier servent à détecter des anomalies. Elles ne doivent pas être ajustées pour atteindre les nombres de possessions imaginés dans l'ancien plan. Supprimer les mentions « dépassé », « podium », les puretés garanties et les scores privés projetés tant qu'ils ne sont pas établis.
+
+**Livrable :** une version candidate gelée et une justification des composants conservés ou abandonnés. **Condition d'adoption d'un bonus :** signal favorable sur validation indépendante autorisée, robustesse, coût acceptable et reproduction préservée. Une amélioration du seul score public ne satisfait pas cette condition.
+
+## 10. Jalon 7 — Préparer la livraison sans attendre les bonus
+
+### Étape 7.1 — Reproduction propre
+
+Sur une nouvelle installation, reconstruire le CSV depuis les seules entrées autorisées avec une commande documentée. Vérifier son empreinte, y compris pour les caches reconstruits. Figer graines, dépendances et options nécessaires ; documenter le matériel et les limites éventuelles de déterminisme.
+
+Préserver un chemin d'exécution CPU pour la référence. Le socle ne dépend pas d'un entraînement vidéo lourd ; chaque bonus doit annoncer son coût réel et pouvoir être désactivé.
+
+### Étape 7.2 — Vérification des livrables
+
+- `submissions/MYA.csv` : fichier final, format vérifié par le validateur officiel sur ses octets exacts.
+- Dépôt public : sources, configuration finale, dépendances, accès aux poids utilisés et instructions ; aucune donnée privée ni sortie reconstructible.
+- `MYA.md` ou `MYA.pdf` : méthode, sources d'entraînement, conventions, gestion des absences, limites, composants essayés et reproduction.
+
+Référence : [SUBMISSION.md](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/SUBMISSION.md). Le formulaire et l'heure limite doivent être vérifiés dans les messages officiels.
+
+### Étape 7.3 — Marge avant l'échéance
+
+| Période indicative | Priorité |
+|---|---|
+| 25–28 octobre | Jalons 0–2 : entrées fiables et première soumission complète |
+| 29 octobre–4 novembre | Jalons 3–5 ; préparation de la validation externe en parallèle |
+| 5–10 novembre | Jalon 6 et au plus un ou deux bonus motivés par les erreurs |
+| 11–14 novembre | Gel de la candidate, reproduction propre et document technique |
+| 15–16 novembre | Validation des livrables et envoi avec marge |
+
+Ces dates sont une proposition de travail, pas un état d'avancement constaté. La validation et la documentation commencent dès le socle ; elles ne sont pas reportées au dernier jour.
+
+Répartition possible : une personne sur ingestion/reproduction ; une sur les indices de jeu et le décodage ; une sur la validation externe, les expériences et la documentation. Convenir des formats échangés avant de paralléliser.
+
+## 11. Sources et règles de priorité
+
+Les règles et le scoreur officiels priment sur ce plan et sur l'analyse historique : [défi](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/CHALLENGE.md), [données](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/DATA.md), [règles](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/RULES.md), [évaluation](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/EVALUATION.md), [code des métriques](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/evaluation/possession_metrics.py), [soumission](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/SUBMISSION.md).
+
+Les étapes ci-dessous sont optionnelles et indépendantes. Elles partent toutes d'une référence fonctionnelle et doivent respecter le protocole du jalon 6. Il n'est pas prévu de les empiler toutes.
+
+## 12. Étapes bonus — améliorations à tester, sans gain présumé
+
+### Bonus B1 — Interpolation courte et pitch control
+
+**Hypothèse :** améliorer la géométrie locale aide sur certaines frontières. **Essais séparés :** interpolation linéaire puis PCHIP/Kalman-RTS sur des trous courts physiquement compatibles ; ajout d'un indicateur simple de contrôle potentiel au ballon. Conserver observations originales, positions imputées et incertitude séparément.
+
+**Risque :** faux contrôle pendant une occultation, vitesse fictive ou aucune information supplémentaire par rapport aux distances. **Conserver seulement si :** des trous masqués sur données externes et la tâche finale montrent un bénéfice, notamment près des transitions. Une meilleure erreur de position seule ne suffit pas. [Fernandez et Bornn, 2018](https://www.lukebornn.com/papers/fernandez_ssac_2018.pdf).
+
+### Bonus B2 — Durées explicites et états internes enrichis
+
+**Hypothèse :** un HSMM ou des états internes de passe/contrôle conservent mieux les possessions. **Essai :** comparer au décodeur simple, avec distributions de durée estimées hors BAR-ATH et retour final vers H/A/D.
+
+**Risque :** imposer des durées qui effacent les récupérations courtes ou multiplier les paramètres. **Conserver seulement si :** gain externe sur les frontières et les possessions courtes, sans correction manuelle. Les états internes supplémentaires ne changent pas l'alphabet de sortie du concours.
+
+### Bonus B3 — Frontières apprises et raffinement temporel
+
+**Hypothèse :** une branche de frontières inspirée d'ASRF, un petit TCN ou MS-TCN++ améliore les intervalles par rapport aux candidats heuristiques. **Essai :** une famille à la fois, supervision externe ou automatique tracée, séquences et masques explicites ; éviter d'empiler plusieurs lissages sans comparaison.
+
+**Risque :** peu de supervision indépendante, frontières étalées ou surajustement. **Conserver seulement si :** les gains externes persistent selon la durée des possessions et la qualité du tracking. [ASRF](https://yiskw713.github.io/asrf/), [MS-TCN++](https://arxiv.org/abs/2006.09220).
+
+### Bonus B4 — Apprendre directement depuis les joueurs et le contexte
+
+**Hypothèse :** un modèle temporel léger peut prédire H/A/D, ou vivant/mort puis équipe, sans reconstruire d'abord chaque position du ballon. **Essai :** encodeur invariant par équipe, contexte temporel court, comparaison aux règles et au modèle tabulaire ; sources de supervision autorisées uniquement.
+
+**Risque :** mémorisation de styles d'équipe ou de pistes, écart entre conventions des données externes et du concours. **Conserver seulement si :** robustesse externe aux absences du ballon et aux permutations/ruptures, et coût justifié. [Borghesi et al., 2023](https://doi.org/10.1016/j.eswa.2023.119780).
+
+### Bonus B5 — PathCRF et apprentissage conjoint de trajectoires/états
+
+**Hypothèse :** les interactions entre joueurs et la cohérence d'un chemin de possession apportent de meilleurs indices pendant les absences. **Essais alternatifs :** examiner le transfert de [PathCRF](https://github.com/hyunsungkim-ds/pathcrf) ou une variante simplifiée par équipe ; étudier [TranSPORTmer](https://arxiv.org/abs/2410.17785) et [BallRadar](https://arxiv.org/abs/2306.08206) si un apprentissage conjoint peut être reproduit.
+
+Vérifier d'abord code, poids, droits, conventions des labels et données nécessaires. PathCRF annonce des modèles et une préparation Sportec accessibles ; cela ne garantit pas leur transfert aux pistes du concours.
+
+**Risque :** l'invariance à l'ordre des joueurs ne traite pas leurs changements d'identité temporelle ; une bonne trajectoire reconstruite n'assure pas une bonne possession. **Conserver seulement si :** l'adaptation aux ruptures est vérifiée et la validation externe justifie la complexité. Ne pas engager les trois familles simultanément.
+
+### Bonus B6 — Tracking et images locales des joueurs
+
+**Hypothèse :** les postures et gestes aident à distinguer contrôle, déviation et remise en jeu. **Essai :** images centrées sur les joueurs via la caméra tactique et sa géométrie, encodeur préentraîné éventuellement figé, fusion avec les caractéristiques du socle ; aucune annotation manuelle du match.
+
+**Risque :** erreurs de cadrage, coût d'extraction et supervision externe insuffisante. **Conserver seulement si :** gain sur les ambiguïtés ciblées et coût d'inférence acceptable. Réutiliser les images ou caractéristiques en cache local avec provenance, sans les publier. [Peral et al., WACV 2026](https://openaccess.thecvf.com/content/WACV2026/papers/Peral_Multi-Modal_Soccer_Scene_Analysis_with_Masked_Pre-Training_WACV_2026_paper.pdf).
+
+### Bonus B7 — Fusion avec la caméra TV
+
+**Hypothèse :** la seconde vue résout des absences importantes pour les transitions. **Essai :** commencer par ses 51 pistes et son XML, puis produire un alignement automatique par segments avec score de confiance et possibilité de rejet. Traiter coupures et ralentis ; une homographie valide n'est pas une preuve de direct.
+
+Ne pas supposer un offset global de 304 images. Comparer les positions ATD dans un repère terrain cohérent ; utiliser l'homographie inverse seulement pour des détections en pixels. Ne fusionner que les correspondances temporelles et géométriques fiables.
+
+**Risque :** une position convaincante issue d'un ralenti peut créer une fausse récupération. **Conserver seulement si :** l'alignement est contrôlé automatiquement et la qualité finale progresse sur validation externe ; aucun pourcentage de positions récupérées n'est garanti.
+
+### Bonus B8 — Détection visuelle ciblée, diffusion et combinaison de spécialistes
+
+Trois essais indépendants, à n'ouvrir qu'en présence d'une erreur persistante :
+
+- **Détection visuelle du ballon :** un détecteur préentraîné sur d'autres matchs, appelé sur des zones ambiguës, avec contrôle de faux positifs et retour à l'incertitude si échec.
+- **Segmentation générative :** [DiffAct](https://github.com/Finspire13/DiffAct), si données, supervision et coût rendent une comparaison réaliste. Les résultats sur d'autres domaines ne prédisent pas spellF1 ici.
+- **Combinaison de spécialistes :** fusionner des scores avant le décodage si les erreurs des approches sont complémentaires ; ne pas voter naïvement sur des étiquettes qui fragmentent les possessions.
+
+**Règle d'arrêt commune :** abandonner un essai si son gain indépendant reste indémontré, son coût menace la reproduction ou le calendrier, ou ses entrées ne respectent pas les règles. Conserver alors la candidate du socle ; documenter l'essai et la raison de son abandon.
