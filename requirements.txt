@@ -4,6 +4,7 @@ matplotlib
 numpy
 
 # Jupyter notebook tools
+jupyterlab
 ipykernel
 nbformat
 nbclient
@@ -11,4 +12,4 @@ nbclient
 # Soccer analytics (FIFA / EPTS)
 kloppy
 
-possession_metrics
+# possession_metrics is imported from the sibling official repository (evaluation/).

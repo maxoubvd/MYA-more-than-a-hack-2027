@@ -29,154 +29,154 @@ The challenge is to perform dense frame-by-frame prediction of ball possession f
 
 ## 💻 Environment Setup & Quickstart Guide (Onboarding Team MYA)
 
-Ce guide pas-à-pas détaille l'installation complète pour reproduire l'environnement d'ingénierie et exécuter les scripts et notebooks de l'équipe MYA.
+Le projet utilise Python 3.12 et deux dépôts voisins. Sous Windows, les commandes ci-dessous sont à exécuter dans PowerShell. L'environnement virtuel évite d'installer les dépendances dans le Python global.
 
-### Étape 1 : Structure du Workspace Parent
-Le projet repose sur deux dépôts Git frères situés dans un même dossier de travail racine (ex: `More than a hack 2027/`) :
-```text
-More than a hack 2027/               # Dossier racine du workspace
-├── more-than-a-hack-2027/           # Dépôt officiel (données du challenge & scripts d'évaluation)
-└── MYA-more-than-a-hack-2027/       # Dépôt de l'équipe MYA (notre pipeline, modèles, notebooks)
-```
+### Étape 1 : Préparer les deux dépôts
 
-Créez le dossier racine et placez-vous dedans :
-```bash
-mkdir -p "More than a hack 2027"
-cd "More than a hack 2027"
-```
-
----
-
-### Étape 2 : Cloner le Dépôt Officiel du Challenge
-Clonez le dépôt officiel fourni par les organisateurs :
-```bash
-git clone https://github.com/metrica-sports/more-than-a-hack-2027.git
-```
-
-> [!NOTE]
-> Les scripts d'évaluation officiels (`evaluation/run_evaluation.py`, `evaluation/possession_metrics.py`) et la vérité terrain publique (`evaluation/gt/BAR-ATH_possession_gt_public.csv`) sont déjà inclus dans ce dépôt.
-
----
-
-### Étape 3 : Installer les Données Téléchargées dans `more-than-a-hack-2027/data/`
-Téléchargez les fichiers bruts du challenge (lien fourni par l'organisation) et placez-les rigoureusement dans `more-than-a-hack-2027/data/` en respectant l'arborescence suivante :
+Organisation utilisée pour cette installation :
 
 ```text
-more-than-a-hack-2027/data/
-├── tactical/                                # Caméra Tactique (Référence officielle de prédiction)
-│   ├── BAR-ATH_tactical_atd.txt             # Tracking optique des 46 slots joueurs + ballon (195 Mo)
-│   ├── BAR-ATH_tactical_atd.xml             # Métadonnées EPTS & correspondances équipes
-│   ├── BAR-ATH_tactical_homography.csv      # Matrices homographiques 3x3 & reprojection_error
-│   ├── BAR-ATH_tactical_smart_tagging.xml   # 638 annotations tactiques SportsCode XML
-│   └── BAR-ATH_tactical-002.mp4             # Vidéo tactique haute résolution (4.9 Go, optionnelle)
-│
-└── broadcast/                               # Caméra Broadcast (Vue multi-angles complémentaire)
-    ├── BAR-ATH_broadcast_atd.txt            # Tracking optique broadcast (136 Mo)
-    ├── BAR-ATH_broadcast_atd.xml            # Métadonnées EPTS broadcast
-    ├── BAR-ATH_broadcast_homography.csv     # Homographies broadcast & validité
-    └── BAR-ATH_broadcast-001.mp4            # Vidéo broadcast (14 Go, optionnelle)
+Bureau/
+├── more-than-a-hack-2027/       # Dépôt officiel : chargeurs, références, évaluation
+└── MYA-more-than-a-hack-2027/   # Dépôt de l'équipe : sources et environnement .venv
 ```
 
----
+```powershell
+$workspace = [Environment]::GetFolderPath('Desktop')
+$officialRepo = Join-Path $workspace 'more-than-a-hack-2027'
+$teamRepo = Join-Path $workspace 'MYA-more-than-a-hack-2027'
 
-### Étape 4 : Cloner le Dépôt de Code de l'Équipe MYA
-Depuis le dossier racine `More than a hack 2027/`, clonez notre dépôt d'équipe à côté du dépôt officiel :
-```bash
-git clone https://github.com/maxoubvd/MYA-more-than-a-hack-2027.git
-cd MYA-more-than-a-hack-2027
+if (-not (Test-Path -LiteralPath $officialRepo)) {
+    git clone https://github.com/metrica-sports/more-than-a-hack-2027.git $officialRepo
+}
+if (-not (Test-Path -LiteralPath $teamRepo)) {
+    git clone https://github.com/maxoubvd/MYA-more-than-a-hack-2027.git $teamRepo
+}
+Set-Location $teamRepo
 ```
 
----
+Le dépôt MYA contient actuellement un PDF avec `:` dans son nom, incompatible avec un checkout Windows standard. Si ce fichier bloque un nouveau clonage, terminer le checkout avec une exclusion locale ciblée et récupérer le PDF sous un nom compatible ; ne pas supprimer le PDF du dépôt partagé. La copie locale préparée pour ce projet dispose déjà de cette adaptation.
 
-### Étape 5 : Créer et Activer l'Environnement Virtuel
-Depuis la racine de `MYA-more-than-a-hack-2027/` :
+Les métriques, les CSV de référence et les cinq minutes d'annotations publiques sont dans le dépôt officiel. Le paquet `possession_metrics` ne doit pas être installé depuis PyPI : le notebook importe le module du dossier `evaluation/` officiel.
 
-```bash
-# Création de l'environnement virtuel
-python3 -m venv .venv
-```
+### Étape 2 : Préparer les données dans Téléchargements
 
-**Activation :**
-- **Linux / macOS :**
-  ```bash
-  source .venv/bin/activate
-  ```
-- **Windows (PowerShell) :**
-  ```powershell
-  .venv\Scripts\Activate.ps1
-  ```
-- **Windows (Command Prompt) :**
-  ```cmd
-  .venv\Scripts\activate.bat
-  ```
+Les données sont téléchargées séparément. Dans l'installation locale, elles restent dans `Téléchargements/Projet foot`. Extraire les XML, TXT et CSV des archives dans les sous-dossiers de leur caméra :
 
----
-
-### Étape 6 : Installer les Dépendances
-Assurez-vous que l'environnement virtuel est activé, puis installez les dépendances :
-```bash
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
----
-
-### Étape 7 : Valider l'Installation & la Détection des Données
-Vérifiez immédiatement que la configuration centrale détecte tous les dossiers et assets de données brutes :
-```bash
-python3 src/config.py
-```
-
-**Sortie attendue :**
 ```text
-✅ WORKSPACE_ROOT : .../More than a hack 2027
-✅ CHALLENGE_DIR  : .../More than a hack 2027/more-than-a-hack-2027
-✅ MYA_DIR        : .../More than a hack 2027/MYA-more-than-a-hack-2027
-✅ CACHE_DIR      : .../More than a hack 2027/MYA-more-than-a-hack-2027/.cache
-
-🔍 Vérification des assets :
-  - tactical_atd_txt               : ✅ Trouvé
-  - tactical_atd_xml               : ✅ Trouvé
-  - tactical_homography_csv        : ✅ Trouvé
-  - tactical_smart_tagging_xml     : ✅ Trouvé
-  - broadcast_atd_txt              : ✅ Trouvé
-  - broadcast_atd_xml              : ✅ Trouvé
-  - broadcast_homography_csv       : ✅ Trouvé
-  - ground_truth_public_csv        : ✅ Trouvé
-  - ground_truth_public_meta_json  : ✅ Trouvé
+Téléchargements/Projet foot/
+├── tactical/
+│   ├── BAR-ATH_tactical_atd.txt
+│   ├── BAR-ATH_tactical_atd.xml
+│   ├── BAR-ATH_tactical_homography.csv
+│   ├── BAR-ATH_tactical_smart_tagging.xml
+│   ├── BAR-ATH_tactical-002.mp4
+│   └── BAR-ATH_tactical.mp4
+├── broadcast/
+│   ├── BAR-ATH_broadcast_atd.txt
+│   ├── BAR-ATH_broadcast_atd.xml
+│   ├── BAR-ATH_broadcast_homography.csv
+│   ├── BAR-ATH_broadcast-001.mp4
+│   └── BAR-ATH_broadcast.mp4
+├── BAR-ATH_tactical-002.mp4       # Vidéo téléchargée à son emplacement initial
+├── BAR-ATH_broadcast-001.mp4      # Vidéo téléchargée à son emplacement initial
+└── ...                          # Archives originales conservées
 ```
 
----
+Les noms vidéo avec suffixe correspondent aux fichiers livrés ; les noms sans suffixe sont ceux attendus par les outils officiels. Pour éviter de copier les vidéos, les entrées des sous-dossiers peuvent être des liens physiques NTFS vers les fichiers téléchargés. L'installation locale préparée utilise ces liens : plusieurs noms désignent le même contenu, sans recopier les octets des vidéos.
 
-### Étape 8 : Utilisation Rapide des Chargeurs & du Notebook d'Exploration
+### Étape 3 : Relier les données au dépôt officiel
 
-#### Utilisation dans un script Python :
+Créer des jonctions de dossiers pour conserver les données dans Téléchargements tout en respectant l'arborescence attendue par `config.py` et par le notebook :
+
+```powershell
+$dataRoot = Join-Path $env:USERPROFILE 'Downloads\Projet foot'
+$officialData = Join-Path $officialRepo 'data'
+
+foreach ($camera in @('tactical', 'broadcast')) {
+    $target = Join-Path $dataRoot $camera
+    $link = Join-Path $officialData $camera
+    if (-not (Test-Path -LiteralPath $target)) {
+        throw "Dossier de donnees manquant : $target"
+    }
+    if (-not (Test-Path -LiteralPath $link)) {
+        New-Item -ItemType Junction -Path $link -Target $target | Out-Null
+    }
+}
+```
+
+Si un dossier existe déjà à la place d'une jonction, vérifier son contenu et sa destination avant toute modification. Les fichiers de données sont exclus de Git par le dépôt officiel.
+
+`src/config.py` accepte aussi `MTAH_DATA_DIR`, mais le notebook actuel construit directement son chemin vers le `data/` officiel. Les jonctions assurent que les deux méthodes accèdent aux mêmes fichiers sans modifier les chargeurs ni le notebook.
+
+### Étape 4 : Créer l'environnement Python
+
+Avec le Python 3.12 installé dans le dossier utilisateur Windows :
+
+```powershell
+$basePython = Join-Path $env:LOCALAPPDATA 'Programs\Python\Python312\python.exe'
+& $basePython -m venv .venv
+$python = Join-Path $teamRepo '.venv\Scripts\python.exe'
+```
+
+Si Python est installé ailleurs, adapter `$basePython`. Utiliser directement `$python` permet de travailler sans modifier la politique d'exécution PowerShell ni activer l'environnement dans tout le système. L'activation classique reste possible : `.\.venv\Scripts\Activate.ps1`.
+
+### Étape 5 : Installer les dépendances et le noyau de notebook
+
+```powershell
+& $python -m pip install --upgrade pip
+& $python -m pip install -r requirements.txt
+& $python -m pip check
+& $python -m ipykernel install --prefix (Join-Path $teamRepo '.venv') --name mya-foot --display-name 'Python (MYA foot)'
+```
+
+`requirements.txt` contient les dépendances du travail actuel et JupyterLab. Les bibliothèques des modèles futurs restent à ajouter lorsqu'elles seront nécessaires. Pour conserver une photographie des versions installées localement, enregistrer la sortie de `pip freeze` dans un fichier local ignoré par Git.
+
+### Étape 6 : Vérifier la configuration et les imports
+
+```powershell
+& $python -X utf8 src/config.py
+& $python -c "import numpy, pandas, matplotlib, kloppy, nbformat, nbclient, ipykernel, jupyterlab; from src.utils import load_atd; print('Imports OK')"
+```
+
+La vérification doit trouver les neuf fichiers non vidéo : les quatre fichiers tactiques, les trois fichiers TV, le CSV public et son JSON de métadonnées. Les fichiers vidéo sont facultatifs pour charger le tracking et calculer les références.
+
+Pour vérifier le chargeur tactique sans afficher les données du match :
+
 ```python
-from src import config
-from src.utils import (
-    load_atd,
-    load_ground_truth,
-    load_homography,
-    load_smart_tagging,
-    load_team_mapping,
-)
+from src.utils import load_atd
 
-# Chargement de la vérité terrain (5 min publiques)
-df_gt = load_ground_truth(public_window_only=True)
-
-# Chargement instantané du tracking ATD (avec cache NPZ automatique)
 atd = load_atd(source="tactical")
-print(f"Tracking players: {atd['players'].shape}")  # (199319, 46, 3)
+print(atd["players"].shape)  # (199319, 46, 3)
+print(atd["ball"].shape)     # (199319, 3)
 ```
 
-#### Lancement du Notebook d'Exploration :
-Le notebook complet d'EDA empirique est disponible à l'emplacement [`analysis/data_exploration.ipynb`](analysis/data_exploration.ipynb) :
-1. Ouvrez le notebook dans VS Code ou JupyterLab.
-2. Cliquez sur **Select Kernel** en haut à droite.
-3. Choisissez **Python Environments...** et sélectionnez `.venv` (`.venv/bin/python`).
-4. Toutes les cellules s'exécutent de manière autonome grâce à la résolution dynamique des chemins de `config.py`.
+Ce contrôle technique n'entraîne aucun modèle. Les labels des cinq minutes publiques servent uniquement à vérifier le fonctionnement ; ne pas les utiliser pour apprendre ou régler des paramètres.
+
+### Étape 7 : Ouvrir le notebook
+
+Depuis le dépôt MYA :
+
+```powershell
+& $python -m jupyterlab analysis/data_exploration.ipynb
+```
+
+Dans JupyterLab, sélectionner le noyau **Python (MYA foot)**. Dans VS Code, choisir l'interpréteur `.venv\Scripts\python.exe`. Le dossier de travail doit être le dépôt MYA ou son sous-dossier `analysis/`, afin que la recherche du dépôt officiel voisin fonctionne.
+
+L'installation locale préparée ajoute aussi **`Ouvrir_Notebook.cmd`** à la racine du dépôt : un double-clic ouvre JupyterLab avec le bon Python. Ce lanceur est exclu localement de Git. Les sorties détaillées du notebook peuvent contenir des données privées : les retirer avant publication.
+
+### Étape 8 : Vérifier les références officielles
+
+```powershell
+& $python (Join-Path $officialRepo 'evaluation\run_evaluation.py')
+```
+
+Cette commande utilise les annotations publiques et les références déjà fournies ; elle ne nécessite pas les vidéos ni un GPU. L'installation des bibliothèques et l'accès aux fichiers ne signifient pas que les jalons de modélisation sont déjà implémentés.
+
+Sur Linux/macOS, conserver le même principe de dépôts voisins, créer `.venv` avec `python3 -m venv .venv`, utiliser `.venv/bin/python` et remplacer les jonctions Windows par des liens de dossiers adaptés.
 
 ---
+
 
 ## 🏗️ Project Architecture & Repository Structure
 
