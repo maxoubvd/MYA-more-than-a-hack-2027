@@ -21,7 +21,7 @@ The challenge is to perform dense frame-by-frame prediction of ball possession f
   - `A`: Away team in possession with ball in play (**Athletic Club**).
   - `D`: Dead ball (ball out of play, stoppages, fouls, goals, substitutions).
   - `X`: System abstention / non-evaluated periods (pre-match, halftime, post-match).
-- **Primary Metric**: **`spellF1`** (Temporal Action Segmentation IoU with bijective Hungarian matching averaged across 5 overlap thresholds $\theta \in \{0.3, 0.4, 0.5, 0.6, 0.7\}$).
+- **Primary Metric**: **`spellF1`** (Temporal Action Segmentation IoU with greedy one-to-one matching in descending IoU order averaged across 5 overlap thresholds $\theta \in \{0.3, 0.4, 0.5, 0.6, 0.7\}$).
 - **Tie-break Metric**: **`macroF1`** (unweighted frame-level macro F1 across classes $H, A, D$).
 - **Official Reference Baseline to Beat**: `baseline_smooth50` (`spellF1 = 0.2433` / `macroF1 = 0.6724`).
 
@@ -29,7 +29,7 @@ The challenge is to perform dense frame-by-frame prediction of ball possession f
 
 ## 💻 Environment Setup & Quickstart Guide (Onboarding Team MYA)
 
-Le projet utilise Python 3.12 et deux dépôts voisins. Sous Windows, les commandes ci-dessous sont à exécuter dans PowerShell. L'environnement virtuel évite d'installer les dépendances dans le Python global.
+Le projet est vérifié avec Python 3.12.6 et utilise par défaut deux dépôts voisins. Sous Windows, les commandes ci-dessous sont à exécuter dans PowerShell. L'environnement virtuel évite d'installer les dépendances dans le Python global.
 
 ### Étape 1 : Préparer les deux dépôts
 
@@ -55,7 +55,7 @@ if (-not (Test-Path -LiteralPath $teamRepo)) {
 Set-Location $teamRepo
 ```
 
-Le dépôt MYA contient actuellement un PDF avec `:` dans son nom, incompatible avec un checkout Windows standard. Si ce fichier bloque un nouveau clonage, terminer le checkout avec une exclusion locale ciblée et récupérer le PDF sous un nom compatible ; ne pas supprimer le PDF du dépôt partagé. La copie locale préparée pour ce projet dispose déjà de cette adaptation.
+Le document partagé utilise désormais un nom compatible Windows : `analysis/Gemini - Analyse et Benchmark Possession Football.pdf`. Son contenu est conservé à l’identique.
 
 Les métriques, les CSV de référence et les cinq minutes d'annotations publiques sont dans le dépôt officiel. Le paquet `possession_metrics` ne doit pas être installé depuis PyPI : le notebook importe le module du dossier `evaluation/` officiel.
 
@@ -107,7 +107,18 @@ foreach ($camera in @('tactical', 'broadcast')) {
 
 Si un dossier existe déjà à la place d'une jonction, vérifier son contenu et sa destination avant toute modification. Les fichiers de données sont exclus de Git par le dépôt officiel.
 
-`src/config.py` accepte aussi `MTAH_DATA_DIR`, mais le notebook actuel construit directement son chemin vers le `data/` officiel. Les jonctions assurent que les deux méthodes accèdent aux mêmes fichiers sans modifier les chargeurs ni le notebook.
+Le notebook et les chargeurs partagent maintenant `src/config.py`. Les jonctions
+restent utilisables ; il est aussi possible de configurer les racines pour la
+session PowerShell, sans déplacer les données :
+
+```powershell
+$env:MTAH_DATA_DIR = Join-Path $env:USERPROFILE 'Downloads\Projet foot'
+$env:MTAH_CHALLENGE_DIR = $officialRepo
+# Optionnel : $env:MTAH_CACHE_DIR = 'D:\cache-mya'
+```
+
+La racine du dépôt MYA est déduite du package et reste correcte si le dossier
+est renommé. Aucun dossier n’est créé au simple import de la configuration.
 
 ### Étape 4 : Créer l'environnement Python
 
@@ -125,12 +136,27 @@ Si Python est installé ailleurs, adapter `$basePython`. Utiliser directement `$
 
 ```powershell
 & $python -m pip install --upgrade pip
-& $python -m pip install -r requirements.txt
+& $python -m pip install -r requirements-notebook.txt
 & $python -m pip check
 & $python -m ipykernel install --prefix (Join-Path $teamRepo '.venv') --name mya-foot --display-name 'Python (MYA foot)'
 ```
 
-`requirements.txt` contient les dépendances du travail actuel et JupyterLab. Les bibliothèques des modèles futurs restent à ajouter lorsqu'elles seront nécessaires. Pour conserver une photographie des versions installées localement, enregistrer la sortie de `pip freeze` dans un fichier local ignoré par Git.
+`requirements.txt` fixe le socle minimal (NumPy/Pandas) ;
+`requirements-notebook.txt` ajoute les outils du notebook ;
+`requirements-bonus.txt` réserve les dépendances des futures expériences.
+`requirements-windows-py312.lock.txt` fige tout l’environnement Windows testé.
+Pour reproduire exactement cet environnement Windows, installer ce dernier fichier.
+
+La révision officielle est figée dans `official-revision.txt`. Après le clonage,
+se placer sur cette révision (ne pas écraser des modifications locales du dépôt officiel) :
+
+```powershell
+$officialRevision = (Get-Content official-revision.txt).Trim()
+git -C $officialRepo checkout $officialRevision
+```
+
+L’import du scoreur vérifie cette révision et l’absence de modifications locales
+de ses sources et documents de référence.
 
 ### Étape 6 : Vérifier la configuration et les imports
 
@@ -161,7 +187,7 @@ Depuis le dépôt MYA :
 & $python -m jupyterlab analysis/data_exploration.ipynb
 ```
 
-Dans JupyterLab, sélectionner le noyau **Python (MYA foot)**. Dans VS Code, choisir l'interpréteur `.venv\Scripts\python.exe`. Le dossier de travail doit être le dépôt MYA ou son sous-dossier `analysis/`, afin que la recherche du dépôt officiel voisin fonctionne.
+Dans JupyterLab, sélectionner le noyau **Python (MYA foot)**. Dans VS Code, choisir l'interpréteur `.venv\Scripts\python.exe`. Le dossier de travail doit être le dépôt MYA ou son sous-dossier `analysis/`, afin que le notebook puisse importer le package MYA.
 
 L'installation locale préparée ajoute aussi **`Ouvrir_Notebook.cmd`** à la racine du dépôt : un double-clic ouvre JupyterLab avec le bon Python. Ce lanceur est exclu localement de Git. Les sorties détaillées du notebook peuvent contenir des données privées : les retirer avant publication.
 
@@ -178,6 +204,75 @@ Sur Linux/macOS, conserver le même principe de dépôts voisins, créer `.venv`
 ---
 
 
+
+## Jalons 0 et 1 : règles et ingestion
+
+Le [protocole](docs/protocole.md) et le [registre des sources](docs/sources.json)
+séparent diagnostic public, entrées automatiques et futures données externes.
+Les labels publics sont refusés pour l’apprentissage, la calibration et la
+sélection de variantes par les chargeurs du projet.
+
+```powershell
+& $python -m unittest discover -s tests -v
+& $python -m src.validate_inputs
+& $python -m src.hygiene.repository_check
+```
+
+La deuxième commande valide intégralement les deux ATD, leurs XML et homographies,
+le Smart Tagging, puis l’équivalence lecture directe/cache. Son manifeste reste
+dans `.cache/manifests/ingestion.json` et ne doit pas être publié. Elle n’utilise
+aucune vérité terrain. Le notebook utilise les mêmes interfaces ; ses sorties
+sont effacées dans la version partagée.
+
+Les masques `players_observed` et `ball_observed` indiquent la disponibilité de
+x/y, indépendamment de la vitesse. Les copies `*_metres` changent seulement x/y.
+**Attention à l’unité de vitesse :** le XML déclare `kph`, la prose officielle
+annonce des m/s. `speed_unit` et `speed_documentation_conflict` rendent cette
+incohérence explicite ; les valeurs brutes restent inchangées.
+
+Ces deux jalons préparent l’ingestion ; la chaîne de prédiction du jalon 2 est désormais disponible ci-dessous.
+
+
+## Jalon 2 : générer le premier CSV complet
+
+Depuis la racine du dépôt, après la configuration des données :
+
+```powershell
+.venv\Scripts\python.exe -m src.pipeline --output submissions/MYA.csv
+```
+
+Cette commande attribue le ballon à l’équipe du joueur le plus proche, puis
+applique le vote officiel à ±50 images, séparément à chaque mi-temps. Les vitesses
+ne sont pas utilisées. Le choix de cette fenêtre vient de la référence officielle
+publiée et précède tout diagnostic public. Sans observation d’équipe exploitable,
+la référence rend D ; c’est une hypothèse de départ, pas une preuve d’arrêt de jeu.
+`--missing-label X` permet une abstention explicite, sans propagation entre périodes.
+
+Le fichier final a exactement 199 319 lignes `frame,label`, passe le validateur
+officiel et possède des octets reproductibles. Les réglages, les signatures
+d’entrée et les empreintes du code sont enregistrés localement dans `.cache/runs/`.
+Les labels publics ne sont jamais lus par cette commande.
+
+Pour vérifier le format avec le script officiel, en utilisant le dépôt voisin
+par défaut :
+
+```powershell
+.venv\Scripts\python.exe ..\more-than-a-hack-2027\evaluation\validate_submission.py submissions/MYA.csv
+```
+
+Si le dépôt officiel est ailleurs, utiliser son chemin configuré pour ce script.
+Le diagnostic public est une action séparée, à effectuer sur une version gelée :
+
+```powershell
+.venv\Scripts\python.exe -m src.diagnostics
+.venv\Scripts\python.exe -m src.diagnostics --submission submissions/MYA.csv
+```
+
+Les quatre scores officiels sont reproduits. Ces commandes ne choisissent aucun
+modèle ni paramètre ; les cinq minutes publiques ne sont ni un jeu d’entraînement
+ni un jeu de réglage. Les rapports détaillés restent ignorés sous `.cache/`.
+Voir [la méthode, les preuves et les limites](analysis/JALON_2_VALIDATION.md).
+
 ## 🏗️ Project Architecture & Repository Structure
 
 The project follows a modular, reproducible engineering structure separating data exploration, implementation planning, modular source components, and generated submissions:
@@ -185,9 +280,9 @@ The project follows a modular, reproducible engineering structure separating dat
 ```text
 MYA-more-than-a-hack-2027/
 ├── analysis/                                     # Exploratory analysis & documentation
-│   ├── data_exploration.ipynb                    # 100% empirical EDA on raw match data
-│   ├── Implementation_Plan.md                    # 7-milestone roadmap (26 operational steps)
-│   └── Gemini : Analyse et Benchmark ... .pdf    # Reference modeling and technical report
+│   ├── data_exploration.ipynb                    # Exploration locale via les chargeurs contrôlés
+│   ├── Implementation_Plan.md                    # Feuille de route : jalons 0 à 7 et bonus
+│   └── Gemini - Analyse et Benchmark ... .pdf    # Reference modeling and technical report
 │
 ├── src/                                          # Core modular technical pipeline
 │   ├── __init__.py

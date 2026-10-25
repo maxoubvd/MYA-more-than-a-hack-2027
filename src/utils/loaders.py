@@ -1,379 +1,186 @@
-"""High-performance data loading utilities for the challenge — Team MYA.
+"""Validated source-specific ingestion shared by notebooks and future pipelines.
 
-This module provides ergonomic and optimized loaders for:
-1. Official Ground Truth (public 5-min window or full dataset).
-2. Smart Tagging tactical metadata and annotations (SportsCode XML -> pandas DataFrame).
-3. Camera-to-pitch homography matrices (3x3 tensors, reprojection errors, validity masks).
-4. Anonymized tracking player slot mappings to teams (Home 'H' vs Away 'A').
-5. Automatic Tracking Data (ATD) with automatic binary caching (NPZ) reducing loading
-   times from minutes down to < 0.5 second.
+No interpolation, team prediction, or training takes place here. Observed masks
+mean finite delivered coordinates, not evidence that a ball is in play.
 """
-
 from __future__ import annotations
 
 import json
-import logging
-import time
-import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 
 from src import config
+from src.source_policy import require_use
+from src.preprocessing.atd_parser import (
+    DataValidationError, child_text, local_name, parse_atd, parse_metadata, read_xml,
+)
+from src.preprocessing.cache_manager import (
+    ARRAY_KEYS, inputs_unchanged, provenance, read_cache, write_cache,
+)
+from src.preprocessing.coordinates import to_metres
 
-logger = logging.getLogger(__name__)
+
+def _read_csv(path):
+    try:
+        return pd.read_csv(path)
+    except (ValueError, pd.errors.ParserError, UnicodeError):
+        raise DataValidationError("Malformed CSV (contents withheld)") from None
 
 
-# ==============================================================================
-# 1. GROUND TRUTH LOADERS
-# ==============================================================================
-
-def load_ground_truth(
-    path: Optional[Path] = None,
-    public_window_only: bool = False,
-) -> pd.DataFrame:
-    """Loads the ground truth file as a pandas DataFrame.
-
-    Args:
-        path: Optional path to the ground truth CSV file.
-              Defaults to config.GT_PUBLIC_CSV.
-        public_window_only: If True, filters to only keep the evaluated frames
-                            from the public validation window (frames 11,185 to 18,684).
-
-    Returns:
-        pd.DataFrame with columns ['frame', 'label'].
-    """
-    gt_path = path or config.GT_PUBLIC_CSV
-    if not gt_path.exists():
-        raise FileNotFoundError(f"Ground truth file not found: {gt_path}")
-
-    df = pd.read_csv(gt_path)
-
+def load_ground_truth(path=None, public_window_only=False, *, purpose="diagnostic"):
+    """Official public labels: exclusively a format/alignment/meaning diagnostic."""
+    require_use("public_labels", purpose)
+    table = _read_csv(Path(path or config.GT_PUBLIC_CSV))
+    if (list(table.columns) != ["frame", "label"] or len(table) != config.TOTAL_FRAMES
+            or not np.array_equal(table["frame"].to_numpy(), np.arange(config.TOTAL_FRAMES))
+            or not table["label"].isin(config.LABELS).all()):
+        raise DataValidationError("Invalid public label table")
     if public_window_only:
-        start_frame, end_frame = config.PUBLIC_WINDOW_SPAN
-        mask = (df["frame"] >= start_frame) & (df["frame"] <= end_frame)
-        df = df[mask].reset_index(drop=True)
-
-    return df
-
-
-def load_ground_truth_meta(path: Optional[Path] = None) -> Dict[str, Any]:
-    """Loads official ground truth metadata (JSON)."""
-    meta_path = path or config.GT_PUBLIC_META_JSON
-    if not meta_path.exists():
-        raise FileNotFoundError(f"Ground truth metadata not found: {meta_path}")
-
-    with open(meta_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+        start, end = config.PUBLIC_WINDOW_SPAN
+        table = table[table["frame"].between(start, end)].reset_index(drop=True)
+    table.attrs["allowed_use"] = "diagnostic_only"
+    return table
 
 
-# ==============================================================================
-# 2. SMART TAGGING LOADER (XML -> DATAFRAME)
-# ==============================================================================
+def load_ground_truth_meta(path=None, *, purpose="diagnostic"):
+    require_use("public_labels", purpose)
+    with Path(path or config.GT_PUBLIC_META_JSON).open(encoding="utf-8") as handle:
+        return json.load(handle)
 
-def load_smart_tagging(
-    path: Optional[Path] = None,
-    fps: float = config.FPS,
-) -> pd.DataFrame:
-    """Parses SportsCode Smart Tagging XML into a structured pandas DataFrame.
 
-    Args:
-        path: Optional path to the Smart Tagging XML file.
-              Defaults to config.TACTICAL_SMART_TAGGING_XML.
-        fps: Video framerate used to convert seconds into frame numbers.
+def load_team_mapping(path=None, *, source="tactical"):
+    spec = config.get_source(source)
+    return parse_metadata(Path(path or spec.xml_path), spec.num_frames, spec.num_slots, config.FPS).team_mapping
 
-    Returns:
-        pd.DataFrame containing:
-            - code: Tactical event category (e.g., 'SET PIECES', 'OFFENSIVE PLAY')
-            - start_s, end_s: Start and end timestamps in seconds
-            - start_frame, end_frame: Start and end converted to video frame indices
-            - duration_s, duration_frames: Duration of the phase
-            - team: Identified team name ('Barcelona', 'Atletic Club', or None)
-            - team_code: Normalized team code ('H', 'A', or None)
-            - half: Match half ('1st Half', '2nd Half', or None)
-            - phase_type: Sub-type (e.g., 'Throw In', 'Corner', 'Build Up')
-            - raw_tags: Complete dictionary of parsed XML group-text labels
+
+def load_atd(source="tactical", max_frames=None, use_cache=True, save_cache=True,
+             *, path=None, xml_path=None, cache_path=None):
+    """Load a camera on ITS timeline, preserving the legacy dictionary interface.
+
+    A preview still validates every input record, but allocates only max_frames
+    rows and never reads/writes a full cache. Fingerprints hash complete inputs;
+    caches with a different source, XML, content, dimensions or parser are misses.
+    Normalised raw arrays and metric copies keep the native scalar speed. Missing speed is
+    separate from missing x/y; missing data is never replaced by zero.
     """
-    xml_path = path or config.TACTICAL_SMART_TAGGING_XML
-    if not xml_path.exists():
-        raise FileNotFoundError(f"Smart Tagging XML file not found: {xml_path}")
-
-    tree = ET.parse(xml_path)
-    root = tree.getroot()
-
-    rows = []
-    for instance in root.iter("instance"):
-        code = instance.findtext("code") or ""
-        start_s = float(instance.findtext("start") or 0.0)
-        end_s = float(instance.findtext("end") or 0.0)
-
-        start_frame = int(round(start_s * fps))
-        end_frame = int(round(end_s * fps))
-
-        tags: Dict[str, str] = {}
-        for label in instance.findall("label"):
-            group = label.findtext("group")
-            text = label.findtext("text")
-            if group and text:
-                tags[group] = text
-
-        team_raw = tags.get("Team")
-        team_code = None
-        if team_raw == "Barcelona":
-            team_code = config.HOME_TEAM_LABEL
-        elif team_raw in ("Atletic Club", "Athletic Club"):
-            team_code = config.AWAY_TEAM_LABEL
-
-        half_raw = tags.get("Half")
-        type_raw = tags.get("Type")
-
-        rows.append({
-            "code": code,
-            "start_s": start_s,
-            "end_s": end_s,
-            "start_frame": start_frame,
-            "end_frame": end_frame,
-            "duration_s": end_s - start_s,
-            "duration_frames": end_frame - start_frame,
-            "team": team_raw,
-            "team_code": team_code,
-            "half": half_raw,
-            "phase_type": type_raw,
-            "raw_tags": tags,
-        })
-
-    df = pd.DataFrame(rows)
-    return df
+    spec = config.get_source(source)
+    txt_path = Path(path or spec.txt_path)
+    xml_path = Path(xml_path or spec.xml_path)
+    cache_path = Path(cache_path or spec.cache_path)
+    if max_frames is not None and (type(max_frames) is not int or not 1 <= max_frames <= spec.num_frames):
+        raise ValueError("max_frames must be an integer within the source range")
+    signature = provenance(source, txt_path, xml_path, spec.num_frames, spec.num_slots)
+    metadata = parse_metadata(xml_path, spec.num_frames, spec.num_slots, config.FPS)
+    arrays = read_cache(cache_path, signature) if use_cache and max_frames is None else None
+    cache_hit = arrays is not None
+    if arrays is None:
+        arrays = dict(zip(ARRAY_KEYS, parse_atd(txt_path, spec.num_frames, spec.num_slots, max_frames=max_frames)))
+        inputs_unchanged(signature)
+        if save_cache and max_frames is None:
+            write_cache(cache_path, arrays, signature)
+    inputs_unchanged(signature)
+    players, ball = arrays["players"], arrays["ball"]
+    return {**arrays, "team_mapping": metadata.team_mapping, "source": source,
+            "speed_unit": metadata.speed_unit,
+            "speed_documentation_conflict": metadata.speed_unit != "m/s",
+            "players_observed": np.isfinite(players[..., :2]).all(axis=-1),
+            "ball_observed": np.isfinite(ball[..., :2]).all(axis=-1),
+            "players_speed_observed": np.isfinite(players[..., 2]),
+            "ball_speed_observed": np.isfinite(ball[..., 2]),
+            "players_metres": to_metres(players), "ball_metres": to_metres(ball),
+            "provenance": signature, "cache_hit": cache_hit,
+            "complete": max_frames is None or max_frames == spec.num_frames}
 
 
-# ==============================================================================
-# 3. HOMOGRAPHY LOADERS
-# ==============================================================================
+# Compatibility for previous callers; all parsing now uses the strict module.
+def _parse_raw_atd_file(file_path, num_frames, num_slots=config.NUM_SLOTS):
+    return parse_atd(file_path, num_frames, num_slots)
 
-def load_homography(
-    source: str = "tactical",
-    path: Optional[Path] = None,
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray, pd.DataFrame]:
-    """Loads homography data for a specified camera recording source.
 
-    Args:
-        source: 'tactical' or 'broadcast'.
-        path: Optional custom CSV file path.
+def load_homography(source="tactical", path=None):
+    """Return (H, error_pixels, valid, table), indexed by exact zero-based frame.
 
-    Returns:
-        Tuple consisting of:
-            - matrices: NumPy tensor of shape (N, 3, 3) (NaN where invalid)
-            - reprojection_error: 1D NumPy array (N,) of reprojection errors in pixels
-            - valid: 1D boolean NumPy array (N,) indicating whether the frame has a valid matrix
-            - df: Complete raw pandas DataFrame
+    Valid matrices must be finite and invertible. Invalid rows must explicitly
+    carry nine NaNs. Negative delivered errors are retained in the raw table,
+    marked unavailable, and returned as NaN (never as trustworthy low errors).
     """
-    if path is not None:
-        csv_path = path
-    elif source == "tactical":
-        csv_path = config.TACTICAL_HOMOGRAPHY_CSV
-    elif source == "broadcast":
-        csv_path = config.BROADCAST_HOMOGRAPHY_CSV
-    else:
-        raise ValueError(f"Unknown camera source '{source}'. Choose 'tactical' or 'broadcast'.")
-
-    if not csv_path.exists():
-        raise FileNotFoundError(f"Homography file not found: {csv_path}")
-
-    df = pd.read_csv(csv_path)
-
+    spec = config.get_source(source)
+    table = _read_csv(Path(path or spec.homography_path))
     matrix_cols = [f"h{r}{c}" for r in range(3) for c in range(3)]
-    missing = [c for c in matrix_cols + ["reprojection_error", "valid"] if c not in df.columns]
-    if missing:
-        raise ValueError(f"{csv_path}: missing required columns {missing}")
+    required = ["frame", *matrix_cols, "reprojection_error", "valid"]
+    if any(c not in table for c in required):
+        raise DataValidationError("Homography is missing required columns")
+    if len(table) != spec.num_frames or not np.array_equal(table["frame"], np.arange(spec.num_frames)):
+        raise DataValidationError("Homography frame count/order/alignment mismatch")
+    if not table["valid"].isin([0, 1]).all():
+        raise DataValidationError("Homography valid flag must be 0 or 1, never missing")
+    try:
+        matrices = table[matrix_cols].to_numpy(dtype=np.float64).reshape(-1, 3, 3)
+        errors = table["reprojection_error"].to_numpy(dtype=np.float64)
+    except (TypeError, ValueError):
+        raise DataValidationError("Non-numeric homography coefficients/errors") from None
+    valid = table["valid"].to_numpy(dtype=bool)
+    if (not np.isfinite(matrices[valid]).all() or not np.isnan(matrices[~valid]).all()
+            or np.isinf(errors).any()
+            or not np.isfinite(errors[valid]).all()):
+        raise DataValidationError("Homography coefficients/error disagree with validity")
+    if valid.any() and (np.linalg.slogdet(matrices[valid])[0] == 0).any():
+        raise DataValidationError("Valid homography matrix is singular")
+    table["reprojection_error_observed"] = np.isfinite(errors) & (errors >= 0)
+    table.attrs["negative_error_count"] = int((errors < 0).sum())
+    errors = np.where(errors >= 0, errors, np.nan)
+    return matrices, errors, valid, table
 
-    matrices = df[matrix_cols].values.astype(np.float64).reshape(-1, 3, 3)
-    reprojection_error = df["reprojection_error"].values.astype(np.float32)
-    valid = df["valid"].values.astype(bool)
 
-    return matrices, reprojection_error, valid, df
+def load_smart_tagging(path=None, fps=config.FPS, *, num_frames=None):
+    """SportsCode intervals [start_frame,end_frame), using nearest frame (half up).
 
-
-# ==============================================================================
-# 4. PLAYER SLOT TO TEAM MAPPING (EPTS XML)
-# ==============================================================================
-
-def load_team_mapping(path: Optional[Path] = None) -> Dict[int, str]:
-    """Extracts anonymized player slot index (0..45) -> Team label ('H' or 'A') from ATD XML.
-
-    Args:
-        path: Optional path to the ATD metadata XML file.
-              Defaults to config.TACTICAL_ATD_XML.
-
-    Returns:
-        Dictionary mapping {slot_index: 'H' or 'A'} for all 46 tracking slots.
+    Group names are casefolded for lookup, raw names/values and unknown fields
+    remain in raw_tags. N/A stays N/A and never becomes an invented team.
+    Duplicate groups are retained as lists, ambiguous semantic groups fail.
     """
-    xml_path = path or config.TACTICAL_ATD_XML
-    if not xml_path.exists():
-        raise FileNotFoundError(f"ATD metadata XML not found: {xml_path}")
-
-    tree = ET.parse(xml_path)
-    root = tree.getroot()
-
-    slot_to_team: Dict[int, str] = {}
-    player_idx = 0
-
-    for elem in root.iter():
-        if elem.tag.endswith("Player"):
-            team_id = elem.get("teamId")
-            if team_id == config.HOME_TEAM_ID:
-                team_label = config.HOME_TEAM_LABEL  # 'H'
-            elif team_id == config.AWAY_TEAM_ID:
-                team_label = config.AWAY_TEAM_LABEL  # 'A'
-            else:
-                team_label = "U"  # Unknown
-
-            slot_to_team[player_idx] = team_label
-            player_idx += 1
-
-    return slot_to_team
-
-
-# ==============================================================================
-# 5. HIGH-PERFORMANCE ATD LOADER (WITH BINARY NPZ CACHE)
-# ==============================================================================
-
-def _parse_raw_atd_file(
-    file_path: Path,
-    num_frames: int,
-    num_slots: int = config.NUM_SLOTS,
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """Parses raw text ATD file in an optimized single streaming pass."""
-    players = np.full((num_frames, num_slots, 3), np.nan, dtype=np.float32)
-    ball = np.full((num_frames, 3), np.nan, dtype=np.float32)
-    frame_ids = np.zeros(num_frames, dtype=np.int32)
-    video_frames = np.zeros(num_frames, dtype=np.int32)
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        for idx, line in enumerate(f):
-            if idx >= num_frames:
-                break
-
-            line = line.strip()
-            if not line:
+    if not np.isfinite(fps) or fps <= 0:
+        raise ValueError("fps must be positive and finite")
+    num_frames = config.TOTAL_FRAMES if num_frames is None else num_frames
+    root = read_xml(Path(path or config.TACTICAL_SMART_TAGGING_XML))
+    rows = []
+    for index, instance in enumerate(e for e in root.iter() if local_name(e).casefold() == "instance"):
+        try:
+            start_s, end_s = float(child_text(instance, "start")), float(child_text(instance, "end"))
+        except ValueError:
+            raise DataValidationError(f"Smart Tagging interval {index}: invalid timestamps") from None
+        if not np.isfinite([start_s, end_s]).all() or not 0 <= start_s < end_s <= num_frames / fps:
+            raise DataValidationError(f"Smart Tagging interval {index}: invalid bounds")
+        start, end = int(np.floor(start_s * fps + .5)), int(np.floor(end_s * fps + .5))
+        if not 0 <= start < end <= num_frames:
+            raise DataValidationError(f"Smart Tagging interval {index}: empty/out-of-range frame interval")
+        tags, normalised = {}, {}
+        for label in instance:
+            if local_name(label).casefold() != "label":
                 continue
-
-            p0 = line.find(":")
-            p1 = line.rfind(":")
-
-            frame_id = int(line[:p0])
-            frame_ids[idx] = frame_id
-            video_frames[idx] = frame_id - 1
-
-            # Extract player tracking coordinates
-            players_part = line[p0 + 1 : p1]
-            slots = players_part.split(";")
-            for s_idx, s in enumerate(slots):
-                if s != "NaN,NaN,NaN" and s:
-                    c1 = s.find(",")
-                    c2 = s.rfind(",")
-                    x_str = s[:c1]
-                    y_str = s[c1 + 1 : c2]
-                    sp_str = s[c2 + 1 :]
-                    players[idx, s_idx, 0] = float(x_str) if x_str != "NaN" else np.nan
-                    players[idx, s_idx, 1] = float(y_str) if y_str != "NaN" else np.nan
-                    players[idx, s_idx, 2] = float(sp_str) if sp_str != "NaN" else np.nan
-
-            # Extract ball tracking coordinates
-            ball_part = line[p1 + 1 :]
-            if ball_part != "NaN,NaN,NaN" and ball_part:
-                c1 = ball_part.find(",")
-                c2 = ball_part.rfind(",")
-                bx_str = ball_part[:c1]
-                by_str = ball_part[c1 + 1 : c2]
-                bs_str = ball_part[c2 + 1 :]
-                ball[idx, 0] = float(bx_str) if bx_str != "NaN" else np.nan
-                ball[idx, 1] = float(by_str) if by_str != "NaN" else np.nan
-                ball[idx, 2] = float(bs_str) if bs_str != "NaN" else np.nan
-
-    return players, ball, frame_ids, video_frames
-
-
-def load_atd(
-    source: str = "tactical",
-    max_frames: Optional[int] = None,
-    use_cache: bool = True,
-    save_cache: bool = True,
-) -> Dict[str, Any]:
-    """Loads ATD tracking data (players and ball) with optional high-speed binary caching.
-
-    If a compressed .npz cache exists in CACHE_DIR, it loads in < 0.5s.
-    Otherwise, the text file is parsed in streaming mode and the cache is created.
-
-    Args:
-        source: 'tactical' or 'broadcast'.
-        max_frames: Optional number of frames to load (e.g., 5000 for rapid testing).
-        use_cache: If True, attempts to load from existing .npz cache file.
-        save_cache: If True and max_frames is None, automatically saves parsed data to .npz cache.
-
-    Returns:
-        Dictionary containing:
-            - 'players': np.ndarray (N, 46, 3) (x, y, scalar speed) normalized in [0, 1]
-            - 'ball': np.ndarray (N, 3) (x, y, speed/status) normalized in [0, 1]
-            - 'frame_ids': np.ndarray (N,) 1-indexed
-            - 'video_frames': np.ndarray (N,) 0-indexed
-            - 'team_mapping': Dict[int, str] mapping slot -> 'H' or 'A'
-            - 'source': Camera source name ('tactical' or 'broadcast')
-    """
-    if source == "tactical":
-        txt_path = config.TACTICAL_ATD_TXT
-        cache_path = config.TACTICAL_ATD_CACHE_NPZ
-        expected_frames = config.TOTAL_FRAMES
-    elif source == "broadcast":
-        txt_path = config.BROADCAST_ATD_TXT
-        cache_path = config.BROADCAST_ATD_CACHE_NPZ
-        expected_frames = config.BROADCAST_TOTAL_FRAMES
-    else:
-        raise ValueError(f"Invalid camera source: '{source}'. Choose 'tactical' or 'broadcast'.")
-
-    team_mapping = load_team_mapping()
-
-    # Attempt to load from binary NPZ cache
-    if use_cache and cache_path.exists() and max_frames is None:
-        logger.info(f"⚡ Loading from binary NPZ cache: {cache_path}")
-        loaded = np.load(cache_path)
-        return {
-            "players": loaded["players"],
-            "ball": loaded["ball"],
-            "frame_ids": loaded["frame_ids"],
-            "video_frames": loaded["video_frames"],
-            "team_mapping": team_mapping,
-            "source": source,
-        }
-
-    # Direct parsing of the raw text file
-    num_to_parse = max_frames if max_frames is not None else expected_frames
-    logger.info(f"📖 Parsing raw text ATD file ({num_to_parse} frames): {txt_path}")
-    t0 = time.time()
-
-    players, ball, frame_ids, video_frames = _parse_raw_atd_file(
-        txt_path, num_frames=num_to_parse, num_slots=config.NUM_SLOTS
-    )
-    t_parse = time.time() - t0
-    logger.info(f"✅ Parsing completed in {t_parse:.2f}s")
-
-    # Save to binary cache for future instantaneous loads
-    if save_cache and max_frames is None:
-        logger.info(f"💾 Saving binary NPZ cache: {cache_path}")
-        np.savez_compressed(
-            cache_path,
-            players=players,
-            ball=ball,
-            frame_ids=frame_ids,
-            video_frames=video_frames,
-        )
-
-    return {
-        "players": players,
-        "ball": ball,
-        "frame_ids": frame_ids,
-        "video_frames": video_frames,
-        "team_mapping": team_mapping,
-        "source": source,
-    }
+            group, text = child_text(label, "group"), child_text(label, "text")
+            if not group:
+                raise DataValidationError(f"Smart Tagging interval {index}: missing group")
+            if group in tags:
+                tags[group] = tags[group] + [text] if isinstance(tags[group], list) else [tags[group], text]
+            else:
+                tags[group] = text
+            key = group.casefold()
+            if key in normalised and key in ("team", "half", "type"):
+                raise DataValidationError(f"Smart Tagging interval {index}: ambiguous semantic group")
+            normalised[key] = text
+        team = normalised.get("team")
+        team_code = {"barcelona": "H", "fc barcelona": "H", "atletic club": "A", "athletic club": "A"}.get((team or "").casefold())
+        rows.append({"code": child_text(instance, "code").upper(), "start_s": start_s, "end_s": end_s,
+                     "start_frame": start, "end_frame": end, "duration_s": end_s - start_s,
+                     "duration_frames": end - start, "team": team, "team_code": team_code,
+                     "half": normalised.get("half"), "phase_type": normalised.get("type"),
+                     "raw_tags": tags, "normalised_tags": normalised})
+    columns = ["code", "start_s", "end_s", "start_frame", "end_frame", "duration_s", "duration_frames",
+               "team", "team_code", "half", "phase_type", "raw_tags", "normalised_tags"]
+    result = pd.DataFrame(rows, columns=columns)
+    result.attrs["interval_convention"] = "[start_frame,end_frame)"
+    result.attrs["unknown_team_count"] = sum(row["team_code"] is None for row in rows)
+    return result

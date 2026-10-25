@@ -1,89 +1,64 @@
-"""Central configuration and Single Source of Truth (SSOT) — Team MYA.
+"""Central source contracts and paths. Importing this module never writes files.
 
-This module centralizes:
-1. Dynamic path resolution for workspace, raw data, and team working directories.
-2. Geometric pitch specifications and match kinematic constants.
-3. Contractual segmentation boundaries (evaluated frames, non-evaluated 'X' masks, 2HT dead zone 'D').
-4. Team identifiers, target label alphabet, and official metadata.
+Roots follow the package location, even if this checkout is renamed. Environment
+overrides are read at process start. Inclusive legacy *_SPAN constants remain
+compatible; new *_INTERVALS use half-open video indices.
 """
-
 from __future__ import annotations
 
+from dataclasses import dataclass
 import os
 from pathlib import Path
-from typing import Dict, Final, List, Tuple
+from typing import Dict, Final, Tuple
 
-# ==============================================================================
-# 1. DYNAMIC PATH RESOLUTION (FULL PORTABILITY)
-# ==============================================================================
-
-def find_workspace_root(start_path: Path | None = None) -> Path:
-    """Detects the root workspace directory containing both competition git repositories."""
-    current = (start_path or Path(__file__)).resolve()
-    for parent in [current] + list(current.parents):
-        if (parent / "more-than-a-hack-2027").exists() and (parent / "MYA-more-than-a-hack-2027").exists():
-            return parent
-        if (parent / "more-than-a-hack-2027").exists():
-            return parent
-    # Default fallback based on standard tree depth
-    return current.parent.parent.parent
-
-
-# Global workspace root
-WORKSPACE_ROOT: Final[Path] = find_workspace_root()
-
-# Repository roots
-CHALLENGE_DIR: Final[Path] = WORKSPACE_ROOT / "more-than-a-hack-2027"
-MYA_DIR: Final[Path] = WORKSPACE_ROOT / "MYA-more-than-a-hack-2027"
+MYA_DIR: Final[Path] = Path(__file__).resolve().parent.parent
 SRC_DIR: Final[Path] = MYA_DIR / "src"
+WORKSPACE_ROOT: Final[Path] = MYA_DIR.parent
 
-# Data directory (configurable via MTAH_DATA_DIR environment variable)
-DATA_DIR: Final[Path] = Path(os.environ.get("MTAH_DATA_DIR", CHALLENGE_DIR / "data"))
-TACTICAL_DIR: Final[Path] = DATA_DIR / "tactical"
-BROADCAST_DIR: Final[Path] = DATA_DIR / "broadcast"
 
-# Official evaluation directories
-EVAL_DIR: Final[Path] = CHALLENGE_DIR / "evaluation"
-GT_DIR: Final[Path] = EVAL_DIR / "gt"
-RESULTS_DIR: Final[Path] = EVAL_DIR / "results"
+def find_workspace_root(start_path=None):
+    """Legacy alias; the package location is authoritative, not a folder name."""
+    return WORKSPACE_ROOT
 
-# Team MYA working directories (created automatically if needed)
-CACHE_DIR: Final[Path] = MYA_DIR / ".cache"
-SUBMISSIONS_DIR: Final[Path] = MYA_DIR / "submissions"
-MODELS_DIR: Final[Path] = MYA_DIR / "models"
-REPORTS_DIR: Final[Path] = MYA_DIR / "reports"
 
-for _dir in [CACHE_DIR, SUBMISSIONS_DIR, MODELS_DIR, REPORTS_DIR]:
-    _dir.mkdir(parents=True, exist_ok=True)
+def _root_from_env(name, default):
+    return Path(os.environ.get(name, str(default))).expanduser().resolve()
 
-# ------------------------------------------------------------------------------
-# Raw Data Files
-# ------------------------------------------------------------------------------
 
-# Tactical Feed (Official challenge prediction reference)
-TACTICAL_ATD_TXT: Final[Path] = TACTICAL_DIR / "BAR-ATH_tactical_atd.txt"
-TACTICAL_ATD_XML: Final[Path] = TACTICAL_DIR / "BAR-ATH_tactical_atd.xml"
-TACTICAL_HOMOGRAPHY_CSV: Final[Path] = TACTICAL_DIR / "BAR-ATH_tactical_homography.csv"
-TACTICAL_SMART_TAGGING_XML: Final[Path] = TACTICAL_DIR / "BAR-ATH_tactical_smart_tagging.xml"
-TACTICAL_VIDEO_MP4: Final[Path] = TACTICAL_DIR / "BAR-ATH_tactical-002.mp4"
+CHALLENGE_DIR: Final[Path] = _root_from_env("MTAH_CHALLENGE_DIR", WORKSPACE_ROOT / "more-than-a-hack-2027")
+DATA_DIR: Final[Path] = _root_from_env("MTAH_DATA_DIR", CHALLENGE_DIR / "data")
+CACHE_DIR: Final[Path] = _root_from_env("MTAH_CACHE_DIR", MYA_DIR / ".cache")
+TACTICAL_DIR = DATA_DIR / "tactical"
+BROADCAST_DIR = DATA_DIR / "broadcast"
+EVAL_DIR = CHALLENGE_DIR / "evaluation"
+GT_DIR = EVAL_DIR / "gt"
+RESULTS_DIR = EVAL_DIR / "results"
+SUBMISSIONS_DIR = MYA_DIR / "submissions"
+MODELS_DIR = MYA_DIR / "models"
+REPORTS_DIR = MYA_DIR / "reports"
 
-# Broadcast Feed (Complementary multi-angle tracking)
-BROADCAST_ATD_TXT: Final[Path] = BROADCAST_DIR / "BAR-ATH_broadcast_atd.txt"
-BROADCAST_ATD_XML: Final[Path] = BROADCAST_DIR / "BAR-ATH_broadcast_atd.xml"
-BROADCAST_HOMOGRAPHY_CSV: Final[Path] = BROADCAST_DIR / "BAR-ATH_broadcast_homography.csv"
-BROADCAST_VIDEO_MP4: Final[Path] = BROADCAST_DIR / "BAR-ATH_broadcast-001.mp4"
+TACTICAL_ATD_TXT = TACTICAL_DIR / "BAR-ATH_tactical_atd.txt"
+TACTICAL_ATD_XML = TACTICAL_DIR / "BAR-ATH_tactical_atd.xml"
+TACTICAL_HOMOGRAPHY_CSV = TACTICAL_DIR / "BAR-ATH_tactical_homography.csv"
+TACTICAL_SMART_TAGGING_XML = TACTICAL_DIR / "BAR-ATH_tactical_smart_tagging.xml"
+TACTICAL_VIDEO_MP4 = TACTICAL_DIR / "BAR-ATH_tactical-002.mp4"
+BROADCAST_ATD_TXT = BROADCAST_DIR / "BAR-ATH_broadcast_atd.txt"
+BROADCAST_ATD_XML = BROADCAST_DIR / "BAR-ATH_broadcast_atd.xml"
+BROADCAST_HOMOGRAPHY_CSV = BROADCAST_DIR / "BAR-ATH_broadcast_homography.csv"
+BROADCAST_VIDEO_MP4 = BROADCAST_DIR / "BAR-ATH_broadcast-001.mp4"
+GT_PUBLIC_CSV = GT_DIR / "BAR-ATH_possession_gt_public.csv"
+GT_PUBLIC_META_JSON = GT_DIR / "BAR-ATH_possession_gt_public_meta.json"
+TACTICAL_ATD_CACHE_NPZ = CACHE_DIR / "tactical_atd.npz"
+BROADCAST_ATD_CACHE_NPZ = CACHE_DIR / "broadcast_atd.npz"
+TACTICAL_HOMOGRAPHY_CACHE_PARQUET = CACHE_DIR / "tactical_homography.parquet"
+BROADCAST_HOMOGRAPHY_CACHE_PARQUET = CACHE_DIR / "broadcast_homography.parquet"
+SMART_TAGGING_CACHE_PARQUET = CACHE_DIR / "smart_tagging.parquet"
 
-# Public Ground Truth (5 minutes of official evaluation labels)
-GT_PUBLIC_CSV: Final[Path] = GT_DIR / "BAR-ATH_possession_gt_public.csv"
-GT_PUBLIC_META_JSON: Final[Path] = GT_DIR / "BAR-ATH_possession_gt_public_meta.json"
 
-# High-performance binary cache files (Milestone 1)
-TACTICAL_ATD_CACHE_NPZ: Final[Path] = CACHE_DIR / "tactical_atd.npz"
-BROADCAST_ATD_CACHE_NPZ: Final[Path] = CACHE_DIR / "broadcast_atd.npz"
-TACTICAL_HOMOGRAPHY_CACHE_PARQUET: Final[Path] = CACHE_DIR / "tactical_homography.parquet"
-BROADCAST_HOMOGRAPHY_CACHE_PARQUET: Final[Path] = CACHE_DIR / "broadcast_homography.parquet"
-SMART_TAGGING_CACHE_PARQUET: Final[Path] = CACHE_DIR / "smart_tagging.parquet"
-
+def ensure_workdirs():
+    """Explicit opt-in for callers that need all output directories."""
+    for folder in (CACHE_DIR, SUBMISSIONS_DIR, MODELS_DIR, REPORTS_DIR):
+        folder.mkdir(parents=True, exist_ok=True)
 
 # ==============================================================================
 # 2. PITCH GEOMETRIC & KINEMATIC CONSTANTS
@@ -112,26 +87,26 @@ NUM_SLOTS: Final[int] = 46
 TOTAL_FRAMES: Final[int] = 199319                  # Total tactical video frames (0 to 199,318)
 BROADCAST_TOTAL_FRAMES: Final[int] = 164488        # Total broadcast video frames
 EVALUATED_FRAMES_COUNT: Final[int] = 158857        # In-play evaluated frames
-NON_EVALUATED_FRAMES_COUNT: Final[int] = 40462     # Out-of-play frames (must be labeled 'X')
+NON_EVALUATED_FRAMES_COUNT: Final[int] = 40462     # Non-evaluated frames (X by our output convention)
 
 
 # ==============================================================================
 # 4. CONTRACTUAL INTERVALS & MILESTONE 0 (INCLUSIVE BOUNDS [start, end])
 # ==============================================================================
 
-# 1. Pre-match (11,185 frames) -> Strict contractual label 'X'
+# 1. Pre-match (11,185 frames) -> X by our output convention; ignored by scorer
 PRE_MATCH_SPAN: Final[Tuple[int, int]] = (0, 11184)
 
 # 2. First half evaluated play (79,467 frames)
 FIRST_HALF_SPAN: Final[Tuple[int, int]] = (11185, 90651)
 
-# 3. Halftime break (20,156 frames) -> Strict contractual label 'X'
+# 3. Halftime break (20,156 frames) -> X by our output convention; ignored by scorer
 HALFTIME_SPAN: Final[Tuple[int, int]] = (90652, 110807)
 
 # 4. Second half evaluated play (79,390 frames)
 SECOND_HALF_SPAN: Final[Tuple[int, int]] = (110808, 190197)
 
-# 5. Post-match (9,121 frames) -> Strict contractual label 'X'
+# 5. Post-match (9,121 frames) -> X by our output convention; ignored by scorer
 POST_MATCH_SPAN: Final[Tuple[int, int]] = (190198, 199318)
 
 # 6. Dead Zone pre-2HT kickoff (2,934 frames) -> Deterministic forced 'D'
@@ -145,7 +120,7 @@ KICKOFF_2ND_HALF: Final[int] = 113742
 # Halftime canonical flip frame
 HALFTIME_FLIP_FRAME: Final[int] = 110808
 
-# Public validation window (7,500 frames / 5 minutes)
+# Public diagnostic-only window (7,500 frames / 5 minutes)
 PUBLIC_WINDOW_SPAN: Final[Tuple[int, int]] = (11185, 18684)
 PUBLIC_WINDOW_COUNT: Final[int] = 7500
 
@@ -156,11 +131,9 @@ PUBLIC_WINDOW_COUNT: Final[int] = 7500
 
 HOME_TEAM_NAME: Final[str] = "Barcelona"
 HOME_TEAM_LABEL: Final[str] = "H"
-HOME_TEAM_ID: Final[str] = "MET_user_team_o4Hossvb8M"
 
 AWAY_TEAM_NAME: Final[str] = "Atletic Club"
 AWAY_TEAM_LABEL: Final[str] = "A"
-AWAY_TEAM_ID: Final[str] = "MET_user_team_x7C4FFX2HF"
 
 DEAD_BALL_LABEL: Final[str] = "D"
 NON_EVALUATED_LABEL: Final[str] = "X"
@@ -192,6 +165,37 @@ def check_data_assets() -> Dict[str, bool]:
     return assets
 
 
+
+# These public boundaries come from games.py/FAQ at official-revision.txt, not
+# from manual annotations of this match. Half-open equivalents for new code.
+EVALUATED_INTERVALS = ((11185, 90652), (110808, 190198))
+NON_EVALUATED_INTERVALS = ((0, 11185), (90652, 110808), (190198, 199319))
+DEAD_ZONE_2HT_INTERVAL = (110808, 113742)
+PUBLIC_DIAGNOSTIC_INTERVAL = (11185, 18685)
+
+
+@dataclass(frozen=True)
+class SourceSpec:
+    name: str
+    num_frames: int
+    num_slots: int
+    txt_path: Path
+    xml_path: Path
+    homography_path: Path
+    video_path: Path
+    cache_path: Path
+
+
+def get_source(source: str) -> SourceSpec:
+    if source == "tactical":
+        return SourceSpec(source, TOTAL_FRAMES, 46, TACTICAL_ATD_TXT, TACTICAL_ATD_XML,
+                          TACTICAL_HOMOGRAPHY_CSV, TACTICAL_VIDEO_MP4, TACTICAL_ATD_CACHE_NPZ)
+    if source == "broadcast":
+        return SourceSpec(source, BROADCAST_TOTAL_FRAMES, 51, BROADCAST_ATD_TXT, BROADCAST_ATD_XML,
+                          BROADCAST_HOMOGRAPHY_CSV, BROADCAST_VIDEO_MP4, BROADCAST_ATD_CACHE_NPZ)
+    raise ValueError("Unknown source: expected tactical or broadcast")
+
+
 if __name__ == "__main__":
     print(f"✅ WORKSPACE_ROOT : {WORKSPACE_ROOT}")
     print(f"✅ CHALLENGE_DIR  : {CHALLENGE_DIR}")
@@ -201,3 +205,6 @@ if __name__ == "__main__":
     for asset_name, exists in check_data_assets().items():
         status = "✅ Found" if exists else "❌ Missing"
         print(f"  - {asset_name:30s} : {status}")
+
+    if not all(check_data_assets().values()):
+        raise SystemExit(1)

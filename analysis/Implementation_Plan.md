@@ -1,10 +1,10 @@
 # Plan d'implémentation — équipe MYA
 
-> **Révision : 25 octobre 2026.** Ce document décrit le travail à réaliser ; il ne déclare aucun jalon terminé et ne présente aucun gain MYA comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
+> **Révision : 25 octobre 2026.** Jalons 0, 1 et 2 réalisés et vérifiés le 25 octobre 2026 ; jalons 3 à 7 et bonus à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
 >
 > **Équipe :** Ali ABOUHACHIM-ALAMI, Youssef BENADDI, Maxime BENDAVID. **Match :** FC Barcelona (`H`) — Athletic Club (`A`). **Référence de sortie :** vidéo tactique, 199 319 images à 25 images/s. **Classement :** `spellF1` ; départage par `macroF1`. **Échéance annoncée :** 17 novembre 2026 ; vérifier l'heure limite dans le courriel des organisateurs.
 >
-> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Les noms de modules ci-dessous sont des emplacements prévus, pas des preuves d'implémentation.
+> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Pour les jalons 3 et suivants, les noms de modules restent des emplacements prévus. Voir [la validation des jalons 0 et 1](JALONS_0_1_VALIDATION.md) pour les preuves déjà obtenues.
 
 ## 1. Objectif et décisions de conception
 
@@ -38,9 +38,9 @@ flowchart TD
 
 | Jalon | Livrable | Condition de sortie |
 |---|---|---|
-| 0 — Règles et protocole | Registre des sources et séparation des usages | Données autorisées identifiées ; protocole écrit |
-| 1 — Ingestion fiable | Données alignées, masques de qualité et caches vérifiés | Tests de format, de source et d'alignement réussis |
-| 2 — Première chaîne complète | CSV de référence et commande de régénération | Validation officielle et scores publics de référence reproduits |
+| 0 — Réalisé : règles et protocole | Registre des sources et séparation des usages | Données autorisées identifiées ; protocole écrit |
+| 1 — Réalisé : ingestion fiable | Données alignées, masques de qualité et caches vérifiés | Tests de format, de source et d'alignement réussis |
+| 2 — Réalisé : première chaîne complète | CSV de référence et commande de régénération | Validation officielle et scores publics de référence reproduits |
 | 3 — Caractéristiques fiables | Matrice de caractéristiques, conventions et provenance | Invariance et comportement sur données manquantes vérifiés |
 | 4 — Vivant / mort et contrôle | Scores d'état issus d'indices explicites | Indisponibilité distinguée d'un arrêt et incertitude conservée |
 | 5 — Continuité et frontières | Décodeur temporel simple et réinitialisé par période | Passes, duels, reprises et possessions courtes testés |
@@ -108,15 +108,25 @@ Enregistrer avec le cache : source, chemin résolu, signature des entrées, dime
 
 ### Étape 1.5 — Repères et unités
 
-Conserver le repère normalisé d'origine et une version métrique `x_m = 105.3 x`, `y_m = 68 y`, avec l'origine au coin correspondant à `(0, 0)`. Les vitesses scalaires sont distinctes des coordonnées et ne doivent pas être multipliées par les dimensions du terrain.
+Conserver le repère normalisé d'origine et une version métrique `x_m = 105.3 x`, `y_m = 68 y`, avec l'origine au coin correspondant à `(0, 0)`. Les vitesses scalaires sont distinctes des coordonnées et ne doivent pas être multipliées par les dimensions du terrain. La lecture réelle a révélé une divergence : DATA.md annonce des m/s, le XML déclare kph. Le chargeur conserve la vitesse brute, expose `speed_unit` et `speed_documentation_conflict` ; tout futur seuil physique doit attendre une clarification explicite de cette unité.
 
 L'homographie transforme les positions normalisées du terrain en pixels. Son inverse sert pour une détection en pixels ; ne pas l'appliquer aux positions ATD déjà exprimées sur le terrain. Toute normalisation du sens offensif doit être justifiée par des métadonnées ou un algorithme, et transformer aussi les vecteurs associés.
+
+**Réalisation vérifiée le 25 octobre :** 27 tests synthétiques réussis ; tactique
+199 319 × 46 et TV 164 488 × 51 entièrement validées ; égalité lecture directe/cache
+pour les deux sources ; notebook exécuté en local avec sorties partagées effacées.
+Les erreurs d’homographie négatives livrées sont conservées en brut et marquées
+non exploitables, séparément de la validité de la matrice. Aucune vérité terrain
+n’est utilisée par la commande de validation d’ingestion. Détails et limites dans
+[JALONS_0_1_VALIDATION.md](JALONS_0_1_VALIDATION.md).
 
 **Livrable :** données tactiques validées et masques de qualité. **Tests indispensables :** petit fichier valide, tronqué, trop long, désordonné, doublons, observations manquantes, changement de source, cache périmé ; fixture TV de 51 pistes pour prévenir la régression du chargeur générique. Ces fixtures sont synthétiques.
 
 ## 5. Jalon 2 — Obtenir très tôt une première soumission complète
 
-Modules prévus : `src/pipeline.py`, `src/hygiene/masking.py`, `validator.py`, `src/refinement/exporter.py`. Ce jalon précède les modèles avancés.
+Modules réalisés : `src/pipeline.py`, `src/baseline.py`, `src/hygiene/masking.py`, `validator.py`, `src/refinement/exporter.py` ; diagnostic séparé dans `src/diagnostics.py`. Ce jalon précède les modèles avancés.
+
+**Vérifié le 25 octobre :** CSV de 199 319 lignes accepté officiellement ; deux exécutions identiques octet par octet ; quatre scores de référence reproduits ; calcul sans masques MYA identique aux quatre CSV officiels ; 50 tests synthétiques réussis au total. Fenêtre ±50 fixée avant le diagnostic, sans entraînement ni sélection sur les labels publics. Voir [JALON_2_VALIDATION.md](JALON_2_VALIDATION.md).
 
 ### Étape 2.1 — Reproduire la référence officielle
 

@@ -1,0 +1,2 @@
+# No bonus dependencies selected yet. Add only with a documented experiment.
+# Deep learning / GPU libraries are not required for milestones 0 and 1.

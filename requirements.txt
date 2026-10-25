@@ -1,15 +1,3 @@
-# Core data science libraries
-pandas
-matplotlib
-numpy
-
-# Jupyter notebook tools
-jupyterlab
-ipykernel
-nbformat
-nbclient
-
-# Soccer analytics (FIFA / EPTS)
-kloppy
-
-# possession_metrics is imported from the sibling official repository (evaluation/).
+# Milestones 0-1 runtime, Python 3.12.6. Official scorer is local, never PyPI.
+numpy==2.5.4
+pandas==3.1.0

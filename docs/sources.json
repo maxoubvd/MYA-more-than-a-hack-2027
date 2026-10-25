@@ -1,0 +1,172 @@
+{
+  "rules_revision": "f8f2629ff1e0985f81d7e59d8413678514ee1530",
+  "external_datasets_adopted": [],
+  "sources": [
+    {
+      "id": "tactical_atd_txt",
+      "match": "BAR-ATH",
+      "origin": "Metrica Sports competition asset delivery",
+      "version": "delivered asset; exact content SHA-256 recorded in ignored local manifest",
+      "rights": "Competition-only enrolment terms; no redistribution or reconstructible exports",
+      "nature": "automatic",
+      "allowed_uses": [
+        "pipeline",
+        "training"
+      ],
+      "local_path": "${MTAH_DATA_DIR}/tactical/BAR-ATH_tactical_atd.txt"
+    },
+    {
+      "id": "tactical_atd_xml",
+      "match": "BAR-ATH",
+      "origin": "Metrica Sports competition asset delivery",
+      "version": "delivered asset; exact content SHA-256 recorded in ignored local manifest",
+      "rights": "Competition-only enrolment terms; no redistribution or reconstructible exports",
+      "nature": "automatic",
+      "allowed_uses": [
+        "pipeline",
+        "training"
+      ],
+      "local_path": "${MTAH_DATA_DIR}/tactical/BAR-ATH_tactical_atd.xml"
+    },
+    {
+      "id": "tactical_homography_csv",
+      "match": "BAR-ATH",
+      "origin": "Metrica Sports competition asset delivery",
+      "version": "delivered asset; exact content SHA-256 recorded in ignored local manifest",
+      "rights": "Competition-only enrolment terms; no redistribution or reconstructible exports",
+      "nature": "automatic",
+      "allowed_uses": [
+        "pipeline",
+        "training"
+      ],
+      "local_path": "${MTAH_DATA_DIR}/tactical/BAR-ATH_tactical_homography.csv"
+    },
+    {
+      "id": "tactical_video",
+      "match": "BAR-ATH",
+      "origin": "Metrica Sports competition asset delivery",
+      "version": "delivered recording; unused in J0/J1",
+      "rights": "Competition-only enrolment terms; no redistribution",
+      "nature": "recording",
+      "allowed_uses": [
+        "pipeline",
+        "training"
+      ],
+      "local_path": "${MTAH_DATA_DIR}/tactical/BAR-ATH_tactical-002.mp4"
+    },
+    {
+      "id": "broadcast_atd_txt",
+      "match": "BAR-ATH",
+      "origin": "Metrica Sports competition asset delivery",
+      "version": "delivered asset; exact content SHA-256 recorded in ignored local manifest",
+      "rights": "Competition-only enrolment terms; no redistribution or reconstructible exports",
+      "nature": "automatic",
+      "allowed_uses": [
+        "pipeline",
+        "training"
+      ],
+      "local_path": "${MTAH_DATA_DIR}/broadcast/BAR-ATH_broadcast_atd.txt"
+    },
+    {
+      "id": "broadcast_atd_xml",
+      "match": "BAR-ATH",
+      "origin": "Metrica Sports competition asset delivery",
+      "version": "delivered asset; exact content SHA-256 recorded in ignored local manifest",
+      "rights": "Competition-only enrolment terms; no redistribution or reconstructible exports",
+      "nature": "automatic",
+      "allowed_uses": [
+        "pipeline",
+        "training"
+      ],
+      "local_path": "${MTAH_DATA_DIR}/broadcast/BAR-ATH_broadcast_atd.xml"
+    },
+    {
+      "id": "broadcast_homography_csv",
+      "match": "BAR-ATH",
+      "origin": "Metrica Sports competition asset delivery",
+      "version": "delivered asset; exact content SHA-256 recorded in ignored local manifest",
+      "rights": "Competition-only enrolment terms; no redistribution or reconstructible exports",
+      "nature": "automatic",
+      "allowed_uses": [
+        "pipeline",
+        "training"
+      ],
+      "local_path": "${MTAH_DATA_DIR}/broadcast/BAR-ATH_broadcast_homography.csv"
+    },
+    {
+      "id": "broadcast_video",
+      "match": "BAR-ATH",
+      "origin": "Metrica Sports competition asset delivery",
+      "version": "delivered recording; unused in J0/J1",
+      "rights": "Competition-only enrolment terms; no redistribution",
+      "nature": "recording",
+      "allowed_uses": [
+        "pipeline",
+        "training"
+      ],
+      "local_path": "${MTAH_DATA_DIR}/broadcast/BAR-ATH_broadcast-001.mp4"
+    },
+    {
+      "id": "smart_tagging",
+      "match": "BAR-ATH",
+      "origin": "Metrica Sports automatic Smart Tagging delivery",
+      "version": "delivered XML; exact SHA-256 in local manifest",
+      "rights": "Competition-only enrolment terms; no redistribution",
+      "nature": "automatic",
+      "allowed_uses": [
+        "pipeline",
+        "training"
+      ],
+      "local_path": "${MTAH_DATA_DIR}/tactical/BAR-ATH_tactical_smart_tagging.xml"
+    },
+    {
+      "id": "public_labels",
+      "match": "BAR-ATH",
+      "origin": "https://github.com/metrica-sports/more-than-a-hack-2027/tree/main/evaluation/gt",
+      "version": "f8f2629ff1e0985f81d7e59d8413678514ee1530",
+      "rights": "Official diagnostic-only labels; never training, calibration or selection",
+      "nature": "human",
+      "allowed_uses": [
+        "diagnostic"
+      ],
+      "local_path": "${MTAH_CHALLENGE_DIR}/evaluation/gt/BAR-ATH_possession_gt_public.csv (+ metadata JSON)"
+    },
+    {
+      "id": "official_code",
+      "match": "BAR-ATH",
+      "origin": "https://github.com/metrica-sports/more-than-a-hack-2027",
+      "version": "f8f2629ff1e0985f81d7e59d8413678514ee1530",
+      "rights": "Official repository LICENSE applies to code/docs, not match assets",
+      "nature": "code_and_published_metadata",
+      "allowed_uses": [
+        "pipeline",
+        "diagnostic"
+      ],
+      "local_path": "${MTAH_CHALLENGE_DIR}"
+    },
+    {
+      "id": "synthetic_fixtures",
+      "match": "synthetic",
+      "origin": "MYA tests/test_ingestion.py generators",
+      "version": "current MYA git revision",
+      "rights": "MYA repository terms; contains no match observations",
+      "nature": "synthetic",
+      "allowed_uses": [
+        "diagnostic"
+      ],
+      "local_path": "tests/test_ingestion.py"
+    },
+    {
+      "id": "official_baselines",
+      "match": "BAR-ATH",
+      "origin": "https://github.com/metrica-sports/more-than-a-hack-2027/tree/main/evaluation/results",
+      "version": "f8f2629ff1e0985f81d7e59d8413678514ee1530",
+      "rights": "Published official automatic predictions; repository terms; diagnostic only in MYA",
+      "nature": "automatic_public_predictions",
+      "allowed_uses": [
+        "diagnostic"
+      ],
+      "local_path": "${MTAH_CHALLENGE_DIR}/evaluation/results/baseline_*.csv"
+    }
+  ]
+}

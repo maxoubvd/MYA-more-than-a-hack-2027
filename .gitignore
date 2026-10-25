@@ -37,8 +37,14 @@ data/
 
 # Local caches, trained models and submissions
 .cache/
-models/
+/models/
 *.npz
 *.parquet
 submissions/*.csv
 !submissions/.gitkeep
+
+# Private recordings and dataset archives, wherever accidentally placed
+*.mp4
+*.avi
+*.mov
+*.zip
