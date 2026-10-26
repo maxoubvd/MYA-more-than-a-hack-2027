@@ -1,10 +1,10 @@
 # Plan d'implémentation — équipe MYA
 
-> **Révision : 26 octobre 2026.** Jalons 0, 1 et 2 réalisés et vérifiés le 25 octobre 2026 ; jalons 3 à 7 et bonus enrichis et à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
+> **Révision : 26 octobre 2026.** Jalons 0, 1 et 2 réalisés le 25 octobre ; jalon 3 réalisé le 26 octobre. Jalons 4 à 7 et bonus à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
 >
 > **Équipe :** Ali ABOUHACHIM-ALAMI, Youssef BENADDI, Maxime BENDAVID. **Match :** FC Barcelona (`H`) — Athletic Club (`A`). **Référence de sortie :** vidéo tactique, 199 319 images à 25 images/s. **Classement :** `spellF1` ; départage par `macroF1`. **Échéance annoncée :** 17 novembre 2026 ; vérifier l'heure limite dans le courriel des organisateurs.
 >
-> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Pour les jalons 3 et suivants, les noms de modules restent des emplacements prévus. Voir [la validation des jalons 0 et 1](JALONS_0_1_VALIDATION.md) pour les preuves déjà obtenues.
+> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Pour les jalons 4 et suivants, les noms de modules restent des emplacements prévus. Voir [la validation des jalons 0 et 1](JALONS_0_1_VALIDATION.md) et [celle du jalon 3](JALON_3_VALIDATION.md) pour les preuves déjà obtenues.
 
 ## 1. Objectif et décisions de conception
 
@@ -42,7 +42,7 @@ flowchart TD
 | 0 — Réalisé : règles et protocole | Registre des sources et séparation des usages | Données autorisées identifiées ; protocole écrit |
 | 1 — Réalisé : ingestion fiable | Données alignées, masques de qualité et caches vérifiés | Tests de format, de source et d'alignement réussis |
 | 2 — Réalisé : première chaîne complète | CSV de référence et commande de régénération | Validation officielle et scores publics de référence reproduits |
-| 3 — Caractéristiques fiables | Matrice de caractéristiques, conventions et provenance | Invariance et comportement sur données manquantes vérifiés |
+| 3 — Réalisé : caractéristiques fiables | 116 caractéristiques, unités, masques et provenance sur tactique et DFL | Invariance et données manquantes vérifiées ; voir le rapport J3 |
 | 4 — Vivant / mort et contrôle | Scores d'état issus d'indices explicites | Indisponibilité distinguée d'un arrêt et incertitude conservée |
 | 5 — Continuité et frontières | Décodeur temporel simple et réinitialisé par période | Passes, duels, reprises et possessions courtes testés |
 | 6 — Comparaisons et robustesse | Registre d'expériences et décision de conservation | Choix justifiés hors des cinq minutes publiques |
@@ -172,11 +172,22 @@ Documenter son coût : erreur pour `macroF1` sur les images évaluées ; remplis
 Les cinq prérequis ont été appliqués : hypothèses assouplies, match DFL complet
 vérifié, entrées et cibles séparées, protocole externe figé, baseline externe
 mesurée. Cela valide la chaîne de mesure ; aucun modèle nouveau ni gain indépendant
-n’est revendiqué. Les jalons 3 à 7 restent à réaliser.
+n’est revendiqué. Le jalon 3 est maintenant réalisé ; les jalons 4 à 7 restent à réaliser.
 
 ## 6. Jalon 3 — Construire des caractéristiques fiables, cinématiques et indices sans ballon
 
-Modules prévus : `src/preprocessing/player_denoising.py`, `smart_tagging.py`, `src/features/team_assignment.py`, `k_nearest.py`, `relative_kinematics.py`, `collective_dynamics.py`, `context_features.py`, `builder.py`, `src/utils/external_data.py`.
+Modules réalisés : `src/preprocessing/player_denoising.py`, `smart_tagging.py`, `src/imputation/gap_analyzer.py`, `src/features/team_assignment.py`, `k_nearest.py`, `relative_kinematics.py`, `collective_dynamics.py`, `context_features.py`, `physical.py`, `activity.py`, `builder.py`, `src/build_features.py`, `src/validate_features.py` et l'ingestion externe préparée précédemment.
+
+**Réalisation du 26 octobre :** 116 caractéristiques par image, masques explicites,
+unités et provenance ; matrices tactique et externe complètes, commandes de
+construction/validation et intégration notebook. Aucun classifieur H/A/D nouveau.
+Les deux modes d'activité et le seuil d'accélération sont descriptifs, ajustés
+sur les observations du seul match externe d'apprentissage, sans labels.
+Le score de faible activité n'est pas une probabilité de D ; les contacts restent
+des candidats avec proximité dans une fenêtre de ±2 images du même fragment.
+Les portes de qualité et noyaux sont initiaux et restent à comparer hors BAR-ATH.
+Voir [le dictionnaire et les limites](../docs/FEATURES.md) et
+[le rapport de validation](JALON_3_VALIDATION.md).
 
 ### Étape 3.1 — Mesurer les disparitions du ballon sans les assimiler à des arrêts
 
@@ -215,7 +226,7 @@ Garder les touches `Team = N/A` comme inconnues tant qu'une règle générale et
 Construire des caractéristiques d'arrêt strictement indépendantes de l'attribution d'équipe :
 - **Sorties des limites du terrain :** coordonnées de balle franchissant les lignes de touche ou de but (en appliquant une marge de tolérance pour ne pas confondre une balle haute en perspective 2D avec une sortie réelle).
 - **Faible mouvement du ballon :** caractéristique continue ; 0,5 m/s pendant 1 s est une hypothèse à comparer hors BAR-ATH, pas une règle D. Utiliser des dérivées de positions aux unités contrôlées tant que le désaccord kph/m/s des fichiers du concours reste non résolu.
-- **Ralentissement collectif :** vitesse médiane des joueurs de champ (modèle à deux composantes séparant jeu actif et temps mort).
+- **Ralentissement collectif :** vitesse médiane pondérée des pistes disponibles. Sans identité fiable, ne pas prétendre isoler exactement les joueurs de champ. Le mélange à deux composantes décrit des modes de vitesse ; leur correspondance avec vivant/mort doit être évaluée sur données externes.
 - **Sortie suivie de disparition :** dernière observation proche d'une ligne avec vitesse sortante, suivie d'une rupture de suivi du ballon.
 
 ### Étape 3.6 — Ingestion externe préparée avant le jalon 3
@@ -235,7 +246,7 @@ d’apprentissage est contrôlé ; les autres matchs conservent leur rôle figé
   information inconnue → X. Aucun défaut Kloppy ne transforme un inconnu en A/D.
 - Coordonnées métriques natives conservées par les dimensions propres au terrain,
   puis repère normalisé de Metrica ; aucun étirement physique vers 105,3 m.
-  Les vitesses XML ne sont pas exposées ; les futures dérivées relèvent du jalon 3.
+  Les vitesses XML ne sont pas exposées ; les dérivées de positions sont maintenant calculées par le jalon 3.
 - Référence ±50 mesurée sur le seul match d’apprentissage d’essai, en données
   propres et dans 19 couples scénario/graine figés, sans sélection de paramètres.
 

@@ -299,94 +299,69 @@ n’est lu ; son CSV de référence reste identique.
 
 Les données, caches, cibles et rapports détaillés restent sous `.cache/` et ne
 doivent pas être ajoutés au dépôt. Les tests utilisent seulement des fixtures
-synthétiques. Les caractéristiques du jalon 3 restent à réaliser.
+synthétiques. Les caractéristiques du jalon 3 sont maintenant réalisées ; voir ci-dessous.
 
 Voir [les résultats et preuves](analysis/PREPARATION_JALON_3.md), le
 [protocole de comparaison](docs/external_validation_protocol.md) et les
 [sources/version/empreintes](configs/dfl_manifest.json).
 
-## 🏗️ Project Architecture & Repository Structure
+## Jalon 3 : caractéristiques fiables
 
-The project follows a modular, reproducible engineering structure separating data exploration, implementation planning, modular source components, and generated submissions:
+```powershell
+.venv\Scripts\python.exe -m src.build_features --source all
+.venv\Scripts\python.exe -m src.validate_features
+```
+
+La construction produit **116 caractéristiques par image** sur les 199 319 images
+tactiques et les 145 967 images du match DFL d'apprentissage. Elle décrit les
+absences, mouvements par fragments, proximités par équipe, blocs collectifs,
+contacts candidats, indices physiques et contexte tactique. Chaque valeur possède
+une unité et un masque de validité ; les inconnus restent manquants.
+
+Deux descripteurs non supervisés sont ajustés sur les seules observations du match
+externe d'apprentissage : modes de vitesse collective et quantile d'accélération.
+Ils ne prédisent pas encore la possession. Les labels publics et les cibles DFL
+ne sont pas lus. Le CSV du jalon 2 conserve exactement son contenu.
+
+Les matrices, manifestes et descripteurs ajustés restent sous `.cache/features/`.
+Le notebook propose une section de lecture et de visualisation via la même API.
+Exécuter la construction avant cette section et vider les sorties avant publication.
+Aucun GPU ni paquet supplémentaire n'est nécessaire.
+
+Voir [les conventions et limites](docs/FEATURES.md), le
+[dictionnaire des 116 colonnes](docs/feature_schema.json) et les
+[preuves de validation](analysis/JALON_3_VALIDATION.md).
+
+## Architecture et état réel
 
 ```text
-MYA-more-than-a-hack-2027/
-├── analysis/                                     # Exploratory analysis & documentation
-│   ├── data_exploration.ipynb                    # Exploration locale via les chargeurs contrôlés
-│   ├── Implementation_Plan.md                    # Feuille de route : jalons 0 à 7 et bonus
-│   └── Gemini - Analyse et Benchmark ... .pdf    # Reference modeling and technical report
-│
-├── src/                                          # Core modular technical pipeline
-│   ├── __init__.py
-│   ├── config.py                                 # Global pitch dimensions (105.3x68m), frame limits, paths
-│   ├── pipeline.py                               # End-to-end execution runner and CLI orchestrator
-│   │
-│   ├── hygiene/                                  # [Jalon 0] Temporal hygiene & contractual masking
-│   │   ├── __init__.py
-│   │   ├── masking.py                            # Non-evaluated frame masking (X: 40,462 frames) & 2HT dead zone (D: 2,934 frames)
-│   │   ├── guards.py                             # Anti-X guard policy in active play (forward-fill fallback)
-│   │   └── validator.py                          # Contractual submission validation (199,319 rows, strict schema)
-│   │
-│   ├── preprocessing/                            # [Jalon 1] Binary caching, coordinate normalization & filtering
-│   │   ├── __init__.py
-│   │   ├── atd_parser.py                         # Streaming raw ATD parser (player slots, scalar speeds, ball status)
-│   │   ├── cache_manager.py                      # High-speed binary serialization / loading (Parquet / NPZ)
-│   │   ├── coordinates.py                        # Metric projection (105.3m x 68.0m) & canonical offensive direction flip
-│   │   ├── player_denoising.py                   # Savitzky-Golay / Butterworth low-pass filters & (vx, vy, ax, ay) derivations
-│   │   └── smart_tagging.py                      # XML tactical tagging sync (frame = sec * 25), throw-in team resolution
-│   │
-│   ├── imputation/                               # [Jalon 2] Ball trajectory reconstruction & dead ball detection
-│   │   ├── __init__.py
-│   │   ├── gap_analyzer.py                       # Functional gap segmentation (micro <=15, medium 16-50, long >50 frames)
-│   │   ├── kalman_rts.py                         # PCHIP interpolation & constant acceleration Kalman-RTS smoothing
-│   │   ├── broadcast_fusion.py                   # Broadcast multi-view fusion (H^-1 inverse homography & Chamfer alignment)
-│   │   └── deadball_detector.py                  # Out-of-bounds trajectory & homography reprojection_error spike detector (D)
-│   │
-│   ├── features/                                 # [Jalon 3] Permutation-invariant, kinematic & physical features
-│   │   ├── __init__.py
-│   │   ├── team_assignment.py                    # Dynamic XML mapping of 46 tracking slots to Home (0) vs Away (1)
-│   │   ├── k_nearest.py                          # Dynamic K=5 nearest players sorting per team (slot permutation invariance)
-│   │   ├── relative_kinematics.py                # Relative distances, approach velocities, Time-To-Interception (TTI, ΔTTI)
-│   │   ├── pitch_control.py                      # Fernandez & Bornn / Spearman physical pitch control model (PC_ball)
-│   │   ├── collective_dynamics.py                # Team centroids, spatial compactness, defensive/offensive lines
-│   │   ├── context_features.py                   # Homography reprojection_error dynamics & smart tagging event proximity
-│   │   └── builder.py                            # End-to-end feature matrix extraction and builder
-│   │
-│   ├── models/                                   # [Jalon 4] Frame-by-frame classification & probability calibration
-│   │   ├── __init__.py
-│   │   ├── anchors.py                            # High-confidence pseudo-labeling (>98% pure anchors for H, A, D)
-│   │   ├── dataset.py                            # Temporal GroupKFold split (15-min blocks) and tabular loaders
-│   │   ├── tabular.py                            # Multi-class LightGBM / CatBoost model training & inference
-│   │   └── calibration.py                        # Posterior probability calibration (Isotonic Regression / Platt Scaling)
-│   │
-│   ├── sequential/                               # [Jalon 5] Constrained temporal decoding (TAS)
-│   │   ├── __init__.py
-│   │   ├── dynamic_matrix.py                     # Kinematic-dependent dynamic transition matrix T(t) with physical rules
-│   │   ├── viterbi.py                            # Inhomogeneous dynamic programming Viterbi decoder
-│   │   └── hsmm.py                               # Explicit-duration Hidden Semi-Markov Model (HSMM) decoder
-│   │
-│   ├── refinement/                               # [Jalon 6] Multi-stage convolutional refinement & post-processing
-│   │   ├── __init__.py
-│   │   ├── mstcn.py                              # PyTorch MS-TCN++ multi-stage dilated temporal convolutions
-│   │   ├── smoothing_loss.py                     # Truncated Mean Squared Error (T-MSE) temporal smoothness loss
-│   │   ├── spell_filter.py                       # Spurious micro-spell pruning (>=18 frames for H/A, >=10 frames for D)
-│   │   └── exporter.py                           # Submission packaging (199,319 frames CSV) & local metric scoring
-│   │
-│   └── utils/                                    # Shared utilities & evaluation
-│       ├── __init__.py
-│       ├── loaders.py                            # High-level clean data loaders (ATD, homography, XML, ground truth)
-│       ├── metrics.py                            # Official spellF1 (Hungarian bipartite IoU matching) & macroF1
-│       ├── pitch.py                              # Pitch coordinate utilities and tactical pitch plotting
-│       └── io.py                                 # Safe atomic file I/O and serialization helpers
-│
-├── requirements.txt                              # Python package dependencies
-└── README.md                                     # Project documentation
+analysis/                  Notebook, plan et rapports de validation
+configs/                   Réglages, signatures et protocole externe figé
+docs/                      Règles, sources, conventions et dictionnaire
+src/
+├── config.py              Racines et contrats des sources
+├── pipeline.py            Référence de possession du jalon 2
+├── build_features.py      Construction des matrices du jalon 3
+├── validate_features.py   Contrôles d'intégration sans labels
+├── external_benchmark.py  Banc initial externe à scénarios figés
+├── preprocessing/         Parseur, cache, fragments et Smart Tagging
+├── features/              Géométrie, mouvement, contexte et constructeur
+├── imputation/            Analyse des trous ; aucune imputation dans le socle actuel
+├── hygiene/               Masques contractuels et contrôles de publication
+├── refinement/            Export CSV reproductible
+└── utils/                 Chargeurs contrôlés et ingestion externe
+tests/                     Fixtures synthétiques et régressions
 ```
+
+Les modules de classification et de décodage des jalons 4 à 7, la reconstruction
+du ballon, le pitch control et la fusion TV restent prévus par le plan. Leur
+présence éventuelle comme fichier vide ne signifie pas qu'ils sont implémentés.
+Les états des jalons et bonus font autorité dans le plan ci-dessous.
 
 ---
 
 ## 📚 Key Project References
 - Detailed Roadmap & Step-by-Step Guide: [`analysis/Implementation_Plan.md`](analysis/Implementation_Plan.md)
 - Exploratory Data Analysis Notebook: [`analysis/data_exploration.ipynb`](analysis/data_exploration.ipynb)
-- Technical Report: [`analysis/Gemini : Analyse et Benchmark Possession Football.pdf`](analysis/Gemini%20:%20Analyse%20et%20Benchmark%20Possession%20Football.pdf)
+- Technical Report: [`analysis/Gemini - Analyse et Benchmark Possession Football.pdf`](analysis/Gemini%20-%20Analyse%20et%20Benchmark%20Possession%20Football.pdf)
 - Official Challenge Repository: [metrica-sports/more-than-a-hack-2027](https://github.com/metrica-sports/more-than-a-hack-2027)

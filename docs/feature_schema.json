@@ -1,0 +1,817 @@
+{
+  "features": [
+    {
+      "description": "Delivered availability or conservative continuity diagnostic; not a game-state label",
+      "group": "quality",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_observed",
+      "unit": "1"
+    },
+    {
+      "description": "Delivered availability or conservative continuity diagnostic; not a game-state label",
+      "group": "quality",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_link_valid",
+      "unit": "1"
+    },
+    {
+      "description": "Delivered availability or conservative continuity diagnostic; not a game-state label",
+      "group": "quality",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_fragment_start",
+      "unit": "1"
+    },
+    {
+      "description": "New visible fragments, including first observations; not confirmed identity switches",
+      "group": "quality",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_fragment_start_n",
+      "unit": "count"
+    },
+    {
+      "description": "New visible fragments, including first observations; not confirmed identity switches",
+      "group": "quality",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_fragment_start_n",
+      "unit": "count"
+    },
+    {
+      "description": "Gap duration and previous/next observation distances, bounded by periods; future context is offline",
+      "group": "availability_context",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "gap_duration_s",
+      "unit": "s"
+    },
+    {
+      "description": "Gap duration and previous/next observation distances, bounded by periods; future context is offline",
+      "group": "availability_context",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "since_observation_s",
+      "unit": "s"
+    },
+    {
+      "description": "Gap duration and previous/next observation distances, bounded by periods; future context is offline",
+      "group": "availability_context",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "until_observation_s",
+      "unit": "s"
+    },
+    {
+      "description": "Gap duration and previous/next observation distances, bounded by periods; future context is offline",
+      "group": "availability_context",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "gap_left_censored",
+      "unit": "1"
+    },
+    {
+      "description": "Gap duration and previous/next observation distances, bounded by periods; future context is offline",
+      "group": "availability_context",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "gap_right_censored",
+      "unit": "1"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_observed_n",
+      "unit": "count"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_effective_n",
+      "unit": "count"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_near_duplicate_n",
+      "unit": "count"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_velocity_observed_n",
+      "unit": "count"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_centroid_x_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_spread_x_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_extent_x_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_mean_vx_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_centroid_y_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_spread_y_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_extent_y_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_mean_vy_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_attack_axis",
+      "unit": "1"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_attack_velocity_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_distance_to_opponent_goal_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_observed_n",
+      "unit": "count"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_effective_n",
+      "unit": "count"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_near_duplicate_n",
+      "unit": "count"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_velocity_observed_n",
+      "unit": "count"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_centroid_x_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_spread_x_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_extent_x_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_mean_vx_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_centroid_y_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_spread_y_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_extent_y_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_mean_vy_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_attack_axis",
+      "unit": "1"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_attack_velocity_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_distance_to_opponent_goal_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "inter_centroid_distance_m",
+      "unit": "m"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "collective_velocity_observed_n",
+      "unit": "count"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "collective_effective_velocity_n",
+      "unit": "count"
+    },
+    {
+      "description": "Anonymous weighted team geometry and mean valid track velocities; extents are max-minus-min, spread is weighted standard deviation",
+      "group": "collective",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "collective_median_speed_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_nearest_1_m",
+      "unit": "m"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_nearest_2_m",
+      "unit": "m"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_nearest_3_m",
+      "unit": "m"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_within_1m_effective_n",
+      "unit": "count"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_within_2m_effective_n",
+      "unit": "count"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_within_5m_effective_n",
+      "unit": "count"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_distance_kernel",
+      "unit": "1"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_nearest_1_m",
+      "unit": "m"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_nearest_2_m",
+      "unit": "m"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_nearest_3_m",
+      "unit": "m"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_within_1m_effective_n",
+      "unit": "count"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_within_2m_effective_n",
+      "unit": "count"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_within_5m_effective_n",
+      "unit": "count"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_distance_kernel",
+      "unit": "1"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "nearest_distance_A_minus_H_m",
+      "unit": "m"
+    },
+    {
+      "description": "Metric proximity and Gaussian distance kernel; a potential control cue, not possession or ball-alive evidence",
+      "group": "team_proximity",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "distance_kernel_H_minus_A",
+      "unit": "1"
+    },
+    {
+      "description": "Relative kinematics of actual nearest tracks; exact-distance ties averaged; positive closing means approaching",
+      "group": "team_motion",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_nearest_relative_speed_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Relative kinematics of actual nearest tracks; exact-distance ties averaged; positive closing means approaching",
+      "group": "team_motion",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_nearest_closing_speed_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Relative kinematics of actual nearest tracks; exact-distance ties averaged; positive closing means approaching",
+      "group": "team_motion",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_nearest_velocity_support_n",
+      "unit": "count"
+    },
+    {
+      "description": "Relative kinematics of actual nearest tracks; exact-distance ties averaged; positive closing means approaching",
+      "group": "team_motion",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_velocity_coherence",
+      "unit": "1"
+    },
+    {
+      "description": "Relative kinematics of actual nearest tracks; exact-distance ties averaged; positive closing means approaching",
+      "group": "team_motion",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_nearest_relative_speed_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Relative kinematics of actual nearest tracks; exact-distance ties averaged; positive closing means approaching",
+      "group": "team_motion",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_nearest_closing_speed_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Relative kinematics of actual nearest tracks; exact-distance ties averaged; positive closing means approaching",
+      "group": "team_motion",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_nearest_velocity_support_n",
+      "unit": "count"
+    },
+    {
+      "description": "Relative kinematics of actual nearest tracks; exact-distance ties averaged; positive closing means approaching",
+      "group": "team_motion",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_velocity_coherence",
+      "unit": "1"
+    },
+    {
+      "description": "Distance kernel multiplied by a velocity consistency cue; unavailable velocity stays missing",
+      "group": "team_motion",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "H_motion_distance_kernel",
+      "unit": "1"
+    },
+    {
+      "description": "Distance kernel multiplied by a velocity consistency cue; unavailable velocity stays missing",
+      "group": "team_motion",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "A_motion_distance_kernel",
+      "unit": "1"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_speed_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_acceleration_mps2",
+      "unit": "m/s^2"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_backward_speed_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_boundary_distance_m",
+      "unit": "m"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_backward_outward_speed_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_low_motion_score",
+      "unit": "1"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_low_motion_run_s",
+      "unit": "s"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_acceleration_local_peak",
+      "unit": "1"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_acceleration_peak_prominence_mps2",
+      "unit": "m/s^2"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_last_seen_boundary_distance_m",
+      "unit": "m"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_last_seen_outward_speed_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Ball movement, line proximity and last-seen outward motion; none is a referee decision",
+      "group": "physical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_gap_after_boundary_exit",
+      "unit": "1"
+    },
+    {
+      "description": "Nearest-player distance now and minimum within a symmetric ball-fragment window; proximity supports a candidate but does not prove a touch",
+      "group": "contact_geometry",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "contact_nearest_player_m",
+      "unit": "m"
+    },
+    {
+      "description": "Nearest-player distance now and minimum within a symmetric ball-fragment window; proximity supports a candidate but does not prove a touch",
+      "group": "contact_geometry",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "contact_window_nearest_player_m",
+      "unit": "m"
+    },
+    {
+      "description": "Low-activity mode and acceleration candidates require a model fitted only on external training observations; not calibrated labels",
+      "group": "unlabelled_context",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "collective_low_activity_score",
+      "unit": "1"
+    },
+    {
+      "description": "Low-activity mode and acceleration candidates require a model fitted only on external training observations; not calibrated labels",
+      "group": "unlabelled_context",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "contact_acceleration_candidate",
+      "unit": "1"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_speed_past_mean_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_speed_future_mean_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_speed_past_support",
+      "unit": "1"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_speed_future_support",
+      "unit": "1"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_speed_future_minus_past_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "collective_speed_past_mean_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "collective_speed_future_mean_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "collective_speed_past_support",
+      "unit": "1"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "collective_speed_future_support",
+      "unit": "1"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "collective_speed_future_minus_past_mps",
+      "unit": "m/s"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_visibility_past_mean",
+      "unit": "1"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_visibility_future_mean",
+      "unit": "1"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_visibility_past_support",
+      "unit": "1"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_visibility_future_support",
+      "unit": "1"
+    },
+    {
+      "description": "Past and future windows exclude the current frame and never cross a period; support is the fraction of finite samples",
+      "group": "temporal",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "ball_visibility_future_minus_past",
+      "unit": "1"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "tag_active_n",
+      "unit": "count"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "tag_unknown_team_n",
+      "unit": "count"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "tag_unknown_code_n",
+      "unit": "count"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "tag_H_support_n",
+      "unit": "count"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "tag_A_support_n",
+      "unit": "count"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "tag_H_minus_A",
+      "unit": "1"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "tag_conflict",
+      "unit": "1"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "restart_window_active",
+      "unit": "1"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "restart_unknown_team",
+      "unit": "1"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "restart_until_next_start_s",
+      "unit": "s"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "restart_since_last_end_s",
+      "unit": "s"
+    },
+    {
+      "description": "Automatically inferred phase context; offensive/defensive polarity, conflicts and N/A retained; restart windows are not forced dead intervals",
+      "group": "tactical",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "restart_kickoff_active",
+      "unit": "1"
+    },
+    {
+      "description": "Homography validity and nonnegative reprojection error are sensor confidence cues only",
+      "group": "sensor_quality",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "homography_available",
+      "unit": "1"
+    },
+    {
+      "description": "Homography validity and nonnegative reprojection error are sensor confidence cues only",
+      "group": "sensor_quality",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "homography_valid",
+      "unit": "1"
+    },
+    {
+      "description": "Homography validity and nonnegative reprojection error are sensor confidence cues only",
+      "group": "sensor_quality",
+      "missing": "NaN with valid=False; never a fabricated zero",
+      "name": "homography_error_pixels",
+      "unit": "pixel"
+    }
+  ],
+  "version": "mya-features-v1"
+}

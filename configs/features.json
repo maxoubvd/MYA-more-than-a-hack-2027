@@ -1,0 +1,18 @@
+{
+  "version": "mya-features-v1",
+  "settings": {
+    "player_link_speed_gate_mps": 20.0,
+    "ball_link_speed_gate_mps": 100.0,
+    "duplicate_radius_m": 0.15,
+    "control_offset_m": 0.5,
+    "control_sigma_m": 1.5,
+    "relative_velocity_sigma_mps": 5.0,
+    "low_motion_scale_mps": 0.5,
+    "boundary_band_m": 5.0,
+    "temporal_window_s": 1.0,
+    "contact_quantile": 0.98,
+    "contact_half_window_frames": 2
+  },
+  "status": "Initial observation descriptors, not tuned on BAR-ATH labels or validated possession thresholds",
+  "context_fit": "Only external training observations; no labels; descriptive two-mode speed mixture and acceleration quantile"
+}
