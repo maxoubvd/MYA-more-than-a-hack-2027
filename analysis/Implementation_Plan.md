@@ -1,6 +1,6 @@
 # Plan d'implémentation — équipe MYA
 
-> **Révision : 25 octobre 2026.** Jalons 0, 1 et 2 réalisés et vérifiés le 25 octobre 2026 ; jalons 3 à 7 et bonus à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
+> **Révision : 26 octobre 2026.** Jalons 0, 1 et 2 réalisés et vérifiés le 25 octobre 2026 ; jalons 3 à 7 et bonus enrichis et à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
 >
 > **Équipe :** Ali ABOUHACHIM-ALAMI, Youssef BENADDI, Maxime BENDAVID. **Match :** FC Barcelona (`H`) — Athletic Club (`A`). **Référence de sortie :** vidéo tactique, 199 319 images à 25 images/s. **Classement :** `spellF1` ; départage par `macroF1`. **Échéance annoncée :** 17 novembre 2026 ; vérifier l'heure limite dans le courriel des organisateurs.
 >
@@ -15,10 +15,11 @@ La première version exploite le tracking tactique et les indications tactiques.
 Principes du socle :
 
 - Vérifier les entrées avant toute prédiction et conserver leur provenance.
-- Séparer les indices de ballon vivant des indices d'équipe en contrôle.
-- Modéliser la continuité et les frontières dès la première version temporelle.
-- Utiliser des pénalités souples lorsque les observations sont incertaines.
-- Comparer les ajouts séparément, en conservant une version de référence régénérable.
+- **Séparer strictement les indices de ballon vivant/mort des indices d'équipe en contrôle** : la proximité d'un joueur par rapport au ballon informe sur l'équipe potentiellement en contrôle si le ballon est en jeu, mais n'indique pas s'il est vivant (un tireur de coup franc, de corner ou de touche est au contact immédiat de la balle). L'évidence d'équipe ne doit jamais plaider contre un arrêt de jeu (`D`).
+- **Traiter les 41 % d'absences de balle comme des occultations et non comme des arrêts** : la disparition temporaire du ballon ne justifie pas une bascule vers `D` ; le système maintient l'hypothèse de l'équipe précédente (règle causale de rétention) et exploite la morphologie collective des blocs d'équipe sans ballon.
+- **Modéliser la continuité globale et les frontières via un décodage séquentiel optimal** : abandonner le lissage local par fenêtre au profit d'un décodeur global (Viterbi MAP / semi-markovien) à 3 états (H, A, D) pénalisant les transitions parasites ($\lambda$) et intégrant une persistance minimale réaliste pour les arrêts de jeu ($D \ge 2\text{ s}$).
+- **Combiner contrôle de surface (Pitch Control) et cinématique** : enrichir l'attribution d'équipe par le contrôle d'espace à la Fernandez & Bornn et dater les transitions aux ruptures cinématiques réelles (impacts de contact).
+- **Validation externe et banc d'évaluation indépendant** : exploiter les données de tracking ouvertes de la littérature (avec vérité terrain image par image) et un protocole de dégradation simulant les défauts des capteurs, afin d'optimiser nos hyperparamètres hors du match du concours.
 - N'annoncer un bénéfice qu'après mesure ; ne pas viser un nombre de possessions supposé ni un score privé prédit.
 
 ```mermaid
@@ -55,8 +56,8 @@ Le règlement officiel consulté le 25 octobre fait autorité sur les propositio
 
 - Les cinq minutes annotées publiques servent uniquement à vérifier le fonctionnement, l'alignement et le sens des étiquettes. Ne pas les utiliser pour apprendre, calibrer, régler un seuil ou sélectionner une version.
 - Les annotations humaines et les corrections manuelles du match fourni sont interdites, y compris sur le tracking ou les seules transitions. Ne pas créer de constantes propres à certaines images à partir d'une inspection humaine.
-- Des labels et données externes sur d'autres matchs sont utilisables si leur accès, leurs droits et leur provenance permettent la vérification par les organisateurs. Le socle du plan n'impose aucun jeu externe obligatoire ; la référence ouverte de Metrica Sports est conservée pour mémoire si un besoin exploratoire se présente : https://github.com/metrica-sports/sample-data.
-- L'apprentissage sans labels humains et les pseudo-labels produits automatiquement sur les entrées autorisées restent possibles.
+- Des labels et données externes sur d'autres matchs sont utilisables si leur accès, leurs droits et leur provenance permettent la vérification par les organisateurs. Le jeu de données ouvert de la Bundesliga (DFL / IDSSE, Bassek et al., 2025; CC BY 4.0; DOI: 10.6084/m9.figshare.28196177) est formellement intégré comme référence externe principale pour l'apprentissage et le banc d'évaluation. La référence ouverte de Metrica Sports (https://github.com/metrica-sports/sample-data) est également conservée.
+- L'apprentissage sur ces données externes et les pseudo-labels produits automatiquement sur les entrées autorisées restent possibles.
 
 Sources : [RULES.md](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/RULES.md), [FAQ](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/FAQ.md). En particulier, la calibration sur les cinq minutes proposée dans l'ancien plan est retirée.
 
@@ -166,59 +167,87 @@ Documenter son coût : erreur pour `macroF1` sur les images évaluées ; remplis
 
 **Livrable :** une commande régénérant un premier CSV accepté par `evaluation/validate_submission.py`. Deux exécutions de référence doivent produire les mêmes octets. Le code de validation fourni reste l'autorité.
 
-## 6. Jalon 3 — Construire des caractéristiques fiables et des indices d'incertitude
+## 6. Jalon 3 — Construire des caractéristiques fiables, cinématiques et indices sans ballon
 
-Modules prévus : `src/preprocessing/player_denoising.py`, `smart_tagging.py`, `src/features/team_assignment.py`, `k_nearest.py`, `relative_kinematics.py`, `collective_dynamics.py`, `context_features.py`, `builder.py`.
+Modules prévus : `src/preprocessing/player_denoising.py`, `smart_tagging.py`, `src/features/team_assignment.py`, `k_nearest.py`, `relative_kinematics.py`, `collective_dynamics.py`, `context_features.py`, `builder.py`, `src/utils/external_data.py`.
 
-### Étape 3.1 — Mesurer les trous sans les interpréter comme des arrêts
+### Étape 3.1 — Mesurer les disparitions du ballon sans les assimiler à des arrêts
 
 Recalculer les absences séparément par période et sur la chronologie originale. Ne pas concaténer les mi-temps avant de compter les segments. Conserver leur longueur, l'âge de la dernière observation et la distance jusqu'à la prochaine, puisque l'analyse est hors ligne.
 
-Les comptes détaillés du premier notebook restent des observations à reproduire, pas une vérité sur la nature des phases. Un trou long ne prouve pas `D`. Présenter toute la distribution, y compris les plus longs trous.
+Distinguer les absences courtes et moyennes (< 2–3 s, ballons en vol ou masquages de duel en jeu actif) des absences longues consécutives à une sortie de touche. L'absence d'observation de balle ne produit aucune évidence d'équipe et ne vote jamais `D` de manière isolée.
 
-### Étape 3.2 — Cinématique par fragments continus
+### Étape 3.2 — Cinématique par fragments continus et détection des contacts (touches)
 
 Détecter les ruptures, changements brusques et pistes possiblement dupliquées. Lisser et dériver seulement à l'intérieur de fragments fiables ; ne pas interpoler un joueur à travers une rupture d'identité ou la mi-temps. Conserver un masque de validité et le nombre de joueurs fiables de chaque équipe.
 
-Les limites physiologiques servent d'alertes de qualité, pas de preuve qu'un filtre est bon parce qu'il a écrêté toutes les vitesses. Comparer les dérivées aux vitesses fournies et documenter les écarts.
+**Détection des contacts et touches de balle :** identifier les pics locaux d'accélération nette du ballon (dérivée seconde filtrée sur fenêtre courte) dépassant le seuil de vol libre. Associer chaque pic au joueur le plus proche : un impact seul ne prouve pas le contrôle, mais il fournit une ancre temporelle exacte à l'image près pour dater une transition si le contrôle se confirme.
 
-### Étape 3.3 — Représentation d'équipe indépendante de l'ordre des pistes
+### Étape 3.3 — Représentation d'équipe : contrôle avec ballon et morphologie collective sans ballon
 
-Construire au minimum : distances au ballon des joueurs les plus proches de chaque équipe, écart de proximité H–A, nombre de joueurs proches, activité collective et contrastes entre contexte passé et futur. Gérer les cas sans ballon ou avec trop peu de joueurs par des masques explicites.
+Construire une représentation découplée et robuste aux occultations :
 
-Pour `Δr = position_joueur - position_ballon`, une vitesse de fermeture positive peut s'écrire `-Δr · (v_joueur - v_ballon) / max(||Δr||, ε)`, uniquement si les vitesses sont fiables. Le ratio distance / vitesse est un indicateur grossier ; ne pas le présenter comme un temps d'interception physique exact.
+1. **Avec ballon visible (contrôle direct) :**
+   - Noyau gaussien de distance au ballon : $K(d) = \exp\left(-\frac{1}{2} \left(\frac{\max(d - d_0, 0)}{\sigma}\right)^2\right)$.
+   - Porte de vitesse relative : facteur multiplicatif modélisant la cohérence de vitesse entre le joueur le plus proche et le ballon. Une balle passant à grande vitesse à côté d'un joueur ne produit pas de contrôle.
+   - Évidence différentielle $C_H - C_A$ : en duel serré avec les deux équipes au contact, les évidences s'annulent naturellement.
+2. **Sans ballon visible (41 % des images évaluées — modèle « ball-free ») :**
+   - Modéliser la géométrie collective des 22 joueurs : centre de gravité (centroïde) de chaque bloc, étalement spatial (largeur et profondeur), distance inter-blocs et vitesse collective orientée vers le but adverse selon le sens d'attaque de chaque mi-temps.
+   - Cette signature collective fournit un prédicteur d'équipe autonome capable d'attribuer la possession avec une confiance quantifiée pendant les longues occultations en jeu actif.
 
 Tester l'invariance aux permutations au sein des équipes. Ne pas calculer une vitesse en suivant la même place dans un tri par distance : cette place peut changer de joueur à chaque image.
 
-### Étape 3.4 — Smart Tagging comme indice contextualisé
+### Étape 3.4 — Smart Tagging et ancres de remise en jeu
 
-Encoder les phases offensives pour l'équipe indiquée et les phases défensives avec une polarité opposée. Conserver l'incertitude des bornes et les contradictions entre tags. Encoder les proximités des reprises et leur type ; ne pas supposer qu'une fenêtre de corner est entièrement morte ou entièrement vivante.
+Encoder les phases offensives pour l'équipe indiquée et les phases défensives avec une polarité opposée. Conserver l'incertitude des bornes et les contradictions entre tags. Exploiter les fenêtres de coups de pied arrêtés (`SET PIECES`) et coups d'envoi comme ancres pour délimiter les recherches d'arrêts et de reprises, sans assimiler l'intégralité d'un tag à une phase morte continue.
 
-Garder les touches `Team = N/A` comme inconnues tant qu'une règle générale et vérifiable n'apporte pas d'indice suffisant. Ne pas attribuer automatiquement la touche à l'adversaire du joueur le plus proche une seconde auparavant.
+Garder les touches `Team = N/A` comme inconnues tant qu'une règle générale et vérifiable n'apporte pas d'indice suffisant.
 
-### Étape 3.5 — Qualité des capteurs
+### Étape 3.5 — Indices physiques d'arrêt de jeu (Dead ball)
 
-Conserver visibilité, longueur des trous, continuité des pistes, effectif fiable, présence de doublons et désaccords des indices. `reprojection_error` est un indice de confiance géométrique ; aucun seuil isolé ne doit forcer `D`.
+Construire des caractéristiques d'arrêt strictement indépendantes de l'attribution d'équipe :
+- **Sorties des limites du terrain :** coordonnées de balle franchissant les lignes de touche ou de but (en appliquant une marge de tolérance pour ne pas confondre une balle haute en perspective 2D avec une sortie réelle).
+- **Immobilité du ballon :** vitesse du ballon $\le 0.5\text{ m/s}$ pendant au moins 1 s (ballon posé pour coup franc, six mètres ou corner).
+- **Ralentissement collectif :** vitesse médiane des joueurs de champ (modèle à deux composantes séparant jeu actif et temps mort).
+- **Sortie suivie de disparition :** dernière observation proche d'une ligne avec vitesse sortante, suivie d'une rupture de suivi du ballon.
 
-**Livrable :** matrice de caractéristiques avec noms, unités, masques et provenance. **Validation :** permutations, cas sans ballon, joueur absent, doublon, rupture de piste, frontière de période et calcul passé/futur sur fixtures synthétiques. Réutiliser ces fonctions dans le notebook pour éviter deux implémentations divergentes.
+### Étape 3.6 — Téléchargement automatisé et ingestion des données externes de référence
+
+Module : `src/utils/external_data.py`.
+Implémenter la récupération automatisée et contrôlée du jeu de données ouvert de la Bundesliga (Bassek et al., 2025; CC BY 4.0; DOI: 10.6084/m9.figshare.28196177) :
+1. **Téléchargement scripté via l'API Figshare** : requête directe sur les métadonnées de l'article pour télécharger les fichiers `matchinformation` et `positions_raw_observed` de chaque match cible, avec contrôle d'intégrité par empreinte MD5.
+2. **Normalisation via `kloppy`** : chargement avec `kloppy.sportec` en conservant impérativement les états morts (`only_alive=False`) et projection dans le repère unifié du concours (`coordinates="metrica"`, échelle $105,3 \times 68,0\text{ m}$).
+3. **Extraction des étiquettes cibles** : cartographie exacte vers l'alphabet du concours :
+   - `BallState.DEAD` $\to D$
+   - `BallState.ALIVE` avec `ball_owning_team == home` $\to H$ (ou $A$ pour l'extérieur).
+   - Hors mi-temps ou indéterminé $\to X$.
+4. **Cache intermédiaire** : sérialisation locale propre sous format compact (`.npz` ou parquet) contenant positions, vitesses m/s calculées par corde centrale et étiquettes.
+
+**Livrable :** matrice de caractéristiques avec noms, unités, masques et provenance, complétée par le module d'ingestion externe `src/utils/external_data.py`. **Validation :** permutations, cas sans ballon, joueur absent, doublon, rupture de piste, frontière de période et calcul passé/futur sur fixtures synthétiques et données DFL.
 
 ## 7. Jalon 4 — Séparer ballon vivant et contrôle de l'équipe
 
 Modules prévus : `src/imputation/deadball_detector.py`, `src/models/anchors.py`, `dataset.py`, `tabular.py`. Les modèles appris sont conditionnés à une supervision autorisée ; la version par règles demeure une solution complète.
 
-### Étape 4.1 — Score de ballon vivant
+### Étape 4.1 — Score d'arrêt de jeu ($D$ vs vivant)
 
-Combiner plusieurs indices : mouvement récent du ballon, proximité des limites, activité collective, phases tactiques et indices de reprise. Prévoir les contre-exemples « ballon absent pendant le jeu » et « ballon visible pendant un arrêt ». L'homographie et le ralentissement des joueurs sont des indices souples, jamais la décision de l'arbitre.
+Calculer une évidence d'arrêt de jeu $S_D(t)$ (en log-vraisemblance ou score centré) totalement étanche vis-à-vis de l'évidence d'équipe :
+- Une sortie confirmée, un ballon stationnaire placé, ou une sortie suivie d'absence augmentent $S_D$.
+- Un ballon se déplaçant à vitesse vive à l'intérieur du terrain apporte une évidence négative forte contre $D$.
+- **Règle fondamentale :** la proximité des joueurs ne plaide jamais contre $D$ (un tireur préparant un coup franc est collé au ballon). L'absence de ballon seule ne force pas $D$.
 
-### Étape 4.2 — Score d'équipe et mémoire du contrôle
+### Étape 4.2 — Score d'équipe ($H$ vs $A$) et mémoire du contrôle
 
-Combiner proximité, durée de contact plausible, cinématique fiable et contexte tactique. Une déviation ou le passage de la balle près d'un adversaire ne suffit pas à établir un contrôle. Distinguer la dernière équipe en contrôle de la prochaine équipe pouvant remettre le ballon en jeu : une proximité pendant `D` ne doit pas devenir une possession vivante.
+Calculer l'évidence d'équipe $S_{H/A}(t)$ sur les phases où le ballon est potentiellement vivant :
+- En présence du ballon : différence pondérée des noyaux de contrôle $C_H - C_A$.
+- En l'absence du ballon : l'évidence géométrique directe est nulle ($S_{H/A} = 0$). Le score d'équipe s'appuie sur le modèle de structure d'équipe sans ballon (entraîné de manière auto-supervisée sur les séquences avec ballon incontestable et évalué en cross-validation entre mi-temps).
+- **Règle causale de rétention (« Hold ») :** lorsqu'aucun indice probant de contrôle adverse ou d'arrêt de jeu n'apparaît, la possession reste attribuée à la dernière équipe détentrice avec une incertitude croissante, évitant la fragmentation artificielle des possessions lors des passes aériennes et des duels.
 
-Maintenir des scores pour H et A même si le ballon est absent, à partir du contexte disponible, avec une confiance réduite. Ne pas inventer une coordonnée pour satisfaire l'interface.
+### Étape 4.3 — Modélisation tabulaire supervisée sur données externes et factorisation
 
-### Étape 4.3 — Préparer la comparaison règles / apprentissage léger
+Grâce aux étiquettes complètes issues des données externes (DFL / Bassek et al.), entraîner dans `src/models/tabular.py` un classifieur léger (régression logistique régularisée ou gradient boosting peu profond) sur les caractéristiques extraites (géométrie, cinématique, dynamique de bloc, pitch control).
 
-Si des labels externes compatibles sont disponibles, comparer un petit modèle tabulaire aux règles, puis comparer une sortie ternaire directe à la factorisation :
+La factorisation hiérarchique :
 
 ```text
 P(D) = 1 - P(vivant)
@@ -226,50 +255,64 @@ P(H) = P(vivant) × P(H | vivant)
 P(A) = P(vivant) × P(A | vivant)
 ```
 
-Ces probabilités doivent utiliser des conventions et une supervision cohérentes. En l'absence de calibration indépendante, parler de scores et documenter leur échelle. Ne pas imposer une calibration isotonique sur un minuscule échantillon ni une division automatique des scores par des fréquences de classes biaisées.
+permet de découpler l'apprentissage de l'état du jeu ($D$ vs vivant) de celui de l'équipe détentrice ($H$ vs $A$). Pour simuler les conditions réelles de BAR-ATH, le modèle est entraîné et validé sur les données externes soumises au masque de dégradation synthétique (41 % d'occultations de balle). Comparer systématiquement cette sortie probabiliste aux règles déterministes du socle.
 
-Pour les pseudo-labels, conserver origine, couverture, conflit et confiance. Ne pas annoncer 98 % de pureté sans mesure indépendante ; ne pas utiliser leur propre accord comme validation. Les situations ambiguës peuvent rester non supervisées.
+Pour les éventuels pseudo-labels sur BAR-ATH, conserver origine, couverture, conflit et confiance. Ne pas annoncer 98 % de pureté sans mesure indépendante ; ne pas utiliser leur propre accord comme validation. Les situations ambiguës peuvent rester non supervisées.
 
 **Livrable :** scores d'observation H/A/D et indicateurs de confiance, plus une référence sans apprentissage. **Validation :** cohérence des scores et cas synthétiques de contrôle, de ballon mort et d'incertitude ; toute sélection de modèle ou de calibration se fait hors des annotations publiques de BAR-ATH.
 
-## 8. Jalon 5 — Modéliser la continuité et les frontières
+## 8. Jalon 5 — Modéliser la continuité globale et les frontières
 
-Modules prévus : `src/sequential/dynamic_matrix.py`, `viterbi.py`, `src/hygiene/guards.py`. Commencer par une méthode temporelle légère, puis un Viterbi à trois états si son apport est démontrable ; HSMM et réseaux supplémentaires restent en bonus.
+Modules prévus : `src/sequential/dynamic_matrix.py`, `src/sequential/viterbi.py`, `src/hygiene/guards.py`. Remplacer le lissage local par un décodage temporel global MAP exact.
 
-### Étape 5.1 — Pénalités souples et réinitialisation
+### Étape 5.1 — Décodeur séquentiel global (Viterbi / semi-markovien) avec durée de séjour
 
-Associer aux scores d'observation une pénalité de changement modulée par le contexte. Avec Viterbi, chercher un chemin maximisant la somme des scores d'état et de transition ; préciser s'il s'agit d'un modèle probabiliste ou d'une énergie discriminante.
+Implémenter dans `src/sequential/viterbi.py` la programmation dynamique à trois états ($H$, $A$, $D$) maximisant la vraisemblance globale de la séquence sur chaque période :
 
-Une observation absente ou imprécise ne doit pas interdire irréversiblement une récupération. Éviter les transitions H/A fixées à zéro par un unique rayon de 1,2 m, ainsi que les contraintes non symétriques entre équipes. Réinitialiser la mémoire aux séparations de période.
+$$\max_{\{s_t\}} \sum_{t=1}^T \text{score}(s_t, t) - \sum_{t=1}^{T-1} \lambda(s_t, s_{t+1})$$
 
-### Étape 5.2 — Frontières candidates et confirmation rétrospective
+- **Pénalités de transition $\lambda$ :** pénaliser les bascules intempestives $H \leftrightarrow A$ et les faux arrêts de jeu pour éliminer la sur-segmentation (*flicker*) sans dégrader les vraies transitions.
+- **Persistance minimale des arrêts de jeu ($D \ge 2\text{ s}$) :** un arrêt de jeu de quelques dixièmes de seconde n'existe pas en football. La programmation dynamique intègre une durée de séjour minimale de $k = 50$ images (2 s à 25 fps) pour l'état $D$, éliminant les micro-arrêts artificiels tout en maintenant une complexité linéaire en temps par mi-temps.
+- Réinitialiser strictement le décodeur entre les périodes et émettre $X$ hors des périodes évaluées.
 
-Détecter des candidats à partir des changements de proximité, de mouvement, des réapparitions et des indices de reprise. Utiliser le contexte futur pour confirmer un contrôle, puis estimer son début au premier indice crédible, plutôt que retarder systématiquement la décision jusqu'à la confirmation. Tester l'effet sur le type et le décalage des frontières.
+### Étape 5.2 — Placement et datation physique des frontières
 
-### Étape 5.3 — Comparer des hypothèses pendant les trous
+Résoudre les égalités d'évidence et les incertitudes par des principes physiques orientés football :
+1. **Transition d'équipe ($H \leftrightarrow A$) :** datée au premier contact physique avéré (pic de contact de l'étape 3.2 ou première frame de contrôle effectif) de la nouvelle équipe. Durant la trajectoire aérienne d'une passe interceptée ou d'un dégagement, la possession reste à l'équipe initiale jusqu'à la touche adverse.
+2. **Entrée en arrêt de jeu ($H/A \to D$) :** datée le plus tôt possible, dès le franchissement de la ligne de touche ou le coup de sifflet présumé (début de l'immobilité de la balle).
+3. **Sortie d'arrêt de jeu ($D \to H/A$) :** datée le plus tard possible, au moment exact de la frappe de remise en jeu (reprise de vitesse du ballon).
 
-Pour un trou long, comparer maintien de la possession, récupération adverse et arrêt, en utilisant les observations avant et après. La longueur du trou réduit la confiance ; elle ne décide pas seule de son état. Autoriser la mise à jour d'une hypothèse au retour du ballon.
+### Étape 5.3 — Filtrage des duels courts et anti-flicker
+
+Les statistiques footballistiques et le règlement indiquent qu'une déviation ou un contre furtif ne constituent pas un changement de possession.
+- Un court segment adverse ($< 2-3\text{ s}$) survenant entre deux séquences de la même équipe sans arrêt intermédiaire de jeu doit être absorbé au profit de l'équipe détentrice principale.
+- Les changements d'équipe exigent une persistance minimale de contrôle ou une preuve cinématique claire pour être entérinés.
 
 ### Étape 5.4 — Préserver les vraies possessions courtes
 
-Ne supprimer aucun segment uniquement parce qu'il dure moins de 18 images. Toute correction doit tenir compte du contexte et de la confiance et être comparée au résultat sans correction. Une courte possession peut obtenir une IoU parfaite.
+Ne pas supprimer aveuglément les possessions courtes si elles s'accompagnent d'une évidence de contrôle continue et nette (ex. une récupération rapide suivie d'un tir ou d'un tacle immédiat). La pénalité de transition $\lambda$ doit être calibrée pour filtrer le bruit sans interdire les retournements rapides légitimes.
 
-**Livrable :** séquence H/A/D cohérente et diagnostics des transitions. **Tests indispensables :** passe conservée, déviation sans contrôle, récupération adverse, récupération pendant une absence, ballon visible mort, reprise, vraie possession courte, première image d'une période et absence de propagation à travers la mi-temps. Les labels des tests sont entièrement synthétiques ou proviennent d'autres matchs autorisés.
+**Livrable :** décodeur Viterbi exact produisant une séquence H/A/D cohérente et optimisée globalement. **Tests indispensables :** passe conservée, déviation sans contrôle, récupération adverse datée à l'impact, arrêt avec durée $\ge 2\text{ s}$, égalités d'évidence résolues conformément au protocole, réinitialisation à la mi-temps. Tests exécutés sur fixtures synthétiques.
 
 ## 9. Jalon 6 — Comparer, valider et décider
 
-### Étape 6.1 — Validation indépendante et banc de robustesse
+### Étape 6.1 — Validation indépendante et banc d'évaluation externe
 
-Aucun jeu de données externe n'est imposé pour la validation du socle. Deux voies d'évaluation hors des cinq minutes publiques sont prévues :
+Pour calibrer et comparer nos modèles sans jamais sur-ajuster sur la fenêtre publique de 5 minutes de BAR-ATH, deux voies d'évaluation rigoureusement découplées sont exploitées :
 
-1. **Banc d'épreuves synthétiques et robustesse (Voie principale du socle) :** Évaluer la résistance des modèles par dégradations réalistes sur BAR-ATH (occultations continues du ballon de 1 à 3 secondes, bruit spatial, pertes de pistes) et mesurer la stabilité des frontières de transition autour des ancres structurelles (zone morte officielle `[110808, 113742[`, coups d'envoi, segments Smart Tagging).
-2. **Validation externe (Voie optionnelle) :** Si des matchs externes compatibles sont adoptés (ex. https://github.com/metrica-sports/sample-data), définir des partitions strictes sans chevauchement des possessions ou des fenêtres temporelles. Vérifier que la définition des événements permet une conversion rigoureuse vers H/A/D.
+1. **Validation externe sur tracking ouvert avec vérité terrain complète (Voie principale) :**
+   - Exploiter des jeux de données de tracking ouverts à 25 Hz disposant d'annotations complètes de possession et de statut de balle image par image (ex. jeu de données ouvert DFL / Bundesliga CC-BY 4.0 de 7 matchs complets chargé via `kloppy`, ou données ouvertes Metrica Sports).
+   - **Harnais de dégradation synthétique :** injecter dans ces données externes les défauts caractéristiques du tracking du concours (suppression du ballon sur 41 % des images en distributions exponentielles et en zones de regroupement, bruit spatial gaussien, fragmentation des identités de joueurs).
+   - Exécuter nos pipelines sur ces matchs externes dégradés et évaluer le `spellF1` et la précision des frontières contre la vérité terrain complète de ces matchs. Cela fournit un banc de mesure objectif sur des milliers de possessions réelles.
+2. **Banc d'épreuves synthétiques et ancres physiques locales (BAR-ATH) :**
+   - Évaluer la stabilité des prédictions sur BAR-ATH autour des ancres connues (zone morte officielle `[110808, 113742[`, coups d'envoi des mi-temps).
+   - Vérifier la vraisemblance des agrégats globaux sur le match complet (durée médiane des possessions, nombre total de possessions cohérent avec les statistiques de Liga, proportion de $D \approx 45-52\%$).
 
-Si aucun jeu externe n'est adopté, la validation repose entièrement sur la voie 1 (robustesse synthétique et ancres physiques), garantissant l'indépendance sans fabriquer de pseudo-classement artificiel. Les cinq minutes publiques restent un simple diagnostic technique d'alignement, y compris pour les étapes bonus.
+Les cinq minutes publiques de BAR-ATH restent un simple diagnostic technique d'alignement, jamais une métrique de sélection.
 
 ### Étape 6.2 — Comparaisons par ajout isolé
 
-Comparer, sur la validation autorisée : référence ; indices tactiques ; vivant/mort ; mémoire du contrôle ; décodeur ; puis bonus. Examiner les résultats par type de frontière et niveau de qualité des observations, pas seulement une moyenne globale.
+Comparer, sur la validation externe autorisée : baseline lissé $\pm 50$ ; ajout du maintien lors des absences de balle ; apport du modèle sans ballon ; intégration du détecteur d'arrêt physique ; passage au décodeur Viterbi exact ; puis bonus éventuels.
 
 Conserver `spellF1` et son détail par seuil d'IoU, `macroF1`, diagnostics de frontières, fragmentation et temps de calcul. Le bootstrap peut illustrer l'incertitude d'échantillonnage ; il n'autorise pas le réglage sur le public et ne corrige pas un biais de domaine.
 
