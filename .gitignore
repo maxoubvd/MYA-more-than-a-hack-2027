@@ -48,3 +48,7 @@ submissions/*.csv
 *.avi
 *.mov
 *.zip
+
+# External tracking and generated array predictions stay local
+DFL_*.xml
+*.npy

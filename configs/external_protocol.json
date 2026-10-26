@@ -1,0 +1,125 @@
+{
+  "version": "external-v1",
+  "frozen_date": "2026-10-26",
+  "split_rule": "lexicographic match IDs; first 4 train, next 2 validation, last 1 locked test; all periods stay together",
+  "splits": {
+    "train": [
+      "J03WMX",
+      "J03WN1",
+      "J03WOH",
+      "J03WOY"
+    ],
+    "validation": [
+      "J03WPY",
+      "J03WQQ"
+    ],
+    "test": [
+      "J03WR9"
+    ]
+  },
+  "smoke_match": "J03WMX",
+  "test_access": "locked: no download, ingestion or scoring before final frozen candidate",
+  "primary_metric": "official spell_f1_mean",
+  "secondary_metric": "official macro_f1",
+  "baseline": {
+    "name": "nearest_player_majority_v1",
+    "half_width": 50,
+    "missing_label": "D",
+    "smoothing": "separate GameSection periods; no BAR-ATH masks on external matches"
+  },
+  "feature_allowlist": [
+    "players_xy_normalized",
+    "ball_xy_normalized",
+    "players_observed",
+    "ball_observed",
+    "team_mapping",
+    "frame_ids",
+    "period_ids",
+    "fps",
+    "pitch_dims"
+  ],
+  "forbidden_features": [
+    "BallStatus",
+    "BallPossession",
+    "labels",
+    "ball_state",
+    "ball_owning_team",
+    "player_name",
+    "jersey_number",
+    "stable_player_id",
+    "ball_height",
+    "events"
+  ],
+  "scenario_seeds": [
+    20261026,
+    20261027,
+    20261028
+  ],
+  "scenarios": [
+    {
+      "name": "clean",
+      "kind": "clean"
+    },
+    {
+      "name": "short_gaps",
+      "kind": "ball_gaps",
+      "missing_fraction": 0.2,
+      "gap_frames": [
+        5,
+        25
+      ]
+    },
+    {
+      "name": "long_gaps",
+      "kind": "ball_gaps",
+      "missing_fraction": 0.41,
+      "gap_frames": [
+        100,
+        500
+      ]
+    },
+    {
+      "name": "spatial_noise",
+      "kind": "spatial_noise",
+      "sigma_metres": 0.25
+    },
+    {
+      "name": "crowded_gaps",
+      "kind": "crowded_gaps",
+      "missing_fraction": 0.41,
+      "gap_frames": [
+        25,
+        150
+      ],
+      "neighbour_radius_metres": 5.0
+    },
+    {
+      "name": "fragmented_tracks",
+      "kind": "fragmentation",
+      "segment_frames": 250,
+      "dropout_fraction": 0.1
+    },
+    {
+      "name": "combined",
+      "kind": "combined",
+      "missing_fraction": 0.41,
+      "gap_frames": [
+        25,
+        250
+      ],
+      "sigma_metres": 0.25,
+      "segment_frames": 250,
+      "dropout_fraction": 0.1
+    }
+  ],
+  "selection_policy": "compare additions on validation matches only; frozen scenarios/seeds; limited search budget recorded before runs; no BAR-ATH public labels or target D fraction",
+  "uncertainty": "report each match and each scenario; use match-level uncertainty when enough matches exist; no frame-iid confidence intervals",
+  "smoke_policy": "score clean training smoke match and its fixed degradation scenarios only; never claim independent held-out performance",
+  "label_policy": "use raw BallStatus and BallPossession with strict enum validation; unknown remains X, never defaults to A or D; dead ball overrides owner; labels stored separately",
+  "transfer_limitations": [
+    "DFL multi-camera tracking is cleaner than competition ATD",
+    "provider possession conventions require comparison; same field names do not prove identical targets",
+    "match split is not a team-disjoint or season-disjoint benchmark",
+    "synthetic scenarios are stress tests, not a validated simulator of BAR-ATH"
+  ]
+}

@@ -19,8 +19,8 @@ def issues_for_paths(root, paths):
             continue
         suffix = path.suffix.lower()
         if (any(p in ("data", ".cache", ".venv", "__pycache__") for p in parts)
-                or suffix in (".npz", ".parquet", ".mp4", ".avi", ".mov", ".zip", ".pyc")
-                or ("BAR-ATH" in name and suffix in (".txt", ".xml", ".csv"))):
+                or suffix in (".npz", ".npy", ".parquet", ".mp4", ".avi", ".mov", ".zip", ".pyc")
+                or (("BAR-ATH" in name or "DFL_" in name) and suffix in (".txt", ".xml", ".csv"))):
             issues.append(f"Private/generated asset must not be tracked: {name}")
         if suffix == ".ipynb":
             notebook = json.loads((Path(root) / name).read_text(encoding="utf-8"))

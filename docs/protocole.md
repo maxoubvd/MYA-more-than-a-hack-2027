@@ -35,7 +35,14 @@ consignées dans la configuration.
 Avant d'ajouter un jeu externe, enregistrer un **autre match**, la version,
 l'URL d'accès, la licence/droit d'usage, les annotateurs et le volume, les usages
 prévus et le découpage apprentissage/validation par match. Vérifier que les
-organisateurs peuvent l'inspecter. Aucun jeu externe n'est adopté à ce stade ; la référence ouverte de Metrica Sports est conservée pour mémoire si besoin : https://github.com/metrica-sports/sample-data.
+organisateurs peuvent l'inspecter. Le jeu DFL IDSSE (Bassek et al., 2025), Figshare 28196177 version 1, CC BY 4.0,
+est désormais enregistré pour sept autres matchs. Le découpage et les usages sont
+figés dans `configs/external_protocol.json` ; les fichiers et empreintes MD5 sont
+dans `configs/dfl_manifest.json`. Un match d’apprentissage complet a été vérifié.
+La référence Metrica Sports reste candidate, sans adoption ni promesse de labels
+complets ou de droits équivalents : https://github.com/metrica-sports/sample-data.
+Voir `docs/external_validation_protocol.md` pour les frontières entre observations
+et cibles, les limites de transfert et le verrouillage du test final.
 
 ## Trois preuves distinctes
 

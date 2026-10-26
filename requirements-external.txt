@@ -1,0 +1,4 @@
+# Optional external data cross-check, Python 3.12.6.
+# Strict streaming ingestion and frozen baseline need only the core runtime.
+-r requirements.txt
+kloppy==3.19.1

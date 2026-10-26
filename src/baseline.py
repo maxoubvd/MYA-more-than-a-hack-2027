@@ -15,7 +15,7 @@ from src.hygiene.validator import validate_labels
 DEFAULT_HALF_WIDTH = 50  # Published official reference, fixed BEFORE public diagnostics.
 
 
-def nearest_team_labels(players, ball, team_mapping, *, missing_label="D", batch_size=8192):
+def nearest_team_labels(players, ball, team_mapping, *, missing_label="D", batch_size=8192, pitch_dims=config.PITCH_DIMS):
     """Nearest finite x/y in metres; exact distance ties use the first XML slot.
 
     Speeds are never used. Input is the original normalised representation from
@@ -32,7 +32,9 @@ def nearest_team_labels(players, ball, team_mapping, *, missing_label="D", batch
         raise ValueError("A complete XML H/A team mapping is required")
     teams = np.asarray([team_mapping[i] for i in range(slots)])
     result = np.full(len(ball), missing_label, dtype="<U1")
-    scale = np.asarray(config.PITCH_DIMS, dtype=np.float64)
+    scale = np.asarray(pitch_dims, dtype=np.float64)
+    if scale.shape != (2,) or not np.isfinite(scale).all() or (scale <= 0).any():
+        raise ValueError("Pitch dimensions must be two positive finite metre values")
     for start in range(0, len(ball), batch_size):
         end = min(start + batch_size, len(ball))
         positions = players[start:end, :, :2].astype(np.float64)

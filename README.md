@@ -273,6 +273,38 @@ modèle ni paramètre ; les cinq minutes publiques ne sont ni un jeu d’entraî
 ni un jeu de réglage. Les rapports détaillés restent ignorés sous `.cache/`.
 Voir [la méthode, les preuves et les limites](analysis/JALON_2_VALIDATION.md).
 
+
+## Préparation avant le jalon 3
+
+Les cinq prérequis sont réalisés : hypothèses du plan assouplies, un match DFL
+complet vérifié, observations séparées des cibles, découpage externe figé et
+baseline mesurée avant toute nouvelle méthode.
+
+```powershell
+.venv\Scripts\python.exe -m pip install -r requirements-external.txt
+.venv\Scripts\python.exe -m src.external_benchmark --prepare --benchmark
+.venv\Scripts\python.exe -m src.external_validation
+```
+
+La première exécution télécharge environ 419 Mo pour le seul match d’apprentissage
+J03WMX, depuis Figshare v1 / CC BY 4.0, puis vérifie tailles et empreintes.
+L’ingestion garde les arrêts de jeu et refuse les conversions implicites des
+statuts inconnus en A ou D. Les observations et labels sont stockés séparément.
+
+Quatre matchs sont réservés à l’apprentissage, deux à la validation et un au
+test final verrouillé. Le banc initial comporte 19 exécutions de scénarios figés,
+sans optimisation. Ses scores sont des contrôles sur un match d’apprentissage,
+pas une preuve de performance sur un match réservé. Aucun label public BAR-ATH
+n’est lu ; son CSV de référence reste identique.
+
+Les données, caches, cibles et rapports détaillés restent sous `.cache/` et ne
+doivent pas être ajoutés au dépôt. Les tests utilisent seulement des fixtures
+synthétiques. Les caractéristiques du jalon 3 restent à réaliser.
+
+Voir [les résultats et preuves](analysis/PREPARATION_JALON_3.md), le
+[protocole de comparaison](docs/external_validation_protocol.md) et les
+[sources/version/empreintes](configs/dfl_manifest.json).
+
 ## 🏗️ Project Architecture & Repository Structure
 
 The project follows a modular, reproducible engineering structure separating data exploration, implementation planning, modular source components, and generated submissions:

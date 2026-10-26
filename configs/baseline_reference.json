@@ -1,0 +1,9 @@
+{
+  "method": "nearest_player_majority_v1",
+  "half_width": 50,
+  "missing_label": "D",
+  "source_git_revision": "7b150d6504020da0f1d37a42f78ae4a83930335c",
+  "baseline_source_sha256_before_external_adapter": "68b52cda1c94f1587e3b147b6330c3b45a80c58441b0b2748fd9487ed596e600",
+  "competition_csv_sha256": "faa469cebf4e4bb25e59e03304b8cd45ebf65c8df7eeff69a4a393ed4a516797",
+  "note": "Immutable reference; no public-label-based tuning. Existing J2 CSV remains unchanged."
+}

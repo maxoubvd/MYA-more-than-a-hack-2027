@@ -1,6 +1,15 @@
 {
   "rules_revision": "f8f2629ff1e0985f81d7e59d8413678514ee1530",
-  "external_datasets_adopted": [],
+  "external_datasets_adopted": [
+    {
+      "dataset": "DFL IDSSE",
+      "article_id": 28196177,
+      "version": 1,
+      "license": "CC BY 4.0",
+      "manifest": "configs/dfl_manifest.json",
+      "split": "configs/external_protocol.json"
+    }
+  ],
   "sources": [
     {
       "id": "tactical_atd_txt",
@@ -167,6 +176,118 @@
         "diagnostic"
       ],
       "local_path": "${MTAH_CHALLENGE_DIR}/evaluation/results/baseline_*.csv"
+    },
+    {
+      "id": "dfl_J03WMX",
+      "match": "DFL-MAT-J03WMX",
+      "origin": "https://doi.org/10.6084/m9.figshare.28196177.v1",
+      "version": "Figshare article 28196177 v1; exact file IDs and MD5 in configs/dfl_manifest.json",
+      "rights": "CC BY 4.0; attribute Bassek et al. 2025, DFL and Sportec Solutions",
+      "nature": "provider_tracking_and_labels",
+      "allowed_uses": [
+        "training"
+      ],
+      "local_path": "${MTAH_CACHE_DIR}/external/dfl/28196177/v1/prepared/J03WMX",
+      "split": "train",
+      "label_provenance": "BallStatus/BallPossession from the provider; tracking and events quality-controlled by operators; not assumed identical to competition label conventions",
+      "volume": "one complete match, both periods; per-frame counts recorded in local manifest",
+      "access": "public Figshare; test role is locked by match_role until final frozen candidate"
+    },
+    {
+      "id": "dfl_J03WN1",
+      "match": "DFL-MAT-J03WN1",
+      "origin": "https://doi.org/10.6084/m9.figshare.28196177.v1",
+      "version": "Figshare article 28196177 v1; exact file IDs and MD5 in configs/dfl_manifest.json",
+      "rights": "CC BY 4.0; attribute Bassek et al. 2025, DFL and Sportec Solutions",
+      "nature": "provider_tracking_and_labels",
+      "allowed_uses": [
+        "training"
+      ],
+      "local_path": "${MTAH_CACHE_DIR}/external/dfl/28196177/v1/prepared/J03WN1",
+      "split": "train",
+      "label_provenance": "BallStatus/BallPossession from the provider; tracking and events quality-controlled by operators; not assumed identical to competition label conventions",
+      "volume": "one complete match, both periods; per-frame counts recorded in local manifest",
+      "access": "public Figshare; test role is locked by match_role until final frozen candidate"
+    },
+    {
+      "id": "dfl_J03WOH",
+      "match": "DFL-MAT-J03WOH",
+      "origin": "https://doi.org/10.6084/m9.figshare.28196177.v1",
+      "version": "Figshare article 28196177 v1; exact file IDs and MD5 in configs/dfl_manifest.json",
+      "rights": "CC BY 4.0; attribute Bassek et al. 2025, DFL and Sportec Solutions",
+      "nature": "provider_tracking_and_labels",
+      "allowed_uses": [
+        "training"
+      ],
+      "local_path": "${MTAH_CACHE_DIR}/external/dfl/28196177/v1/prepared/J03WOH",
+      "split": "train",
+      "label_provenance": "BallStatus/BallPossession from the provider; tracking and events quality-controlled by operators; not assumed identical to competition label conventions",
+      "volume": "one complete match, both periods; per-frame counts recorded in local manifest",
+      "access": "public Figshare; test role is locked by match_role until final frozen candidate"
+    },
+    {
+      "id": "dfl_J03WOY",
+      "match": "DFL-MAT-J03WOY",
+      "origin": "https://doi.org/10.6084/m9.figshare.28196177.v1",
+      "version": "Figshare article 28196177 v1; exact file IDs and MD5 in configs/dfl_manifest.json",
+      "rights": "CC BY 4.0; attribute Bassek et al. 2025, DFL and Sportec Solutions",
+      "nature": "provider_tracking_and_labels",
+      "allowed_uses": [
+        "training"
+      ],
+      "local_path": "${MTAH_CACHE_DIR}/external/dfl/28196177/v1/prepared/J03WOY",
+      "split": "train",
+      "label_provenance": "BallStatus/BallPossession from the provider; tracking and events quality-controlled by operators; not assumed identical to competition label conventions",
+      "volume": "one complete match, both periods; per-frame counts recorded in local manifest",
+      "access": "public Figshare; test role is locked by match_role until final frozen candidate"
+    },
+    {
+      "id": "dfl_J03WPY",
+      "match": "DFL-MAT-J03WPY",
+      "origin": "https://doi.org/10.6084/m9.figshare.28196177.v1",
+      "version": "Figshare article 28196177 v1; exact file IDs and MD5 in configs/dfl_manifest.json",
+      "rights": "CC BY 4.0; attribute Bassek et al. 2025, DFL and Sportec Solutions",
+      "nature": "provider_tracking_and_labels",
+      "allowed_uses": [
+        "external_validation"
+      ],
+      "local_path": "${MTAH_CACHE_DIR}/external/dfl/28196177/v1/prepared/J03WPY",
+      "split": "validation",
+      "label_provenance": "BallStatus/BallPossession from the provider; tracking and events quality-controlled by operators; not assumed identical to competition label conventions",
+      "volume": "one complete match, both periods; per-frame counts recorded in local manifest",
+      "access": "public Figshare; test role is locked by match_role until final frozen candidate"
+    },
+    {
+      "id": "dfl_J03WQQ",
+      "match": "DFL-MAT-J03WQQ",
+      "origin": "https://doi.org/10.6084/m9.figshare.28196177.v1",
+      "version": "Figshare article 28196177 v1; exact file IDs and MD5 in configs/dfl_manifest.json",
+      "rights": "CC BY 4.0; attribute Bassek et al. 2025, DFL and Sportec Solutions",
+      "nature": "provider_tracking_and_labels",
+      "allowed_uses": [
+        "external_validation"
+      ],
+      "local_path": "${MTAH_CACHE_DIR}/external/dfl/28196177/v1/prepared/J03WQQ",
+      "split": "validation",
+      "label_provenance": "BallStatus/BallPossession from the provider; tracking and events quality-controlled by operators; not assumed identical to competition label conventions",
+      "volume": "one complete match, both periods; per-frame counts recorded in local manifest",
+      "access": "public Figshare; test role is locked by match_role until final frozen candidate"
+    },
+    {
+      "id": "dfl_J03WR9",
+      "match": "DFL-MAT-J03WR9",
+      "origin": "https://doi.org/10.6084/m9.figshare.28196177.v1",
+      "version": "Figshare article 28196177 v1; exact file IDs and MD5 in configs/dfl_manifest.json",
+      "rights": "CC BY 4.0; attribute Bassek et al. 2025, DFL and Sportec Solutions",
+      "nature": "provider_tracking_and_labels",
+      "allowed_uses": [
+        "external_validation"
+      ],
+      "local_path": "${MTAH_CACHE_DIR}/external/dfl/28196177/v1/prepared/J03WR9",
+      "split": "test",
+      "label_provenance": "BallStatus/BallPossession from the provider; tracking and events quality-controlled by operators; not assumed identical to competition label conventions",
+      "volume": "one complete match, both periods; per-frame counts recorded in local manifest",
+      "access": "public Figshare; test role is locked by match_role until final frozen candidate"
     }
   ]
 }
