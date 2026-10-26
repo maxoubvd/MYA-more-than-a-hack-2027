@@ -35,7 +35,7 @@ consignées dans la configuration.
 Avant d'ajouter un jeu externe, enregistrer un **autre match**, la version,
 l'URL d'accès, la licence/droit d'usage, les annotateurs et le volume, les usages
 prévus et le découpage apprentissage/validation par match. Vérifier que les
-organisateurs peuvent l'inspecter. Aucun jeu externe n'est adopté à ce stade.
+organisateurs peuvent l'inspecter. Aucun jeu externe n'est adopté à ce stade ; la référence ouverte de Metrica Sports est conservée pour mémoire si besoin : https://github.com/metrica-sports/sample-data.
 
 ## Trois preuves distinctes
 

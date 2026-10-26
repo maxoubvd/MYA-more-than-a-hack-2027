@@ -55,7 +55,7 @@ Le règlement officiel consulté le 25 octobre fait autorité sur les propositio
 
 - Les cinq minutes annotées publiques servent uniquement à vérifier le fonctionnement, l'alignement et le sens des étiquettes. Ne pas les utiliser pour apprendre, calibrer, régler un seuil ou sélectionner une version.
 - Les annotations humaines et les corrections manuelles du match fourni sont interdites, y compris sur le tracking ou les seules transitions. Ne pas créer de constantes propres à certaines images à partir d'une inspection humaine.
-- Des labels et données externes sur d'autres matchs sont utilisables si leur accès, leurs droits et leur provenance permettent la vérification par les organisateurs.
+- Des labels et données externes sur d'autres matchs sont utilisables si leur accès, leurs droits et leur provenance permettent la vérification par les organisateurs. Le socle du plan n'impose aucun jeu externe obligatoire ; la référence ouverte de Metrica Sports est conservée pour mémoire si un besoin exploratoire se présente : https://github.com/metrica-sports/sample-data.
 - L'apprentissage sans labels humains et les pseudo-labels produits automatiquement sur les entrées autorisées restent possibles.
 
 Sources : [RULES.md](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/RULES.md), [FAQ](https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/FAQ.md). En particulier, la calibration sur les cinq minutes proposée dans l'ancien plan est retirée.
@@ -258,13 +258,14 @@ Ne supprimer aucun segment uniquement parce qu'il dure moins de 18 images. Toute
 
 ## 9. Jalon 6 — Comparer, valider et décider
 
-### Étape 6.1 — Validation externe indépendante
+### Étape 6.1 — Validation indépendante et banc de robustesse
 
-Définir des matchs d'apprentissage, de choix de paramètres et de validation séparés. Vérifier la convention de possession contrôlée, la définition du ballon mort, l'alignement et la provenance des annotations externes. Les événements seuls ne constituent pas automatiquement une vérité terrain dense compatible.
+Aucun jeu de données externe n'est imposé pour la validation du socle. Deux voies d'évaluation hors des cinq minutes publiques sont prévues :
 
-Éviter tout chevauchement des possessions ou des fenêtres de contexte entre apprentissage et validation ; tenir compte des fenêtres futures et des filtres. Dégrader les données externes par trous continus, ruptures de pistes et bruit réaliste, sans supposer qu'un masquage aléatoire indépendant imite les absences réelles.
+1. **Banc d'épreuves synthétiques et robustesse (Voie principale du socle) :** Évaluer la résistance des modèles par dégradations réalistes sur BAR-ATH (occultations continues du ballon de 1 à 3 secondes, bruit spatial, pertes de pistes) et mesurer la stabilité des frontières de transition autour des ancres structurelles (zone morte officielle `[110808, 113742[`, coups d'envoi, segments Smart Tagging).
+2. **Validation externe (Voie optionnelle) :** Si des matchs externes compatibles sont adoptés (ex. https://github.com/metrica-sports/sample-data), définir des partitions strictes sans chevauchement des possessions ou des fenêtres temporelles. Vérifier que la définition des événements permet une conversion rigoureuse vers H/A/D.
 
-Si aucune vérité indépendante adaptée n'est disponible, conserver une référence simple, signaler cette limite et ne pas fabriquer de classement de variantes à partir des pseudo-labels. Les cinq minutes publiques restent un contrôle de fonctionnement, y compris pour les étapes bonus.
+Si aucun jeu externe n'est adopté, la validation repose entièrement sur la voie 1 (robustesse synthétique et ancres physiques), garantissant l'indépendance sans fabriquer de pseudo-classement artificiel. Les cinq minutes publiques restent un simple diagnostic technique d'alignement, y compris pour les étapes bonus.
 
 ### Étape 6.2 — Comparaisons par ajout isolé
 
@@ -272,7 +273,16 @@ Comparer, sur la validation autorisée : référence ; indices tactiques ; vivan
 
 Conserver `spellF1` et son détail par seuil d'IoU, `macroF1`, diagnostics de frontières, fragmentation et temps de calcul. Le bootstrap peut illustrer l'incertitude d'échantillonnage ; il n'autorise pas le réglage sur le public et ne corrige pas un biais de domaine.
 
-### Étape 6.3 — Registre reproductible
+### Étape 6.3 — Exploration systématique des combinaisons et hyperparamètres (Grid / Random Search par blocs)
+
+Pour dépasser l'analyse composant par composant sans subir d'explosion combinatoire, explorer les interactions entre briques par recherche structurée :
+
+1. **Recherche factorielle par blocs de caractéristiques :** plutôt que de tester $2^N$ combinaisons individuelles, évaluer les combinaisons de familles fonctionnelles (socle géométrique, cinématique relative, dynamique collective, contexte temporel des trous).
+2. **Recherche sur les hyperparamètres temporels :** balayer systématiquement les pénalités de transition Viterbi ($H \leftrightarrow A$, passage à $D$), les priors de durée minimale (HSMM) et les demi-largeurs de fenêtres candidates via grille fine ou recherche aléatoire (Random Search / Optuna).
+3. **Critère du plateau de stabilité :** rejeter tout pic de performance isolé (hyperparamètre hyper-spécifique instable) ; ne retenir qu'une configuration reposant sur une région large et stable des scores de validation externe.
+4. **Cloisonnement strict :** cette exploration s'exécute exclusivement sur les données de validation autorisées, jamais sur les cinq minutes publiques de BAR-ATH.
+
+### Étape 6.4 — Registre reproductible
 
 Pour chaque expérience : identifiant, hypothèse, commit, configuration, révisions des données et du scoreur, source de supervision, graines, coût, résultats de validation externe, décision et empreinte du CSV. Stocker séparément le diagnostic public et la justification du choix.
 
