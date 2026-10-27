@@ -191,6 +191,15 @@ Dans JupyterLab, sélectionner le noyau **Python (MYA foot)**. Dans VS Code, cho
 
 L'installation locale préparée ajoute aussi **`Ouvrir_Notebook.cmd`** à la racine du dépôt : un double-clic ouvre JupyterLab avec le bon Python. Ce lanceur est exclu localement de Git. Les sorties détaillées du notebook peuvent contenir des données privées : les retirer avant publication.
 
+Le notebook restaure les anciennes rubriques : chronologie, Smart Tagging,
+homographie, statistiques des absences, labels publics facultatifs, visualiseur
+2D et comparaison des références. Les graphiques des jalons 3 et 4 sont conservés.
+Il comporte 37 cellules, dont 24 de code. Les options `RUN_PUBLIC_DIAGNOSTIC`
+et `VERIFY_BROADCAST` se trouvent dans la première cellule de code et sont
+désactivées par défaut. Les sections des jalons 3 et 4 peuvent être ignorées
+tant que leurs artefacts ne sont pas générés.
+Voir [les adaptations et vérifications de la restauration](analysis/RESTAURATION_NOTEBOOK.md).
+
 ### Étape 8 : Vérifier les références officielles
 
 ```powershell
@@ -332,6 +341,34 @@ Voir [les conventions et limites](docs/FEATURES.md), le
 [dictionnaire des 116 colonnes](docs/feature_schema.json) et les
 [preuves de validation](analysis/JALON_3_VALIDATION.md).
 
+## Jalon 4 : scores vivant/mort et équipe
+
+```powershell
+.venv\Scripts\python.exe -m src.observation_pipeline --prepare
+.venv\Scripts\python.exe -m src.observation_pipeline --train
+.venv\Scripts\python.exe -m src.observation_pipeline --validate
+.venv\Scripts\python.exe -m src.observation_pipeline --tactical
+```
+
+Une référence par règles, une variante avec mémoire décroissante et trois têtes
+logistiques légères transforment les caractéristiques en scores H/A/D. Le score
+vivant/mort ne reçoit aucun indice d'attribution du contrôle. L'équipe est estimée
+avec la géométrie directe ou le collectif lorsque le ballon manque.
+
+Le modèle est appris sur les quatre matchs DFL d'apprentissage. Deux autres matchs
+sont réservés à la comparaison, dans les 19 couples scénario/graine figés. Les
+annotations publiques BAR-ATH ne sont jamais utilisées. Les probabilités sont non
+calibrées ; aucune variante ne remplace automatiquement la soumission de référence.
+Le décodage temporel reste au jalon 5.
+
+Les scores complets, masques et indicateurs de confiance tactiques sont conservés
+localement dans `.cache/observations/tactical/`. Le notebook propose une section de
+lecture/visualisation via `load_scores`. Aucune dépendance ni GPU supplémentaire
+n'est requis. La préparation des six matchs télécharge environ 2,3 Go au total.
+
+Voir [les conventions et la reproduction](docs/OBSERVATION_SCORES.md) et les
+[mesures sur les matchs réservés à la validation](analysis/JALON_4_VALIDATION.md).
+
 ## Architecture et état réel
 
 ```text
@@ -344,6 +381,8 @@ src/
 ├── build_features.py      Construction des matrices du jalon 3
 ├── validate_features.py   Contrôles d'intégration sans labels
 ├── external_benchmark.py  Banc initial externe à scénarios figés
+├── observation_pipeline.py Apprentissage, validation externe et scores du jalon 4
+├── models/                Trois têtes logistiques et référence avec mémoire
 ├── preprocessing/         Parseur, cache, fragments et Smart Tagging
 ├── features/              Géométrie, mouvement, contexte et constructeur
 ├── imputation/            Analyse des trous ; aucune imputation dans le socle actuel
@@ -353,8 +392,9 @@ src/
 tests/                     Fixtures synthétiques et régressions
 ```
 
-Les modules de classification et de décodage des jalons 4 à 7, la reconstruction
-du ballon, le pitch control et la fusion TV restent prévus par le plan. Leur
+Les scores de classification du jalon 4 sont réalisés. Le décodage des jalons
+5 et suivants, la reconstruction du ballon, le pitch control et la fusion TV
+restent prévus par le plan. Leur
 présence éventuelle comme fichier vide ne signifie pas qu'ils sont implémentés.
 Les états des jalons et bonus font autorité dans le plan ci-dessous.
 

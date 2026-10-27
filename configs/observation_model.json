@@ -1,0 +1,20 @@
+{
+  "version": "observation-scores-v1",
+  "frozen_date": "2026-10-27",
+  "candidate": "one fixed L2 logistic factorization; no hyperparameter search or promotion on BAR-ATH",
+  "train_matches": ["J03WMX", "J03WN1", "J03WOH", "J03WOY"],
+  "validation_matches": ["J03WPY", "J03WQQ"],
+  "training_scenarios": ["clean", "long_gaps", "combined"],
+  "training_seed": 20261026,
+  "maximum_rows_per_match_scenario": 12000,
+  "l2": 0.01,
+  "max_iterations": 50,
+  "gradient_tolerance": 0.000001,
+  "standardized_clip": 8.0,
+  "hold_decay_s": 2.0,
+  "hold_minimum_abs_logit": 1.0,
+  "validation": "all 19 frozen scenario/seed pairs on both validation matches; save predictions before opening targets",
+  "calibration": "none: model outputs are uncalibrated estimates; no validation fitting",
+  "deployment": "observation archives only; preserve baseline MYA.csv; no automatic adoption",
+  "labels": "external targets only; no BAR-ATH labels; final test remains locked"
+}

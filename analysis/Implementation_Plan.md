@@ -1,10 +1,10 @@
 # Plan d'implémentation — équipe MYA
 
-> **Révision : 26 octobre 2026.** Jalons 0, 1 et 2 réalisés le 25 octobre ; jalon 3 réalisé le 26 octobre. Jalons 4 à 7 et bonus à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
+> **Révision : 27 octobre 2026.** Jalons 0, 1 et 2 réalisés le 25 octobre ; jalon 3 réalisé le 26 octobre ; jalon 4 réalisé le 27 octobre. Jalons 5 à 7 et bonus à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
 >
 > **Équipe :** Ali ABOUHACHIM-ALAMI, Youssef BENADDI, Maxime BENDAVID. **Match :** FC Barcelona (`H`) — Athletic Club (`A`). **Référence de sortie :** vidéo tactique, 199 319 images à 25 images/s. **Classement :** `spellF1` ; départage par `macroF1`. **Échéance annoncée :** 17 novembre 2026 ; vérifier l'heure limite dans le courriel des organisateurs.
 >
-> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Pour les jalons 4 et suivants, les noms de modules restent des emplacements prévus. Voir [la validation des jalons 0 et 1](JALONS_0_1_VALIDATION.md) et [celle du jalon 3](JALON_3_VALIDATION.md) pour les preuves déjà obtenues.
+> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Pour les jalons 5 et suivants, les noms de modules restent des emplacements prévus. Voir [la validation des jalons 0 et 1](JALONS_0_1_VALIDATION.md) et [celle du jalon 3](JALON_3_VALIDATION.md) pour les preuves déjà obtenues.
 
 ## 1. Objectif et décisions de conception
 
@@ -43,7 +43,7 @@ flowchart TD
 | 1 — Réalisé : ingestion fiable | Données alignées, masques de qualité et caches vérifiés | Tests de format, de source et d'alignement réussis |
 | 2 — Réalisé : première chaîne complète | CSV de référence et commande de régénération | Validation officielle et scores publics de référence reproduits |
 | 3 — Réalisé : caractéristiques fiables | 116 caractéristiques, unités, masques et provenance sur tactique et DFL | Invariance et données manquantes vérifiées ; voir le rapport J3 |
-| 4 — Vivant / mort et contrôle | Scores d'état issus d'indices explicites | Indisponibilité distinguée d'un arrêt et incertitude conservée |
+| 4 — Réalisé : vivant / mort et contrôle | Règles, maintien candidat et modèle logistique externe factorisé | Deux matchs de validation réservés, scores complets, incertitude et séparation d’état/équipe vérifiées |
 | 5 — Continuité et frontières | Décodeur temporel simple et réinitialisé par période | Passes, duels, reprises et possessions courtes testés |
 | 6 — Comparaisons et robustesse | Registre d'expériences et décision de conservation | Choix justifiés hors des cinq minutes publiques |
 | 7 — Livraison | `MYA.csv`, dépôt et document technique | Reproduction exacte depuis une installation propre |
@@ -172,7 +172,7 @@ Documenter son coût : erreur pour `macroF1` sur les images évaluées ; remplis
 Les cinq prérequis ont été appliqués : hypothèses assouplies, match DFL complet
 vérifié, entrées et cibles séparées, protocole externe figé, baseline externe
 mesurée. Cela valide la chaîne de mesure ; aucun modèle nouveau ni gain indépendant
-n’est revendiqué. Le jalon 3 est maintenant réalisé ; les jalons 4 à 7 restent à réaliser.
+n’est revendiqué. Le jalon 3 est maintenant réalisé ; les jalons 5 à 7 restent à réaliser.
 
 ## 6. Jalon 3 — Construire des caractéristiques fiables, cinématiques et indices sans ballon
 
@@ -258,7 +258,17 @@ publiques de BAR-ATH ne sont lues par aucune de ces commandes.
 
 ## 7. Jalon 4 — Séparer ballon vivant et contrôle de l'équipe
 
-Modules prévus : `src/imputation/deadball_detector.py`, `src/models/anchors.py`, `dataset.py`, `tabular.py`. Les modèles appris sont conditionnés à une supervision autorisée ; la version par règles demeure une solution complète.
+Modules réalisés : `src/imputation/deadball_detector.py`, `src/models/anchors.py`, `dataset.py`, `tabular.py`, `observations.py` et `src/observation_pipeline.py`.
+
+**Réalisation du 27 octobre :** référence par règles, maintien décroissant candidat
+et trois têtes logistiques L2 : état D, équipe avec ballon, équipe par le collectif.
+Apprentissage sur quatre matchs externes, comparaison sur les deux matchs de
+validation dans les 19 couples scénario/graine figés, sans recherche de réglages.
+Le score D ne reçoit aucun indice de proximité ou d'équipe en contrôle. Les
+probabilités sont non calibrées ; ni la variante avec maintien ni le modèle appris
+ne sont adoptés automatiquement. Le CSV de référence reste inchangé.
+Voir [les conventions](../docs/OBSERVATION_SCORES.md) et
+[le rapport avec les mesures et limites](JALON_4_VALIDATION.md).
 
 ### Étape 4.1 — Score d'arrêt de jeu ($D$ vs vivant)
 
