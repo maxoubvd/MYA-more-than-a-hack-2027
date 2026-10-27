@@ -1,10 +1,10 @@
 # Plan d'implémentation — équipe MYA
 
-> **Révision : 27 octobre 2026.** Jalons 0, 1 et 2 réalisés le 25 octobre ; jalon 3 réalisé le 26 octobre ; jalon 4 réalisé le 27 octobre. Jalons 5 à 7 et bonus à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
+> **Révision : 27 octobre 2026.** Jalons 0, 1 et 2 réalisés le 25 octobre ; jalon 3 réalisé le 26 octobre ; jalons 4 et 5 réalisés le 27 octobre. Jalons 6 et 7 et bonus à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
 >
 > **Équipe :** Ali ABOUHACHIM-ALAMI, Youssef BENADDI, Maxime BENDAVID. **Match :** FC Barcelona (`H`) — Athletic Club (`A`). **Référence de sortie :** vidéo tactique, 199 319 images à 25 images/s. **Classement :** `spellF1` ; départage par `macroF1`. **Échéance annoncée :** 17 novembre 2026 ; vérifier l'heure limite dans le courriel des organisateurs.
 >
-> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Pour les jalons 5 et suivants, les noms de modules restent des emplacements prévus. Voir [la validation des jalons 0 et 1](JALONS_0_1_VALIDATION.md) et [celle du jalon 3](JALON_3_VALIDATION.md) pour les preuves déjà obtenues.
+> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Pour les jalons 6 et suivants, les composants supplémentaires restent à réaliser. Voir [la validation des jalons 0 et 1](JALONS_0_1_VALIDATION.md) et [celle du jalon 3](JALON_3_VALIDATION.md) pour les preuves déjà obtenues.
 
 ## 1. Objectif et décisions de conception
 
@@ -44,7 +44,7 @@ flowchart TD
 | 2 — Réalisé : première chaîne complète | CSV de référence et commande de régénération | Validation officielle et scores publics de référence reproduits |
 | 3 — Réalisé : caractéristiques fiables | 116 caractéristiques, unités, masques et provenance sur tactique et DFL | Invariance et données manquantes vérifiées ; voir le rapport J3 |
 | 4 — Réalisé : vivant / mort et contrôle | Règles, maintien candidat et modèle logistique externe factorisé | Deux matchs de validation réservés, scores complets, incertitude et séparation d’état/équipe vérifiées |
-| 5 — Continuité et frontières | Décodeur temporel simple et réinitialisé par période | Passes, duels, reprises et possessions courtes testés |
+| 5 — Réalisé : continuité et frontières | Viterbi exact statique/dynamique, marges et CSV distinct | Optimalité exhaustive, séquences courtes et périodes vérifiées ; comparaison externe figée |
 | 6 — Comparaisons et robustesse | Registre d'expériences et décision de conservation | Choix justifiés hors des cinq minutes publiques |
 | 7 — Livraison | `MYA.csv`, dépôt et document technique | Reproduction exacte depuis une installation propre |
 
@@ -172,7 +172,7 @@ Documenter son coût : erreur pour `macroF1` sur les images évaluées ; remplis
 Les cinq prérequis ont été appliqués : hypothèses assouplies, match DFL complet
 vérifié, entrées et cibles séparées, protocole externe figé, baseline externe
 mesurée. Cela valide la chaîne de mesure ; aucun modèle nouveau ni gain indépendant
-n’est revendiqué. Le jalon 3 est maintenant réalisé ; les jalons 5 à 7 restent à réaliser.
+n’est revendiqué. Le jalon 3 est maintenant réalisé ; les jalons 6 et 7 restent à réaliser.
 
 ## 6. Jalon 3 — Construire des caractéristiques fiables, cinématiques et indices sans ballon
 
@@ -304,7 +304,22 @@ Pour les éventuels pseudo-labels sur BAR-ATH, conserver origine, couverture, co
 
 ## 8. Jalon 5 — Modéliser la continuité globale et les frontières
 
-Modules prévus : `src/sequential/dynamic_matrix.py`, `src/sequential/viterbi.py`, `src/hygiene/guards.py`. Comparer le décodage global à la référence figée avant adoption.
+Modules réalisés : `src/sequential/dynamic_matrix.py`, `viterbi.py`, `decoder.py`, `src/hygiene/guards.py` et `src/sequential_pipeline.py`.
+
+**Réalisation du 27 octobre :** Viterbi exact par période, transitions apprises
+sur les quatre matchs externes d'apprentissage, comparaison statique/dynamique
+prédéfinie et absence de durée minimale. La version dynamique réduit souplement
+certains coûts à partir des observations ; aucune proximité d'équipe n'entre
+dans les indices de transition D. Les égalités et marges sont documentées.
+Les frontières possèdent des enveloppes de score conditionnelles, sans recalage
+forcé au premier contact ni après-filtrage de segments courts.
+
+Le CSV distinct `submissions/MYA_jalon5.csv` conserve les masques officiels ;
+`MYA.csv` n'est pas remplacé. Les mêmes 19 scénarios/graines sont comparés sur
+les deux matchs de validation, sans ajuster les paramètres ni ouvrir le test final.
+Aucun nouveau diagnostic public n'est effectué dans ce jalon. Voir
+[les conventions](../docs/SEQUENTIAL_DECODING.md) et
+[les mesures, tests et limites](JALON_5_VALIDATION.md).
 
 ### Étape 5.1 — Décodeur séquentiel global (Viterbi / semi-markovien) avec durée de séjour
 

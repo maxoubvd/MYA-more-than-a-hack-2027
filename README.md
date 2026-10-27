@@ -194,7 +194,7 @@ L'installation locale préparée ajoute aussi **`Ouvrir_Notebook.cmd`** à la ra
 Le notebook restaure les anciennes rubriques : chronologie, Smart Tagging,
 homographie, statistiques des absences, labels publics facultatifs, visualiseur
 2D et comparaison des références. Les graphiques des jalons 3 et 4 sont conservés.
-Il comporte 37 cellules, dont 24 de code. Les options `RUN_PUBLIC_DIAGNOSTIC`
+Il comporte 40 cellules, dont 26 de code, avec la lecture du jalon 5. Les options `RUN_PUBLIC_DIAGNOSTIC`
 et `VERIFY_BROADCAST` se trouvent dans la première cellule de code et sont
 désactivées par défaut. Les sections des jalons 3 et 4 peuvent être ignorées
 tant que leurs artefacts ne sont pas générés.
@@ -369,6 +369,28 @@ n'est requis. La préparation des six matchs télécharge environ 2,3 Go au tota
 Voir [les conventions et la reproduction](docs/OBSERVATION_SCORES.md) et les
 [mesures sur les matchs réservés à la validation](analysis/JALON_4_VALIDATION.md).
 
+## Jalon 5 : décodage temporel et frontières
+
+```powershell
+.venv\Scripts\python.exe -m src.sequential_pipeline --fit
+.venv\Scripts\python.exe -m src.sequential_pipeline --validate
+.venv\Scripts\python.exe -m src.sequential_pipeline --tactical
+```
+
+Le Viterbi exact combine les scores J4 avec des transitions apprises sur les quatre
+matchs externes d'apprentissage. Deux versions figées sont comparées : statique
+et dynamique avec indices physiques souples. Aucune durée minimale n'efface les
+possessions courtes ; les périodes sont indépendantes et les frontières gardent
+une incertitude explicite. Aucun label public BAR-ATH n'est lu par ce jalon.
+
+La candidate dynamique prédéfinie est exportée dans **`submissions/MYA_jalon5.csv`**,
+fichier distinct ignoré par Git. La baseline `MYA.csv` reste inchangée. Le notebook
+conserve les anciennes rubriques et les jalons 3/4, puis ajoute la comparaison
+des séquences statique/dynamique. Aucun GPU ou paquet supplémentaire n'est requis.
+
+Voir [les conventions et sorties](docs/SEQUENTIAL_DECODING.md) et les
+[mesures de validation et limites](analysis/JALON_5_VALIDATION.md).
+
 ## Architecture et état réel
 
 ```text
@@ -383,6 +405,8 @@ src/
 ├── external_benchmark.py  Banc initial externe à scénarios figés
 ├── observation_pipeline.py Apprentissage, validation externe et scores du jalon 4
 ├── models/                Trois têtes logistiques et référence avec mémoire
+├── sequential_pipeline.py Priors, validation et CSV distinct du jalon 5
+├── sequential/            Viterbi exact, coûts physiques et profils de frontières
 ├── preprocessing/         Parseur, cache, fragments et Smart Tagging
 ├── features/              Géométrie, mouvement, contexte et constructeur
 ├── imputation/            Analyse des trous ; aucune imputation dans le socle actuel
@@ -392,9 +416,9 @@ src/
 tests/                     Fixtures synthétiques et régressions
 ```
 
-Les scores de classification du jalon 4 sont réalisés. Le décodage des jalons
-5 et suivants, la reconstruction du ballon, le pitch control et la fusion TV
-restent prévus par le plan. Leur
+Les scores du jalon 4 et le décodage du jalon 5 sont réalisés. Les comparaisons
+complémentaires et la livraison des jalons 6 et 7, la reconstruction du ballon,
+le pitch control et la fusion TV restent prévus par le plan. Leur
 présence éventuelle comme fichier vide ne signifie pas qu'ils sont implémentés.
 Les états des jalons et bonus font autorité dans le plan ci-dessous.
 
