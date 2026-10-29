@@ -391,6 +391,33 @@ des séquences statique/dynamique. Aucun GPU ou paquet supplémentaire n'est req
 Voir [les conventions et sorties](docs/SEQUENTIAL_DECODING.md) et les
 [mesures de validation et limites](analysis/JALON_5_VALIDATION.md).
 
+## Jalon 6 : comparaison et choix de la candidate
+
+```powershell
+.venv\Scripts\python.exe -m src.experiment_pipeline --prepare
+.venv\Scripts\python.exe -m src.experiment_pipeline --internal
+.venv\Scripts\python.exe -m src.experiment_pipeline --validate
+.venv\Scripts\python.exe -m src.experiment_pipeline --tactical
+```
+
+La recherche est enregistrée avant les essais : quatre validations internes par
+match, 16 apprentissages de familles de caractéristiques et neuf réglages
+Viterbi. Le contexte, le prétraitement, les modèles et les transitions sont
+réappris sans le match interne évalué. Les deux matchs de confirmation, déjà
+examinés aux jalons précédents, sont comparés dans les 19 conditions figées.
+Le dernier match reste réservé au test final ; aucun label public BAR-ATH n'est lu.
+
+Les neuf méthodes comprennent des retraits isolés du collectif et de l'état D
+appris. La décision suit une règle enregistrée et garde le rappel des possessions
+courtes comme garde-fou. Le CSV **`submissions/MYA_jalon6.csv`** reste distinct de
+la baseline. Le registre détaillé et les poids restent dans `.cache/experiments/`.
+Le notebook ajoute les résultats et la grille sans remplacer ses 40 cellules
+précédentes. Aucune nouvelle dépendance ni GPU n'est nécessaire.
+
+Voir [le protocole et la reproduction](docs/EXPERIMENTS.md),
+[les résultats et la décision](analysis/JALON_6_VALIDATION.md) et
+[le registre agrégé](analysis/jalon6_experiment_registry.json).
+
 ## Architecture et état réel
 
 ```text
@@ -407,6 +434,8 @@ src/
 ├── models/                Trois têtes logistiques et référence avec mémoire
 ├── sequential_pipeline.py Priors, validation et CSV distinct du jalon 5
 ├── sequential/            Viterbi exact, coûts physiques et profils de frontières
+├── experiment_pipeline.py Recherche interne, confirmation et export gelé du jalon 6
+├── experiments/           Familles, sélection et Viterbi groupé exact
 ├── preprocessing/         Parseur, cache, fragments et Smart Tagging
 ├── features/              Géométrie, mouvement, contexte et constructeur
 ├── imputation/            Analyse des trous ; aucune imputation dans le socle actuel
@@ -416,9 +445,9 @@ src/
 tests/                     Fixtures synthétiques et régressions
 ```
 
-Les scores du jalon 4 et le décodage du jalon 5 sont réalisés. Les comparaisons
-complémentaires et la livraison des jalons 6 et 7, la reconstruction du ballon,
-le pitch control et la fusion TV restent prévus par le plan. Leur
+Les scores du jalon 4, le décodage du jalon 5 et les comparaisons avec gel d'une
+candidate du jalon 6 sont réalisés. La livraison du jalon 7, la reconstruction du
+ballon, le pitch control et la fusion TV restent prévus par le plan. Leur
 présence éventuelle comme fichier vide ne signifie pas qu'ils sont implémentés.
 Les états des jalons et bonus font autorité dans le plan ci-dessous.
 

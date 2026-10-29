@@ -1,0 +1,30 @@
+{
+  "version": "selection-v1",
+  "registered_date": "2026-10-29",
+  "internal_split": "leave one complete match out of the four training matches",
+  "internal_scenarios": ["clean", "long_gaps", "combined"],
+  "internal_seed": 20261026,
+  "families": ["base", "motion", "temporal", "full"],
+  "family_tolerance_spell_f1": 0.005,
+  "transition_scales": [0.5, 1.0, 2.0],
+  "plateau_tolerance_spell_f1": 0.005,
+  "maximum_family_fits": 16,
+  "maximum_temporal_settings": 9,
+  "internal_prediction_comparisons": 156,
+  "family_selection": "mean official spellF1 equally weighted over matches and three conditions; within 0.005 of best retain fewest input columns",
+  "temporal_selection": "mean spellF1 of each setting and its Manhattan neighbours; within 0.005 of best neighbourhood prefer higher short-possession recall, then lower total switching scale",
+  "validation_shortlist": ["baseline", "rules", "rules_hold", "raw_selected", "selected", "no_collective", "physical_state", "j5_static", "j5_dynamic"],
+  "adoption_gate": {
+    "reference": "j5_static",
+    "minimum_mean_spell_delta": -0.005,
+    "minimum_each_match_spell_delta": -0.02,
+    "minimum_mean_short_recall_delta": -0.01,
+    "fallback": "j5_static"
+  },
+  "minimum_duration_frames": null,
+  "extra_searches": 0,
+  "public_labels": "never read",
+  "final_test": "locked; milestone 7 after a final freeze",
+  "validation_caveat": "The two validation matches have already been inspected in milestones 4/5. They are a confirmation set, not a new blind test.",
+  "deferred": ["HSMM and hard minimum durations", "probability calibration", "deep or visual bonuses"]
+}

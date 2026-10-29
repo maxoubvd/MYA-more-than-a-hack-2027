@@ -1,10 +1,10 @@
 # Plan d'implémentation — équipe MYA
 
-> **Révision : 27 octobre 2026.** Jalons 0, 1 et 2 réalisés le 25 octobre ; jalon 3 réalisé le 26 octobre ; jalons 4 et 5 réalisés le 27 octobre. Jalons 6 et 7 et bonus à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
+> **Révision : 29 octobre 2026.** Jalons 0, 1 et 2 réalisés le 25 octobre ; jalon 3 réalisé le 26 octobre ; jalons 4 et 5 réalisés le 27 octobre. Jalon 6 réalisé le 29 octobre ; jalon 7 et bonus à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
 >
 > **Équipe :** Ali ABOUHACHIM-ALAMI, Youssef BENADDI, Maxime BENDAVID. **Match :** FC Barcelona (`H`) — Athletic Club (`A`). **Référence de sortie :** vidéo tactique, 199 319 images à 25 images/s. **Classement :** `spellF1` ; départage par `macroF1`. **Échéance annoncée :** 17 novembre 2026 ; vérifier l'heure limite dans le courriel des organisateurs.
 >
-> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Pour les jalons 6 et suivants, les composants supplémentaires restent à réaliser. Voir [la validation des jalons 0 et 1](JALONS_0_1_VALIDATION.md) et [celle du jalon 3](JALON_3_VALIDATION.md) pour les preuves déjà obtenues.
+> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Pour le jalon 7 et les bonus, les composants supplémentaires restent à réaliser. Voir [la validation des jalons 0 et 1](JALONS_0_1_VALIDATION.md) et [celle du jalon 3](JALON_3_VALIDATION.md) pour les preuves déjà obtenues.
 
 ## 1. Objectif et décisions de conception
 
@@ -45,7 +45,7 @@ flowchart TD
 | 3 — Réalisé : caractéristiques fiables | 116 caractéristiques, unités, masques et provenance sur tactique et DFL | Invariance et données manquantes vérifiées ; voir le rapport J3 |
 | 4 — Réalisé : vivant / mort et contrôle | Règles, maintien candidat et modèle logistique externe factorisé | Deux matchs de validation réservés, scores complets, incertitude et séparation d’état/équipe vérifiées |
 | 5 — Réalisé : continuité et frontières | Viterbi exact statique/dynamique, marges et CSV distinct | Optimalité exhaustive, séquences courtes et périodes vérifiées ; comparaison externe figée |
-| 6 — Comparaisons et robustesse | Registre d'expériences et décision de conservation | Choix justifiés hors des cinq minutes publiques |
+| 6 — Réalisé : comparaisons et robustesse | Recherche interne entre matchs, registre et candidate gelée | 156 comparaisons internes, 342 confirmations, choix justifié hors des cinq minutes publiques |
 | 7 — Livraison | `MYA.csv`, dépôt et document technique | Reproduction exacte depuis une installation propre |
 
 ## 3. Jalon 0 — Fixer les règles et le protocole avant les modèles
@@ -351,6 +351,30 @@ Ne pas supprimer aveuglément les possessions courtes si elles s'accompagnent d'
 **Livrable :** décodeur Viterbi exact produisant une séquence H/A/D cohérente et optimisée globalement. **Tests indispensables :** passe conservée, déviation sans contrôle, récupération avec frontière incertaine, arrêt court conservé lorsque soutenu par les observations, égalités d'évidence résolues conformément au protocole, réinitialisation à la mi-temps. Tests exécutés sur fixtures synthétiques.
 
 ## 9. Jalon 6 — Comparer, valider et décider
+
+**Réalisation du 29 octobre :** `src/experiment_pipeline.py` et `src/experiments/`.
+Budget et règle d'adoption enregistrés avant les expériences. Validation interne
+par match : quatre groupes de trois matchs apprennent et le quatrième est évalué.
+Le contexte non supervisé, le prétraitement, les trois têtes logistiques et le
+prior temporel sont réappris sans ce quatrième match. Quatre familles (mouvement
+relatif et contexte temporel présents/absents) puis une grille temporelle 3×3
+produisent 156 comparaisons. Une préférence pour les voisinages stables et le
+rappel des possessions courtes complète spellF1.
+
+La liste de neuf méthodes est ensuite figée sur les deux matchs de confirmation
+et leurs 19 conditions : 342 comparaisons, avec retraits isolés et références J5.
+Ces matchs ont déjà été examinés aux jalons 4/5 ; seul le test final, toujours
+verrouillé, pourra fournir une nouvelle évaluation aveugle. Aucun label public
+BAR-ATH n'est lu. La règle d'adoption ou de repli est définie avant confirmation.
+Le CSV distinct `MYA_jalon6.csv` préserve `MYA.csv`.
+
+La recherche est volontairement bornée : pas d'extension de grille après les
+résultats, pas d'HSMM ni de durée minimale ajoutée ; ce dernier essai reste au
+bonus B2. La calibration probabiliste et les autres bonus restent non réalisés.
+Voir [le protocole précis](../docs/EXPERIMENTS.md),
+[les mesures et la décision](JALON_6_VALIDATION.md) et
+[le registre agrégé](jalon6_experiment_registry.json).
+
 
 ### Étape 6.1 — Validation indépendante et banc d'évaluation externe
 

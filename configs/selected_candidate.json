@@ -1,0 +1,41 @@
+{
+  "baseline_replaced": false,
+  "bundle_sha256": "6cdd02a70103b9bad25240d79dd545863e7a4b37f4b6dda5c455d0fdd1774db1",
+  "csv_name": "MYA_jalon6.csv",
+  "csv_sha256": "8b1e2c851cd64f840b6aae8ff932e3aaa599507446fe4fa4a6fbbedbfad4c8f7",
+  "dead_scale": 2.0,
+  "decision": {
+    "accepted_internal_candidate": true,
+    "candidate": "selected",
+    "deltas": [
+      {
+        "match_id": "J03WPY",
+        "short_recall_delta": -0.00127334465195246,
+        "spell_delta": 0.015304140883858564
+      },
+      {
+        "match_id": "J03WQQ",
+        "short_recall_delta": -0.002084418968212605,
+        "spell_delta": 0.013308250825061152
+      }
+    ],
+    "rule": {
+      "fallback": "j5_static",
+      "minimum_each_match_spell_delta": -0.02,
+      "minimum_mean_short_recall_delta": -0.01,
+      "minimum_mean_spell_delta": -0.005,
+      "reference": "j5_static"
+    }
+  },
+  "decoder": "static",
+  "experiment_id": "3c067a898e248543b6cd90caed29997cfe50ada7010bdfdcb617310400703fc1",
+  "family": "full",
+  "final_test_accessed": false,
+  "minimum_duration_frames": null,
+  "probability_calibrated": false,
+  "public_labels_used": false,
+  "reproduce": "python -m src.experiment_pipeline --all",
+  "team_scale": 1.0,
+  "version": "selection-v1",
+  "weights_location": ".cache/experiments/bundle.json"
+}
