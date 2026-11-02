@@ -1,0 +1,196 @@
+{
+  "C0_internal_policy": "refit all model/context/preprocessing/prior/calibration on the other three training matches; published four-match weights forbidden",
+  "adoption": {
+    "max_R4_loss": 0.005,
+    "max_dead_f1_S41_loss": 0.01,
+    "max_dead_recall_S41_loss": 0.02,
+    "max_macro_S41_loss": 0.005,
+    "max_match_S41_loss": 0.01,
+    "max_short_recall_S41_loss": 0.005,
+    "min_mean_S41_gain": 0.01
+  },
+  "audit_only_fields": [
+    "injected_corruption_masks",
+    "native_position_targets"
+  ],
+  "boundary_tolerances_frames": [
+    12,
+    25
+  ],
+  "confirmation_matches": [
+    "J03WPY",
+    "J03WQQ"
+  ],
+  "confirmation_policy": "unavailable until the J18 shortlist is sealed; at most four candidates including C0; no return to search",
+  "context_gap_weights": {
+    "density_gain": 0.5,
+    "line_gain": 4.0,
+    "line_scale_m": 3.0,
+    "neighbour_radius_m": 5.0
+  },
+  "corruption": {
+    "ball_block_bias_sigma_m": 0.5,
+    "ball_noise_sigma_m": 0.25,
+    "bias_block_frames": 125,
+    "outlier_burst_frames": [
+      1,
+      5
+    ],
+    "outlier_fraction": 0.01,
+    "outlier_sigma_m": 4.0,
+    "player_noise_sigma_m": 0.15
+  },
+  "excluded_matches": [
+    "J03WR9"
+  ],
+  "fps": 25.0,
+  "fragmentation": {
+    "block_frames": 250,
+    "dropout_probability": 0.1
+  },
+  "mask_policy": "total missing fraction per period; preserve native missing; reject an unachievable lower fraction; never touch period 0",
+  "model_forbidden_fields": [
+    "labels",
+    "BallStatus",
+    "BallPossession",
+    "events",
+    "stable_player_ids",
+    "injected_corruption_masks"
+  ],
+  "novel_test_matches": [],
+  "novel_test_status": "none_admitted_after_bounded_source_audit",
+  "parameters_origin": "engineering stress tests fixed before profiling/scores; not a validated simulator of BAR-ATH",
+  "primary_metric": {
+    "average": "seed then scenario then match; equal weights",
+    "metric": "spell_f1",
+    "name": "S41",
+    "scenario_ids": [
+      "S2",
+      "S3",
+      "S6"
+    ]
+  },
+  "public_competition_labels": "diagnostic only, never read by this preflight or selection",
+  "registered_date": "2026-11-02",
+  "rng_policy": "SeedSequence(seed, period_id, component_id); masks share a component across comparable conditions; no Python hash()",
+  "robustness_metric": {
+    "average": "seed then scenario then missing level then match; equal weights",
+    "levels": [
+      0,
+      0.2,
+      0.41,
+      0.6
+    ],
+    "metric": "spell_f1",
+    "name": "R4"
+  },
+  "scenarios": [
+    {
+      "correlated_gaps": false,
+      "fragment_players": false,
+      "gap_frames": null,
+      "id": "S0",
+      "missing_fraction": 0,
+      "name": "clean",
+      "spatial_corruption": false
+    },
+    {
+      "correlated_gaps": false,
+      "fragment_players": false,
+      "gap_frames": [
+        5,
+        25
+      ],
+      "id": "S1",
+      "missing_fraction": 0.2,
+      "name": "short_gaps",
+      "spatial_corruption": false
+    },
+    {
+      "correlated_gaps": false,
+      "fragment_players": false,
+      "gap_frames": [
+        100,
+        500
+      ],
+      "id": "S2",
+      "missing_fraction": 0.41,
+      "name": "long_gaps",
+      "spatial_corruption": false
+    },
+    {
+      "correlated_gaps": true,
+      "fragment_players": false,
+      "gap_frames": [
+        25,
+        150
+      ],
+      "id": "S3",
+      "missing_fraction": 0.41,
+      "name": "context_gaps",
+      "spatial_corruption": false
+    },
+    {
+      "correlated_gaps": false,
+      "fragment_players": false,
+      "gap_frames": [
+        100,
+        500
+      ],
+      "id": "S4",
+      "missing_fraction": 0.6,
+      "name": "severe_long_gaps",
+      "spatial_corruption": false
+    },
+    {
+      "correlated_gaps": false,
+      "fragment_players": false,
+      "gap_frames": null,
+      "id": "S5",
+      "missing_fraction": 0,
+      "name": "visible_corruption",
+      "spatial_corruption": true
+    },
+    {
+      "correlated_gaps": false,
+      "fragment_players": true,
+      "gap_frames": [
+        25,
+        250
+      ],
+      "id": "S6",
+      "missing_fraction": 0.41,
+      "name": "combined_41",
+      "spatial_corruption": true
+    },
+    {
+      "correlated_gaps": false,
+      "fragment_players": true,
+      "gap_frames": [
+        25,
+        250
+      ],
+      "id": "S7",
+      "missing_fraction": 0.6,
+      "name": "combined_60",
+      "spatial_corruption": true
+    }
+  ],
+  "seeds": [
+    20261102,
+    20261103,
+    20261104
+  ],
+  "short_duration_thresholds_s": [
+    1.0,
+    2.0,
+    5.0
+  ],
+  "train_matches": [
+    "J03WMX",
+    "J03WN1",
+    "J03WOH",
+    "J03WOY"
+  ],
+  "version": "bonus-v2-j8"
+}

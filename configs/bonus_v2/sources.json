@@ -1,0 +1,120 @@
+{
+  "audit_scope": "public documentation and match identity metadata only; no new tracking or label download or model scoring",
+  "audited_date": "2026-11-02",
+  "candidates": [
+    {
+      "blockers": [
+        "dense unambiguous dead-ball ground truth and coverage not established; null possession is not automatically D",
+        "cadence conversion, provider-label origin, data reuse terms and pretrained-weight overlap require validation"
+      ],
+      "evidence": {
+        "fetched_utc": "2026-11-02T20:54:48.401764+00:00",
+        "sha256": "c09886c6359e5f7ff3bfd71a653510caf2f674d238ca79219aa1ec9ebe6f4428",
+        "url": "https://raw.githubusercontent.com/SkillCorner/opendata/master/README.md"
+      },
+      "findings": [
+        "broadcast tracking documented at 10 Hz, not the protocol native 25 Hz",
+        "possession and in-play phases documented",
+        "README says ten matches while metadata lists 20; availability of every match unverified"
+      ],
+      "id": "skillcorner-opendata",
+      "metadata_evidence": {
+        "fetched_utc": "2026-11-02T20:54:48.725547+00:00",
+        "sha256": "4dd7a62f966046a8fde2563e69fd044997d471b213118aed436cb23ab1fdfad0",
+        "url": "https://raw.githubusercontent.com/SkillCorner/opendata/master/data/matches.json"
+      },
+      "reservation_rule": "first entry of public matches.json, before examining tracking or labels",
+      "reserved_identity": {
+        "away": "Auckland FC",
+        "date_time": "2025-05-17T09:35:00Z",
+        "home": "Melbourne V FC",
+        "match_id": 2017461,
+        "provider": "SkillCorner"
+      },
+      "status": "reserved_for_schema_and_rights_audit_not_admitted",
+      "weights_or_labels_used": false
+    },
+    {
+      "blockers": [
+        "complete compatible per-frame live/dead labels not established from documented events alone",
+        "identity, data terms and pretrained overlap need explicit checks"
+      ],
+      "evidence": {
+        "fetched_utc": "2026-11-02T20:54:48.149729+00:00",
+        "sha256": "fa4b178e62c4d3559e13b6d3a4fdd42e45293461c2ab656e05a13360a6adcbcf",
+        "url": "https://raw.githubusercontent.com/metrica-sports/sample-data/master/README.md"
+      },
+      "findings": [
+        "anonymized tracking and synchronized events for sample games; game 3 EPTS described"
+      ],
+      "id": "metrica-sample",
+      "status": "not_admitted_dense_HAD_unverified",
+      "weights_or_labels_used": false
+    },
+    {
+      "blockers": [
+        "the documented task does not establish a complete possession/dead-ball benchmark"
+      ],
+      "evidence": {
+        "fetched_utc": "2026-11-02T20:54:50.308663+00:00",
+        "sha256": "d5a87acc0d03b134dc85d8f06989509c478086876e157e82a9bcbdcb3e2a8b41",
+        "url": "https://github.com/SoccerNet/sn-gamestate"
+      },
+      "findings": [
+        "athlete localization/identity/minimap task on annotated clips"
+      ],
+      "id": "soccernet-gsr",
+      "status": "not_admitted_wrong_target_for_dense_HAD",
+      "weights_or_labels_used": false
+    },
+    {
+      "blockers": [
+        "no new independent match; checkpoint training splits must exclude evaluation matches",
+        "fine-tuning does not erase pretrained exposure"
+      ],
+      "evidence": {
+        "fetched_utc": "2026-11-02T20:54:48.995923+00:00",
+        "sha256": "f246453bd7c13ef3c17c8c9292d0ad2d79b93b1ccdd7987eb355e34f3ea25f34",
+        "url": "https://raw.githubusercontent.com/hyunsungkim-ds/pathcrf/main/README.md"
+      },
+      "findings": [
+        "uses the same seven Sportec/DFL matches and synchronized events",
+        "public pretrained models provided"
+      ],
+      "id": "pathcrf-sportec",
+      "status": "not_independent_same_DFL_matches",
+      "weights_or_labels_used": false
+    }
+  ],
+  "current_claim": "no new blind evaluation available; continue internal match-disjoint development and one known confirmation only",
+  "future_admission": "a separately registered audit and protocol revision is required before new source labels can enter development or a final holdout",
+  "known_sources": [
+    {
+      "excluded_consumed_test": [
+        "J03WR9"
+      ],
+      "id": "dfl-v1",
+      "identity": "same seven matches across upstream mirrors and derived datasets",
+      "known_confirmation": [
+        "J03WPY",
+        "J03WQQ"
+      ],
+      "origin": "https://doi.org/10.6084/m9.figshare.28196177.v1",
+      "rights_record": "CC BY 4.0 in original registry",
+      "train": [
+        "J03WMX",
+        "J03WN1",
+        "J03WOH",
+        "J03WOY"
+      ]
+    },
+    {
+      "allowed": "observation profiling only",
+      "human_labels": "forbidden for phase-2 fitting/calibration/selection",
+      "id": "BAR-ATH"
+    }
+  ],
+  "new_blind_test_admitted": false,
+  "new_blind_test_matches": [],
+  "version": "bonus-sources-v1"
+}

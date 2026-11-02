@@ -1,6 +1,6 @@
 # Plan d’implémentation — phase 2 : bonus, comparaison et nouvelle livraison
 
-> **Version du 2 novembre 2026 — plan uniquement.** Les jalons 0–7 restent réalisés. Les jalons 8–19 ci-dessous sont à commencer. Ce document n’implémente, n’entraîne ni ne sélectionne aucun nouveau modèle. Il complète [le plan du socle](Implementation_Plan.md).
+> **Mise à jour du 2 novembre 2026.** Jalons 0–8 réalisés ; jalons 9–19 à commencer. J8 a figé le protocole et validé les observations, sans entraîner ni sélectionner de nouveau modèle. Voir [les preuves J8](JALON_8_VALIDATION.md). Il complète [le plan du socle](Implementation_Plan.md).
 >
 > **Objectif :** tester les bonus, conserver les apports externes mesurés, puis comparer les candidats et repréparer une soumission reproductible. **J18 = nouvel équivalent du jalon 6. J19 = nouvel équivalent du jalon 7.** Si aucun bonus ne convainc, conserver la livraison actuelle.
 
@@ -26,7 +26,7 @@ Priorités : robustesse de D, vraies possessions courtes, frontières et informa
 
 | Jalon | Travail | Origine / priorité | Livrable |
 |---|---|---|---|
-| **J8** | Préserver C0 et figer le protocole V2 | Indispensable | Sources, budgets, séparation des matchs, suite de robustesse |
+| **J8 — réalisé** | Préserver C0 et figer le protocole V2 | Indispensable | Sources/budgets figés, 88 validations d’observations, aucun entraînement |
 | **J9** | Renforcer D et le transfert entre capteurs | Priorité 1 | Observations/calibration évaluées hors BAR–ATH |
 | **J10** | Imputation courte et contrôle géométrique | Ancien B1 | Imputation distincte des observations et gain de tâche mesuré |
 | **J11** | Durées souples et états internes | Ancien B2 | HSMM / extension structurée face au Viterbi |
@@ -56,7 +56,7 @@ Données privées, images, trajectoires, embeddings par image et CSV restent loc
 ### 8.1. Référence, code et interfaces
 
 - Conserver commit, `release/`, CSV et empreintes C0. Prévoir un tag et une branche ou un worktree d’expériences ; ne pas modifier le paquet C0 pour accepter un autre CSV.
-- Préparer `src/bonus/`, `configs/bonus_v2/` et `.cache/bonus_v2/`. Ces emplacements sont proposés, pas déjà implémentés. Éviter de modifier les modules dont dépend C0 ; utiliser des adaptateurs ou une copie versionnée.
+- Préparer `src/bonus/`, `configs/bonus_v2/` et `.cache/bonus_v2/`. Ces emplacements et les interfaces de préparation sont créés au J8 ; les modèles des jalons suivants restent à implémenter. Éviter de modifier les modules dont dépend C0 ; utiliser des adaptateurs ou une copie versionnée.
 - Sortie commune : scores H/A/D, masques, frame IDs, period IDs, cadence, qualité et provenance. Séparer positions **observées**, **imputées** et incertitude. Chaque colonne a un nom, une unité et une règle de disponibilité.
 - Vérifier repères, dimensions natives, index, fragments et unités. Les vitesses livrées ne remplacent pas les dérivées de coordonnées sans justification.
 
@@ -110,7 +110,7 @@ Le comparateur interne **C0-OOF** réapprend la recette C0 sur les trois matchs 
 
 Les jalons J9–J17 utilisent uniquement cette sélection interne. Ne pas rouvrir les deux matchs de confirmation après chaque essai : la liste fermée est examinée une fois au J18. Un échec à cette confirmation conduit au maintien de C0, pas à une nouvelle grille pilotée par ces scores.
 
-Les plafonds suivants sont une **proposition à enregistrer au J8**, pas une recherche déjà préenregistrée. Une configuration inclut architecture, caractéristiques, pertes et réglages. Graines et plis ne sont pas de nouvelles configurations mais leurs entraînements et coûts sont comptés séparément.
+Les plafonds suivants sont **enregistrés au J8** dans `configs/bonus_v2/budgets.json`. La grille J9 est scellée dans `j9_grid.json`, sans essai exécuté ; les grilles ultérieures devront être scellées avant leur bloc. Une configuration inclut architecture, caractéristiques, pertes et réglages. Graines et plis ne sont pas de nouvelles configurations mais leurs entraînements et coûts sont comptés séparément.
 
 | Jalon | Configurations nouvelles maximales |
 |---|---:|
@@ -267,7 +267,7 @@ Tous les critères sur la confirmation V2 doivent être satisfaits :
 | Perte F1 D / rappel D sur S41 | **≤ 0,010 / 0,020** |
 | Perte de rappel possessions <2 s sur S41 | **≤ 0,005** |
 
-Ces seuils de tri sont des propositions, pas des seuils de significativité. Les figer avant les essais ; ne pas les assouplir après coup pour sauver une variante. Vérifier aussi une progression de l’objectif spécifique du bonus dans sa sélection interne, sans exiger d’une brique qu’elle résolve tout.
+Ces seuils de tri sont enregistrés au J8 dans `configs/bonus_v2/protocol.json` ; ce ne sont pas des seuils de significativité. Les figer avant les essais ; ne pas les assouplir après coup pour sauver une variante. Vérifier aussi une progression de l’objectif spécifique du bonus dans sa sélection interne, sans exiger d’une brique qu’elle résolve tout.
 
 Deux matchs connus rendent les petits gains incertains. Les intervalles éventuels utilisent blocs ou matchs, jamais des images supposées indépendantes. Les graines ne remplacent pas de nouveaux matchs. À performance proche, privilégier coût et simplicité. Si aucun candidat ne satisfait la règle, **retenir C0**.
 

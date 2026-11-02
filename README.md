@@ -8,6 +8,15 @@ prévoit des essais séparés, un benchmark renouvelé, puis **J18 : comparaison
 gel** et **J19 : nouvelle livraison reproductible**. C'est un plan à exécuter ;
 la candidate J7 ci-dessous reste inchangée.
 
+**Jalon 8 réalisé sur la branche locale `bonus-phase2`** : protocole de 22 conditions,
+88 validations d'observations, budgets et huit futurs essais J9 figés. Aucun nouveau
+modèle entraîné. [Guide phase 2](docs/BONUS_V2.md) · [Rapport J8](analysis/JALON_8_VALIDATION.md).
+
+```powershell
+.venv\Scripts\python.exe -m src.bonus.preflight --all
+```
+
+
 ## Livraison finale — jalon 7
 
 **À envoyer : `submissions/final/MYA.csv` et `MYA.md`.**
@@ -467,6 +476,7 @@ src/
 ├── sequential_pipeline.py Priors, validation et CSV distinct du jalon 5
 ├── sequential/            Viterbi exact, coûts physiques et profils de frontières
 ├── experiment_pipeline.py Recherche interne, confirmation et export gelé du jalon 6
+├── bonus/                 Préparation V2, observations seules, plis et budgets
 ├── delivery.py            Inférence finale autonome, poids publics et empreinte exacte
 ├── final_test.py          Évaluation unique de J03WR9 après le gel définitif
 ├── experiments/           Familles, sélection et Viterbi groupé exact

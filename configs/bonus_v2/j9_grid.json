@@ -1,0 +1,199 @@
+{
+  "balanced_dead": "weights learned from known training labels only, inverse state frequency, normalized mean weight one",
+  "calibration": "inner match-disjoint OOF within the three training matches; no outer holdout labels",
+  "quality_units": "booleans/fractions or seconds; counts normalized by delivered slots; no H/A control or proximity in state",
+  "team_symmetry": "shared positive team temperature; no team intercept",
+  "variants": [
+    {
+      "calibration": "none",
+      "dead_scale": 2.0,
+      "gradient_tolerance": 1e-06,
+      "id": "J9_AUG",
+      "l2": 0.01,
+      "max_iterations": 50,
+      "quality_features": [],
+      "rows_per_match_scenario": 12000,
+      "standardized_clip": 8.0,
+      "state_loss": "plain",
+      "status": "registered_not_implemented_or_trained",
+      "team_scale": 1.0,
+      "training_scenarios": [
+        "S0",
+        "S2",
+        "S6"
+      ],
+      "training_seed": 20261102
+    },
+    {
+      "calibration": "none",
+      "dead_scale": 2.0,
+      "gradient_tolerance": 1e-06,
+      "id": "J9_AUG_D_BAL",
+      "l2": 0.01,
+      "max_iterations": 50,
+      "quality_features": [],
+      "rows_per_match_scenario": 12000,
+      "standardized_clip": 8.0,
+      "state_loss": "balanced_dead",
+      "status": "registered_not_implemented_or_trained",
+      "team_scale": 1.0,
+      "training_scenarios": [
+        "S0",
+        "S2",
+        "S6"
+      ],
+      "training_seed": 20261102
+    },
+    {
+      "calibration": "temperature_dead",
+      "dead_scale": 2.0,
+      "gradient_tolerance": 1e-06,
+      "id": "J9_AUG_D_TEMP",
+      "l2": 0.01,
+      "max_iterations": 50,
+      "quality_features": [],
+      "rows_per_match_scenario": 12000,
+      "standardized_clip": 8.0,
+      "state_loss": "plain",
+      "status": "registered_not_implemented_or_trained",
+      "team_scale": 1.0,
+      "training_scenarios": [
+        "S0",
+        "S2",
+        "S6"
+      ],
+      "training_seed": 20261102
+    },
+    {
+      "calibration": "platt_dead",
+      "dead_scale": 2.0,
+      "gradient_tolerance": 1e-06,
+      "id": "J9_AUG_D_PLATT",
+      "l2": 0.01,
+      "max_iterations": 50,
+      "quality_features": [],
+      "rows_per_match_scenario": 12000,
+      "standardized_clip": 8.0,
+      "state_loss": "plain",
+      "status": "registered_not_implemented_or_trained",
+      "team_scale": 1.0,
+      "training_scenarios": [
+        "S0",
+        "S2",
+        "S6"
+      ],
+      "training_seed": 20261102
+    },
+    {
+      "calibration": "none",
+      "dead_scale": 2.0,
+      "gradient_tolerance": 1e-06,
+      "id": "J9_QUALITY",
+      "l2": 0.01,
+      "max_iterations": 50,
+      "quality_features": [
+        "ball_link_valid",
+        "ball_fragment_start",
+        "gap_duration_s",
+        "since_observation_s",
+        "until_observation_s",
+        "gap_left_censored",
+        "gap_right_censored",
+        "observed_player_fraction",
+        "velocity_supported_player_fraction"
+      ],
+      "rows_per_match_scenario": 12000,
+      "standardized_clip": 8.0,
+      "state_loss": "plain",
+      "status": "registered_not_implemented_or_trained",
+      "team_scale": 1.0,
+      "training_scenarios": [
+        "S0",
+        "S2",
+        "S6"
+      ],
+      "training_seed": 20261102
+    },
+    {
+      "calibration": "none",
+      "dead_scale": 2.0,
+      "gradient_tolerance": 1e-06,
+      "id": "J9_QUALITY_D_BAL",
+      "l2": 0.01,
+      "max_iterations": 50,
+      "quality_features": [
+        "ball_link_valid",
+        "ball_fragment_start",
+        "gap_duration_s",
+        "since_observation_s",
+        "until_observation_s",
+        "gap_left_censored",
+        "gap_right_censored",
+        "observed_player_fraction",
+        "velocity_supported_player_fraction"
+      ],
+      "rows_per_match_scenario": 12000,
+      "standardized_clip": 8.0,
+      "state_loss": "balanced_dead",
+      "status": "registered_not_implemented_or_trained",
+      "team_scale": 1.0,
+      "training_scenarios": [
+        "S0",
+        "S2",
+        "S6"
+      ],
+      "training_seed": 20261102
+    },
+    {
+      "calibration": "platt_dead",
+      "dead_scale": 2.0,
+      "gradient_tolerance": 1e-06,
+      "id": "J9_QUALITY_D_PLATT",
+      "l2": 0.01,
+      "max_iterations": 50,
+      "quality_features": [
+        "ball_link_valid",
+        "ball_fragment_start",
+        "gap_duration_s",
+        "since_observation_s",
+        "until_observation_s",
+        "gap_left_censored",
+        "gap_right_censored",
+        "observed_player_fraction",
+        "velocity_supported_player_fraction"
+      ],
+      "rows_per_match_scenario": 12000,
+      "standardized_clip": 8.0,
+      "state_loss": "plain",
+      "status": "registered_not_implemented_or_trained",
+      "team_scale": 1.0,
+      "training_scenarios": [
+        "S0",
+        "S2",
+        "S6"
+      ],
+      "training_seed": 20261102
+    },
+    {
+      "calibration": "temperature_dead_and_shared_team",
+      "dead_scale": 2.0,
+      "gradient_tolerance": 1e-06,
+      "id": "J9_AUG_HIER_TEMP",
+      "l2": 0.01,
+      "max_iterations": 50,
+      "quality_features": [],
+      "rows_per_match_scenario": 12000,
+      "standardized_clip": 8.0,
+      "state_loss": "plain",
+      "status": "registered_not_implemented_or_trained",
+      "team_scale": 1.0,
+      "training_scenarios": [
+        "S0",
+        "S2",
+        "S6"
+      ],
+      "training_seed": 20261102
+    }
+  ],
+  "version": "j9-grid-v1"
+}

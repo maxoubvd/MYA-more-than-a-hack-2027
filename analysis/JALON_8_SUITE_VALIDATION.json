@@ -1,0 +1,3356 @@
+{
+  "candidate_scores_computed": 0,
+  "conditions_per_match": 22,
+  "confirmation_opened": false,
+  "consumed_test_opened": false,
+  "experiment_id": "bf3c839e3a2c2abaabb3d399aed62928bb318f69c688a6c701a9fbcbb567f9f8",
+  "labels_read": false,
+  "matches": 4,
+  "model_fits": 0,
+  "runs": [
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "85d77d0f3e91a511ebfa24223d6bca57d3fb6f19a99fbb887b0607147f99e3e3",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S0",
+        "seed": 20261102
+      },
+      "scenario_id": "S0",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1723,
+        "max": 2.28,
+        "mean": 0.6777481137550785,
+        "median": 0.64,
+        "p90": 1.0,
+        "p99": 1.72
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "d73f0ff1b977dbf3a06d0e436dbb691973684b65b250da2e5f539123e358d570",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.2000041105181308,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 14142,
+            "period_id": 1,
+            "target_missing_frames": 14142
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 15052,
+            "period_id": 2,
+            "target_missing_frames": 15052
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261102
+      },
+      "scenario_id": "S1",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1742,
+        "max": 3.0,
+        "mean": 0.6703559127439724,
+        "median": 0.64,
+        "p90": 1.0,
+        "p99": 1.8307999999999902
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "5d50f1075ca7beb6ea171ce9b6cbe5b7e7e4358389ec8be1d94490ce1fc92bfa",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.2000041105181308,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 14142,
+            "period_id": 1,
+            "target_missing_frames": 14142
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 15052,
+            "period_id": 2,
+            "target_missing_frames": 15052
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261103
+      },
+      "scenario_id": "S1",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1706,
+        "max": 3.24,
+        "mean": 0.684501758499414,
+        "median": 0.64,
+        "p90": 1.0,
+        "p99": 1.8780000000000017
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "7ef05982ace3761c6e27a532268653c43f3c781586cc1752e18cb65a0e874051",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.2000041105181308,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 14142,
+            "period_id": 1,
+            "target_missing_frames": 14142
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 15052,
+            "period_id": 2,
+            "target_missing_frames": 15052
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261104
+      },
+      "scenario_id": "S1",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 163,
+        "max": 66.32,
+        "mean": 14.686134969325154,
+        "median": 14.4,
+        "p90": 24.44800000000001,
+        "p99": 36.215999999999994
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "9496de00c617a3cf908225ed2f72e25fa5ea4c591d169bcf38f3d313aa5baef4",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4099967800941309,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 28990,
+            "period_id": 1,
+            "target_missing_frames": 28990
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 30856,
+            "period_id": 2,
+            "target_missing_frames": 30856
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261102
+      },
+      "scenario_id": "S2",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 147,
+        "max": 57.36,
+        "mean": 16.284625850340138,
+        "median": 15.32,
+        "p90": 27.240000000000006,
+        "p99": 43.3727999999999
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "e56a5a7babc05f71df3eff5b9a2f9ee6b32a3bbb3d38f61a04b6cc6a00d2f78e",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4099967800941309,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 28990,
+            "period_id": 1,
+            "target_missing_frames": 28990
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 30856,
+            "period_id": 2,
+            "target_missing_frames": 30856
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261103
+      },
+      "scenario_id": "S2",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 155,
+        "max": 38.12,
+        "mean": 15.444129032258065,
+        "median": 14.44,
+        "p90": 25.919999999999995,
+        "p99": 35.862400000000015
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "d6de2d56a45320d325b703d0ce3e840ea5f8fa25c5d83298c2f063216966a6e9",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4099967800941309,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 28990,
+            "period_id": 1,
+            "target_missing_frames": 28990
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 30856,
+            "period_id": 2,
+            "target_missing_frames": 30856
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261104
+      },
+      "scenario_id": "S2",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 475,
+        "max": 41.6,
+        "mean": 5.039663157894737,
+        "median": 4.56,
+        "p90": 8.744000000000002,
+        "p99": 16.102399999999996
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "681ba6511a32b85eea76a5b45182571ea4656264f11e0b34ae31b199a1c6eb1b",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4099967800941309,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 28990,
+            "period_id": 1,
+            "target_missing_frames": 28990
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 30856,
+            "period_id": 2,
+            "target_missing_frames": 30856
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261102
+      },
+      "scenario_id": "S3",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 508,
+        "max": 20.92,
+        "mean": 4.712283464566929,
+        "median": 4.02,
+        "p90": 8.32,
+        "p99": 15.1088
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "458f64b24587bb20ae44efee80b7da71b90a0ce01cd329f03ff0a4500c703d9f",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4099967800941309,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 28990,
+            "period_id": 1,
+            "target_missing_frames": 28990
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 30856,
+            "period_id": 2,
+            "target_missing_frames": 30856
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261103
+      },
+      "scenario_id": "S3",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 485,
+        "max": 23.68,
+        "mean": 4.935752577319588,
+        "median": 4.28,
+        "p90": 9.24,
+        "p99": 15.459199999999996
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "51ee4f6ffef2906df691d945efa94ce5e22004903be9e222e5e5935dcf9552be",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4099967800941309,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 28990,
+            "period_id": 1,
+            "target_missing_frames": 28990
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 30856,
+            "period_id": 2,
+            "target_missing_frames": 30856
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261104
+      },
+      "scenario_id": "S3",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 192,
+        "max": 86.48,
+        "mean": 18.245833333333334,
+        "median": 16.52,
+        "p90": 29.552000000000007,
+        "p99": 58.38480000000003
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "c8ec6b9478d9a81ef2ff415215220b0d10d28b745ac262451c213709d58c9bd2",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999986298272897,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 42425,
+            "period_id": 1,
+            "target_missing_frames": 42425
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 45155,
+            "period_id": 2,
+            "target_missing_frames": 45155
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261102
+      },
+      "scenario_id": "S4",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 176,
+        "max": 78.72,
+        "mean": 19.904545454545453,
+        "median": 18.380000000000003,
+        "p90": 35.36,
+        "p99": 54.03
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "3ad8ab8642e4a7abe1c3dd44e1ef47a97fb8191a537111dc04057337a861216f",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999986298272897,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 42425,
+            "period_id": 1,
+            "target_missing_frames": 42425
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 45155,
+            "period_id": 2,
+            "target_missing_frames": 45155
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261103
+      },
+      "scenario_id": "S4",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 177,
+        "max": 79.52,
+        "mean": 19.792090395480226,
+        "median": 18.08,
+        "p90": 34.248000000000005,
+        "p99": 59.81600000000005
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "d6e562d61f3b8eaa12ab6ffb06fe66d3edb9cabea77fda0f9d12a0840033e199",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999986298272897,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 42425,
+            "period_id": 1,
+            "target_missing_frames": 42425
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 45155,
+            "period_id": 2,
+            "target_missing_frames": 45155
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261104
+      },
+      "scenario_id": "S4",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "e992af13c51914b44d04dddb42697729e8ad16816768b79371d2776d9cf7085e",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.010002260784971946,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261102
+      },
+      "scenario_id": "S5",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "377d267dd02c6d19803226e4de4b92bd8f97f186d22738e319d7f459a6f30e00",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.010002260784971946,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261103
+      },
+      "scenario_id": "S5",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "b128105cf90687028f70590c338a7aee518e258238b0d7a12a2d49e61465213f",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.010002260784971946,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261104
+      },
+      "scenario_id": "S5",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 330,
+        "max": 30.4,
+        "mean": 7.254060606060606,
+        "median": 6.9,
+        "p90": 12.568000000000003,
+        "p99": 21.91159999999996
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "9de56ee79d7a94d38955c214a192cb33ede5dae864070311d3ab7a4095c7468c",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005741023656031843,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4099967800941309,
+        "missing_player_fraction": 0.506155158357711,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 28990,
+            "period_id": 1,
+            "target_missing_frames": 28990
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 30856,
+            "period_id": 2,
+            "target_missing_frames": 30856
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261102
+      },
+      "scenario_id": "S6",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 338,
+        "max": 30.56,
+        "mean": 7.082366863905325,
+        "median": 6.56,
+        "p90": 12.300000000000002,
+        "p99": 20.397199999999998
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "14134e00d55dfa4360020a11a88b5fda21924662c2ab587f0bb02f688a23df6a",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005782128837339947,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4099967800941309,
+        "missing_player_fraction": 0.5054825748285572,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 28990,
+            "period_id": 1,
+            "target_missing_frames": 28990
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 30856,
+            "period_id": 2,
+            "target_missing_frames": 30856
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261103
+      },
+      "scenario_id": "S6",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 316,
+        "max": 24.24,
+        "mean": 7.575443037974684,
+        "median": 6.9399999999999995,
+        "p90": 13.56,
+        "p99": 21.408000000000012
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "986d3d4e444bca92ae977e26954922770c29cb7a17dca9e02e7599ec34a3544a",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005747874519583193,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4099967800941309,
+        "missing_player_fraction": 0.5054099556749129,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 28990,
+            "period_id": 1,
+            "target_missing_frames": 28990
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 30856,
+            "period_id": 2,
+            "target_missing_frames": 30856
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261104
+      },
+      "scenario_id": "S6",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 385,
+        "max": 71.36,
+        "mean": 9.09922077922078,
+        "median": 8.08,
+        "p90": 15.664000000000001,
+        "p99": 37.65759999999986
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "159f3dae072f9e793f51278fcd4fa6b50b92f2b5231fe240bad17d25c4bd1669",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0036309576822158435,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999986298272897,
+        "missing_player_fraction": 0.506155158357711,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 42425,
+            "period_id": 1,
+            "target_missing_frames": 42425
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 45155,
+            "period_id": 2,
+            "target_missing_frames": 45155
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261102
+      },
+      "scenario_id": "S7",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 395,
+        "max": 58.8,
+        "mean": 8.868860759493671,
+        "median": 7.56,
+        "p90": 17.384,
+        "p99": 31.900000000000002
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "b714383b5229b576754b70fdc4590e5cefd1eb2a12f61f6908a736cf2978a4d2",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.003987202586886077,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999986298272897,
+        "missing_player_fraction": 0.5054825748285572,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 42425,
+            "period_id": 1,
+            "target_missing_frames": 42425
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 45155,
+            "period_id": 2,
+            "target_missing_frames": 45155
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261103
+      },
+      "scenario_id": "S7",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 382,
+        "max": 48.48,
+        "mean": 9.170680628272251,
+        "median": 7.74,
+        "p90": 18.592000000000002,
+        "p99": 31.255599999999994
+      },
+      "match_id": "J03WMX",
+      "observations_sha256": "fead7018a79fff6d245c44764c820e894be74822abe6529c63940c66fba9aeec",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0034870895476374797,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999986298272897,
+        "missing_player_fraction": 0.5054099556749129,
+        "per_period": [
+          {
+            "frames": 70708,
+            "missing_frames": 42425,
+            "period_id": 1,
+            "target_missing_frames": 42425
+          },
+          {
+            "frames": 75259,
+            "missing_frames": 45155,
+            "period_id": 2,
+            "target_missing_frames": 45155
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261104
+      },
+      "scenario_id": "S7",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "f77e36c5617a5aa1bd3cd5e89c243ad0ce2e291bc7bd76762b66f1c60e90efed",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S0",
+        "seed": 20261102
+      },
+      "scenario_id": "S0",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1670,
+        "max": 2.24,
+        "mean": 0.6781556886227544,
+        "median": 0.64,
+        "p90": 1.0,
+        "p99": 1.7323999999999977
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "89924cdda008237fac9a95edb849911bef78eefcb99c92f25aadabcd19296635",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.20000565127400907,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 13858,
+            "period_id": 1,
+            "target_missing_frames": 13858
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 14455,
+            "period_id": 2,
+            "target_missing_frames": 14455
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261102
+      },
+      "scenario_id": "S1",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1686,
+        "max": 2.96,
+        "mean": 0.6717200474495848,
+        "median": 0.64,
+        "p90": 1.0,
+        "p99": 1.8460000000000036
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "4d4e0e6581574e75ced391bb1206800e5609df567dfd6ff4bb26c4ae4b158f21",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.20000565127400907,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 13858,
+            "period_id": 1,
+            "target_missing_frames": 13858
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 14455,
+            "period_id": 2,
+            "target_missing_frames": 14455
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261103
+      },
+      "scenario_id": "S1",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1662,
+        "max": 3.12,
+        "mean": 0.6814199759326113,
+        "median": 0.64,
+        "p90": 1.0,
+        "p99": 1.8
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "3bf105f3208e52eac416d91f6a05272387ce9d5464cd5c1c5b1fc6cec3c285f0",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.20000565127400907,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 13858,
+            "period_id": 1,
+            "target_missing_frames": 13858
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 14455,
+            "period_id": 2,
+            "target_missing_frames": 14455
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261104
+      },
+      "scenario_id": "S1",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 160,
+        "max": 64.36,
+        "mean": 14.510000000000002,
+        "median": 14.120000000000001,
+        "p90": 23.415999999999997,
+        "p99": 33.33039999999999
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "271d9034d0425fabb0dbba2c740883056cbfd0efeb58dd1e2231616ae483e592",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.40999992935907487,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 28408,
+            "period_id": 1,
+            "target_missing_frames": 28408
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 29632,
+            "period_id": 2,
+            "target_missing_frames": 29632
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261102
+      },
+      "scenario_id": "S2",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 140,
+        "max": 56.72,
+        "mean": 16.582857142857147,
+        "median": 14.92,
+        "p90": 31.464000000000002,
+        "p99": 53.37759999999988
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "7e3cff32116bcd5536c69196e62434ef9c404bd69f80cb0f0c0f494869a0b800",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.40999992935907487,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 28408,
+            "period_id": 1,
+            "target_missing_frames": 28408
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 29632,
+            "period_id": 2,
+            "target_missing_frames": 29632
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261103
+      },
+      "scenario_id": "S2",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 150,
+        "max": 37.48,
+        "mean": 15.477333333333336,
+        "median": 14.399999999999999,
+        "p90": 26.04,
+        "p99": 35.27399999999999
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "11037ed482a6cc3e6971f5d6ebfa7a3b6fb09576e0d70003191101257edc12b3",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.40999992935907487,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 28408,
+            "period_id": 1,
+            "target_missing_frames": 28408
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 29632,
+            "period_id": 2,
+            "target_missing_frames": 29632
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261104
+      },
+      "scenario_id": "S2",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 466,
+        "max": 22.6,
+        "mean": 4.981974248927038,
+        "median": 4.44,
+        "p90": 9.04,
+        "p99": 14.90200000000003
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "859f8ce962cf4746fa463656f6c033537cb85e6ee9120fe55897fb8ae254af83",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.40999992935907487,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 28408,
+            "period_id": 1,
+            "target_missing_frames": 28408
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 29632,
+            "period_id": 2,
+            "target_missing_frames": 29632
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261102
+      },
+      "scenario_id": "S3",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 481,
+        "max": 26.92,
+        "mean": 4.826611226611227,
+        "median": 4.08,
+        "p90": 8.76,
+        "p99": 15.511999999999995
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "ec4982708be7e0e1877334870d4d8d3481822ce060ac7866b945599f9ee352c1",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.40999992935907487,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 28408,
+            "period_id": 1,
+            "target_missing_frames": 28408
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 29632,
+            "period_id": 2,
+            "target_missing_frames": 29632
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261103
+      },
+      "scenario_id": "S3",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 478,
+        "max": 22.08,
+        "mean": 4.856903765690378,
+        "median": 4.32,
+        "p90": 9.48,
+        "p99": 13.722800000000007
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "8511c08dbcaee7ddd672107a3f920b8f1dd3b5725b8493917b13fab1c7ced537",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.40999992935907487,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 28408,
+            "period_id": 1,
+            "target_missing_frames": 28408
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 29632,
+            "period_id": 2,
+            "target_missing_frames": 29632
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261104
+      },
+      "scenario_id": "S3",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 183,
+        "max": 92.12,
+        "mean": 18.56546448087432,
+        "median": 16.4,
+        "p90": 30.048000000000005,
+        "p99": 67.84480000000013
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "f1d2295f158a63a06684761bd15bbfb1457586467ff80513b745226995dd500e",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028256370046,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 41573,
+            "period_id": 1,
+            "target_missing_frames": 41573
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 43364,
+            "period_id": 2,
+            "target_missing_frames": 43364
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261102
+      },
+      "scenario_id": "S4",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 168,
+        "max": 76.4,
+        "mean": 20.223095238095237,
+        "median": 17.96,
+        "p90": 37.056000000000004,
+        "p99": 57.195200000000014
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "03950ea260acdfa19952f480a3ee091f3a16b54cf6570265a41c1f01e34bdcf1",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028256370046,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 41573,
+            "period_id": 1,
+            "target_missing_frames": 41573
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 43364,
+            "period_id": 2,
+            "target_missing_frames": 43364
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261103
+      },
+      "scenario_id": "S4",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 174,
+        "max": 62.88,
+        "mean": 19.52574712643678,
+        "median": 18.159999999999997,
+        "p90": 33.79200000000001,
+        "p99": 58.56760000000004
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "50e4fdd7c44694cab356a48108efaf24c3fe15364bef7cea5755d5d72fc3555e",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028256370046,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 41573,
+            "period_id": 1,
+            "target_missing_frames": 41573
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 43364,
+            "period_id": 2,
+            "target_missing_frames": 43364
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261104
+      },
+      "scenario_id": "S4",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "d362169cc6823192c91dd15863c9770f3c970008268f0831481c96a79a87a012",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.010002754996079428,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261102
+      },
+      "scenario_id": "S5",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "9b18a167c7b8ead1b5f42858cf88cdbbeeb6106241178ebcc0d49bad7d1f401e",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.010002754996079428,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261103
+      },
+      "scenario_id": "S5",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "e0ea5753f5153da948c40d852328140ccf1dbaeb3892900c5176b41bc5188bf0",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.010002754996079428,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.47312518984748625,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261104
+      },
+      "scenario_id": "S5",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 321,
+        "max": 29.52,
+        "mean": 7.23239875389408,
+        "median": 6.92,
+        "p90": 12.48,
+        "p99": 21.472000000000023
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "8dca9d28d98b1d935fb24ccf25a9c34eb32cfdd87489da95217a295484a267fa",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005764299489266112,
+        "labels_used": false,
+        "missing_ball_fraction": 0.40999992935907487,
+        "missing_player_fraction": 0.5252015032388864,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 28408,
+            "period_id": 1,
+            "target_missing_frames": 28408
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 29632,
+            "period_id": 2,
+            "target_missing_frames": 29632
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261102
+      },
+      "scenario_id": "S6",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 332,
+        "max": 29.72,
+        "mean": 6.992771084337351,
+        "median": 6.42,
+        "p90": 12.352000000000002,
+        "p99": 19.9588
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "8648c625801bb961b768b3bdf60fb42808337950d10a7a7284844dd0f8217011",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005884389061959155,
+        "labels_used": false,
+        "missing_ball_fraction": 0.40999992935907487,
+        "missing_player_fraction": 0.5262891968833224,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 28408,
+            "period_id": 1,
+            "target_missing_frames": 28408
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 29632,
+            "period_id": 2,
+            "target_missing_frames": 29632
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261103
+      },
+      "scenario_id": "S6",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 305,
+        "max": 23.96,
+        "mean": 7.611803278688524,
+        "median": 6.96,
+        "p90": 13.552000000000003,
+        "p99": 20.7568
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "e6f30eab39c41abb20185da894152a2b8e4c05a7a3b0e24e64c60a8f2421e829",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005849068599402377,
+        "labels_used": false,
+        "missing_ball_fraction": 0.40999992935907487,
+        "missing_player_fraction": 0.524867548265412,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 28408,
+            "period_id": 1,
+            "target_missing_frames": 28408
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 29632,
+            "period_id": 2,
+            "target_missing_frames": 29632
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261104
+      },
+      "scenario_id": "S6",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 372,
+        "max": 68.76,
+        "mean": 9.133010752688174,
+        "median": 8.1,
+        "p90": 15.548000000000005,
+        "p99": 37.2320000000001
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "01762b83fb68458cceb529cf8beb7fea7ee349e38b32163df954b8e063194f80",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.003715712660973008,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028256370046,
+        "missing_player_fraction": 0.5252015032388864,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 41573,
+            "period_id": 1,
+            "target_missing_frames": 41573
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 43364,
+            "period_id": 2,
+            "target_missing_frames": 43364
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261102
+      },
+      "scenario_id": "S7",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 382,
+        "max": 69.48,
+        "mean": 8.89392670157068,
+        "median": 7.380000000000001,
+        "p90": 17.512000000000004,
+        "p99": 31.517599999999998
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "0af1506d5dd5d1203f99cc4939d4475d030d9f57710b8431473ad432caa8c9a7",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0041113018416089175,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028256370046,
+        "missing_player_fraction": 0.5262891968833224,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 41573,
+            "period_id": 1,
+            "target_missing_frames": 41573
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 43364,
+            "period_id": 2,
+            "target_missing_frames": 43364
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261103
+      },
+      "scenario_id": "S7",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 376,
+        "max": 46.04,
+        "mean": 9.035851063829787,
+        "median": 7.539999999999999,
+        "p90": 18.18,
+        "p99": 32.81
+      },
+      "match_id": "J03WN1",
+      "observations_sha256": "a649852cbdebf3523636c55898e252854e0f4c5e5c6966cc7f6e5a40e01ff9ab",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0035179180706550535,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028256370046,
+        "missing_player_fraction": 0.524867548265412,
+        "per_period": [
+          {
+            "frames": 69288,
+            "missing_frames": 41573,
+            "period_id": 1,
+            "target_missing_frames": 41573
+          },
+          {
+            "frames": 72273,
+            "missing_frames": 43364,
+            "period_id": 2,
+            "target_missing_frames": 43364
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261104
+      },
+      "scenario_id": "S7",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "9fc98fa48969f7223e4dc86e7eeb57658973e9ca1f9298e9eb8c4a4829950044",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S0",
+        "seed": 20261102
+      },
+      "scenario_id": "S0",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1619,
+        "max": 2.16,
+        "mean": 0.678023471278567,
+        "median": 0.64,
+        "p90": 1.0,
+        "p99": 1.72
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "081a6b7ebfee335852f846e636e562d36967e520d7242935fa59fbbbd8d9def4",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.20000145757721516,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 13885,
+            "period_id": 1,
+            "target_missing_frames": 13885
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 13558,
+            "period_id": 2,
+            "target_missing_frames": 13558
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261102
+      },
+      "scenario_id": "S1",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1635,
+        "max": 2.84,
+        "mean": 0.671388379204893,
+        "median": 0.64,
+        "p90": 1.0,
+        "p99": 1.84
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "5eb4ff51669589b5a12fb13a569a3460a840a70153b57779b4827c81de412ac0",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.20000145757721516,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 13885,
+            "period_id": 1,
+            "target_missing_frames": 13885
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 13558,
+            "period_id": 2,
+            "target_missing_frames": 13558
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261103
+      },
+      "scenario_id": "S1",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1610,
+        "max": 3.0,
+        "mean": 0.6818136645962733,
+        "median": 0.64,
+        "p90": 1.04,
+        "p99": 1.72
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "2e7f0d2d2c01877d9615e8d57260dee642ba723867bae5dd4f6fe19cb4f70263",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.20000145757721516,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 13885,
+            "period_id": 1,
+            "target_missing_frames": 13885
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 13558,
+            "period_id": 2,
+            "target_missing_frames": 13558
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261104
+      },
+      "scenario_id": "S1",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 154,
+        "max": 59.56,
+        "mean": 14.612467532467534,
+        "median": 14.58,
+        "p90": 23.004000000000016,
+        "p99": 33.5956
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "554af6edc1ffa18b02d9a5601aa98f149b0d134ab1d0e167818ef5e262cf0b04",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4100018948503797,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 28464,
+            "period_id": 1,
+            "target_missing_frames": 28464
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 27794,
+            "period_id": 2,
+            "target_missing_frames": 27794
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261102
+      },
+      "scenario_id": "S2",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 137,
+        "max": 56.64,
+        "mean": 16.42569343065693,
+        "median": 15.4,
+        "p90": 28.688000000000017,
+        "p99": 52.15199999999992
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "c6077c2065594a6db9a350cc44f634895eb1b83865ae099d60107540d233ec91",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4100018948503797,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 28464,
+            "period_id": 1,
+            "target_missing_frames": 28464
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 27794,
+            "period_id": 2,
+            "target_missing_frames": 27794
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261103
+      },
+      "scenario_id": "S2",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 145,
+        "max": 37.68,
+        "mean": 15.519448275862066,
+        "median": 14.32,
+        "p90": 25.871999999999996,
+        "p99": 37.150400000000005
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "ce46bcdd952d3f816fbca6f37f6550b5b680347b72b24064dae5dab93dcdd95e",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4100018948503797,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 28464,
+            "period_id": 1,
+            "target_missing_frames": 28464
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 27794,
+            "period_id": 2,
+            "target_missing_frames": 27794
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261104
+      },
+      "scenario_id": "S2",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 463,
+        "max": 20.24,
+        "mean": 4.860302375809934,
+        "median": 4.4,
+        "p90": 8.872000000000002,
+        "p99": 14.204799999999995
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "f887cce3b4a18797e8c943662f0160763181659790ffde8799829a9b49b7d319",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4100018948503797,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 28464,
+            "period_id": 1,
+            "target_missing_frames": 28464
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 27794,
+            "period_id": 2,
+            "target_missing_frames": 27794
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261102
+      },
+      "scenario_id": "S3",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 444,
+        "max": 25.92,
+        "mean": 5.068288288288287,
+        "median": 4.380000000000001,
+        "p90": 9.471999999999998,
+        "p99": 17.439199999999996
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "fb19c9b98bc2c7ff7c83d3c6e5a4ef978637da055d4e8b13f5ccbe2cb0cddf2b",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4100018948503797,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 28464,
+            "period_id": 1,
+            "target_missing_frames": 28464
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 27794,
+            "period_id": 2,
+            "target_missing_frames": 27794
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261103
+      },
+      "scenario_id": "S3",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 461,
+        "max": 21.72,
+        "mean": 4.881388286334055,
+        "median": 4.36,
+        "p90": 8.76,
+        "p99": 14.999999999999995
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "052e327573cbd619824f2330504e1a2bc08caf42520307b756beec306e906825",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4100018948503797,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 28464,
+            "period_id": 1,
+            "target_missing_frames": 28464
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 27794,
+            "period_id": 2,
+            "target_missing_frames": 27794
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261104
+      },
+      "scenario_id": "S3",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 176,
+        "max": 92.28,
+        "mean": 18.71090909090909,
+        "median": 16.38,
+        "p90": 30.64,
+        "p99": 67.05
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "b7b5547440617ce309f7699c9a42686a8b45d282b13d3b1a1e4188b34f78124b",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999970848455697,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 41654,
+            "period_id": 1,
+            "target_missing_frames": 41654
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 40674,
+            "period_id": 2,
+            "target_missing_frames": 40674
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261102
+      },
+      "scenario_id": "S4",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 166,
+        "max": 72.92,
+        "mean": 19.838072289156624,
+        "median": 18.119999999999997,
+        "p90": 37.2,
+        "p99": 55.57399999999999
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "456bfeabf22b15f41664361010e629d208d6718077316a354069d909292648e2",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999970848455697,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 41654,
+            "period_id": 1,
+            "target_missing_frames": 41654
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 40674,
+            "period_id": 2,
+            "target_missing_frames": 40674
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261103
+      },
+      "scenario_id": "S4",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 165,
+        "max": 62.96,
+        "mean": 19.95830303030303,
+        "median": 18.36,
+        "p90": 36.808,
+        "p99": 59.02239999999994
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "896186832535a7c4c018f08c3329dc55ac0f5d8cc3fe6faac1e599f3dce00754",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999970848455697,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 41654,
+            "period_id": 1,
+            "target_missing_frames": 41654
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 40674,
+            "period_id": 2,
+            "target_missing_frames": 40674
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261104
+      },
+      "scenario_id": "S4",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "e23137f4d1dbec98f78ea15df83400b3d21912d066236a2da84cae2b920ae968",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.009998979695949393,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261102
+      },
+      "scenario_id": "S5",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "721ccb88751aa918e1f93daaea11f249595beea1523374529358fa43f9934e5c",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.009998979695949393,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261103
+      },
+      "scenario_id": "S5",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "b1ac2ae88084521d6cebb12192579211d7a24bd45564560161b1972a6a65cca9",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.009998979695949393,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.4358974358974359,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261104
+      },
+      "scenario_id": "S5",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 312,
+        "max": 33.96,
+        "mean": 7.212564102564103,
+        "median": 6.9399999999999995,
+        "p90": 12.472000000000003,
+        "p99": 19.747599999999988
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "6cc2742b81c51e9982fbaa3d4a74393d9f46a33370703df08d53293ee7d9a76f",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005764717885930007,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4100018948503797,
+        "missing_player_fraction": 0.49108243047636985,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 28464,
+            "period_id": 1,
+            "target_missing_frames": 28464
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 27794,
+            "period_id": 2,
+            "target_missing_frames": 27794
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261102
+      },
+      "scenario_id": "S6",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 318,
+        "max": 28.4,
+        "mean": 7.076477987421384,
+        "median": 6.64,
+        "p90": 12.616000000000003,
+        "p99": 19.38479999999999
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "f8616c98538907c8b3cb869385b9d92e141fe2da0e095dbc380d5b8aeace3c58",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005801157316308831,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4100018948503797,
+        "missing_player_fraction": 0.4913875873471833,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 28464,
+            "period_id": 1,
+            "target_missing_frames": 28464
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 27794,
+            "period_id": 2,
+            "target_missing_frames": 27794
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261103
+      },
+      "scenario_id": "S6",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 303,
+        "max": 23.96,
+        "mean": 7.4267986798679875,
+        "median": 6.92,
+        "p90": 13.280000000000003,
+        "p99": 20.658400000000018
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "a6a80c27073c9f0de19502a9ea60aba2c7a6a2354010cbd538ffa8d34aa0c802",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005801157316308831,
+        "labels_used": false,
+        "missing_ball_fraction": 0.4100018948503797,
+        "missing_player_fraction": 0.49165406236113307,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 28464,
+            "period_id": 1,
+            "target_missing_frames": 28464
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 27794,
+            "period_id": 2,
+            "target_missing_frames": 27794
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261104
+      },
+      "scenario_id": "S6",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 358,
+        "max": 47.16,
+        "mean": 9.198659217877095,
+        "median": 8.26,
+        "p90": 16.648000000000003,
+        "p99": 37.00360000000005
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "076b2f2fa767eedc9b1d382e27ee7030fa985e60e5b1da074401fa389b9e674d",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0036585188100339617,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999970848455697,
+        "missing_player_fraction": 0.49108243047636985,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 41654,
+            "period_id": 1,
+            "target_missing_frames": 41654
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 40674,
+            "period_id": 2,
+            "target_missing_frames": 40674
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261102
+      },
+      "scenario_id": "S7",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 371,
+        "max": 65.56,
+        "mean": 8.876334231805929,
+        "median": 7.48,
+        "p90": 17.12,
+        "p99": 31.896000000000008
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "59d06803e3ab8ef2f2b5319ad0d29f2b380f582e53879ab148cd318fca37aed4",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.004088504088504088,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999970848455697,
+        "missing_player_fraction": 0.4913875873471833,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 41654,
+            "period_id": 1,
+            "target_missing_frames": 41654
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 40674,
+            "period_id": 2,
+            "target_missing_frames": 40674
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261103
+      },
+      "scenario_id": "S7",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 367,
+        "max": 37.16,
+        "mean": 8.97307901907357,
+        "median": 7.56,
+        "p90": 18.53600000000001,
+        "p99": 31.617599999999932
+      },
+      "match_id": "J03WOH",
+      "observations_sha256": "4b605af371bc188b929b2a152dbab5f5bc9d59fc6333e145566bcc9901fae6fb",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0036439430378824317,
+        "labels_used": false,
+        "missing_ball_fraction": 0.5999970848455697,
+        "missing_player_fraction": 0.49165406236113307,
+        "per_period": [
+          {
+            "frames": 69424,
+            "missing_frames": 41654,
+            "period_id": 1,
+            "target_missing_frames": 41654
+          },
+          {
+            "frames": 67790,
+            "missing_frames": 40674,
+            "period_id": 2,
+            "target_missing_frames": 40674
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261104
+      },
+      "scenario_id": "S7",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "9e03cca6cfe612a90c48091a76fa9f026803274ff24d2bce99731bc7faa355d1",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S0",
+        "seed": 20261102
+      },
+      "scenario_id": "S0",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1677,
+        "max": 2.28,
+        "mean": 0.6799522957662494,
+        "median": 0.64,
+        "p90": 1.0,
+        "p99": 1.76
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "eadc2b2b66378e32255c1d0d3c9753488b0dfe00053dcf0f11cb1cce78fe6221",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.19999859684570914,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 13822,
+            "period_id": 1,
+            "target_missing_frames": 13822
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 14685,
+            "period_id": 2,
+            "target_missing_frames": 14685
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261102
+      },
+      "scenario_id": "S1",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1697,
+        "max": 2.96,
+        "mean": 0.6719387153800827,
+        "median": 0.64,
+        "p90": 1.0,
+        "p99": 1.84
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "abfe9a6933887cffcbf787f3280e92df04b758983dea52ae9f9e014e607b3d63",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.19999859684570914,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 13822,
+            "period_id": 1,
+            "target_missing_frames": 13822
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 14685,
+            "period_id": 2,
+            "target_missing_frames": 14685
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261103
+      },
+      "scenario_id": "S1",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 1665,
+        "max": 3.12,
+        "mean": 0.6848528528528528,
+        "median": 0.64,
+        "p90": 1.04,
+        "p99": 1.814399999999996
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "8d3f49e95900ae2f0edd6f78a5d44ba887a6ce493cbf24f4f62509cc04a4c540",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.19999859684570914,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 13822,
+            "period_id": 1,
+            "target_missing_frames": 13822
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 14685,
+            "period_id": 2,
+            "target_missing_frames": 14685
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S1",
+        "seed": 20261104
+      },
+      "scenario_id": "S1",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 160,
+        "max": 65.12,
+        "mean": 14.610000000000003,
+        "median": 14.120000000000001,
+        "p90": 23.671999999999997,
+        "p99": 38.78759999999997
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "71fcd9a4798597fcb590f8ac3edeb50634055d5ed403100a5f52702acaed4afb",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.410001683785149,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 28336,
+            "period_id": 1,
+            "target_missing_frames": 28336
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 30104,
+            "period_id": 2,
+            "target_missing_frames": 30104
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261102
+      },
+      "scenario_id": "S2",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 143,
+        "max": 56.48,
+        "mean": 16.34685314685315,
+        "median": 15.0,
+        "p90": 31.087999999999997,
+        "p99": 45.38000000000009
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "259c17156af8f39a8ea62ab87b08db1aa616c2bc153f434eb88e9540ec1b91e3",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.410001683785149,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 28336,
+            "period_id": 1,
+            "target_missing_frames": 28336
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 30104,
+            "period_id": 2,
+            "target_missing_frames": 30104
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261103
+      },
+      "scenario_id": "S2",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 152,
+        "max": 37.4,
+        "mean": 15.378947368421052,
+        "median": 14.399999999999999,
+        "p90": 26.035999999999998,
+        "p99": 35.48600000000001
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "2cad00d238f4babf1d554a94ae1fd4dfd73708f171cf9c45aefd07b8dabad30f",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.410001683785149,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 28336,
+            "period_id": 1,
+            "target_missing_frames": 28336
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 30104,
+            "period_id": 2,
+            "target_missing_frames": 30104
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S2",
+        "seed": 20261104
+      },
+      "scenario_id": "S2",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 468,
+        "max": 23.8,
+        "mean": 4.994871794871795,
+        "median": 4.5,
+        "p90": 8.984000000000002,
+        "p99": 17.570799999999988
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "7182a11c305101818adda904f53d3d989d301faa828f4ce890e414f472396be0",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.410001683785149,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 28336,
+            "period_id": 1,
+            "target_missing_frames": 28336
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 30104,
+            "period_id": 2,
+            "target_missing_frames": 30104
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261102
+      },
+      "scenario_id": "S3",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 487,
+        "max": 20.56,
+        "mean": 4.8,
+        "median": 4.16,
+        "p90": 8.736000000000002,
+        "p99": 15.18959999999998
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "76ae7931f51a5f27f36f4d3774fc68a87cbc4dc7e33d416788cd711f1422c4b3",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.410001683785149,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 28336,
+            "period_id": 1,
+            "target_missing_frames": 28336
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 30104,
+            "period_id": 2,
+            "target_missing_frames": 30104
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261103
+      },
+      "scenario_id": "S3",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 470,
+        "max": 24.28,
+        "mean": 4.9736170212765956,
+        "median": 4.34,
+        "p90": 9.300000000000004,
+        "p99": 15.499200000000002
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "51e6efde84f7c03e3f62479a2ee0e6d37d824181a2de8ae085d0f709ecc51dcf",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.410001683785149,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 28336,
+            "period_id": 1,
+            "target_missing_frames": 28336
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 30104,
+            "period_id": 2,
+            "target_missing_frames": 30104
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S3",
+        "seed": 20261104
+      },
+      "scenario_id": "S3",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 186,
+        "max": 91.92,
+        "mean": 18.391827956989246,
+        "median": 16.48,
+        "p90": 29.82,
+        "p99": 67.88600000000011
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "c92b344e05ce015c700b79f7136c5550bd11ff9283a96e16314ee475302f55b8",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028063085817,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 41467,
+            "period_id": 1,
+            "target_missing_frames": 41467
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 44055,
+            "period_id": 2,
+            "target_missing_frames": 44055
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261102
+      },
+      "scenario_id": "S4",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 172,
+        "max": 77.28,
+        "mean": 19.888837209302327,
+        "median": 18.3,
+        "p90": 35.412,
+        "p99": 53.355999999999966
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "a35fdb516db6c19951d1fe78530dbb6dcdc3489bc443cd87f96b94171fc5a291",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028063085817,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 41467,
+            "period_id": 1,
+            "target_missing_frames": 41467
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 44055,
+            "period_id": 2,
+            "target_missing_frames": 44055
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261103
+      },
+      "scenario_id": "S4",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 177,
+        "max": 62.72,
+        "mean": 19.327005649717513,
+        "median": 17.72,
+        "p90": 33.848000000000006,
+        "p99": 58.33120000000003
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "ca7f579bec6dfe0eb57087bdee98030e2ff617f3a30ff64ab3734ea2d4443c9f",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028063085817,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 41467,
+            "period_id": 1,
+            "target_missing_frames": 41467
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 44055,
+            "period_id": 2,
+            "target_missing_frames": 44055
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S4",
+        "seed": 20261104
+      },
+      "scenario_id": "S4",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "28ad779c491fa782945f27c99940ddd81d55675ae71721e7728db51a721dbae1",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.009997474322276477,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261102
+      },
+      "scenario_id": "S5",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "676dbdfc8c327ee9a355e7c2985690fc0a041f178fbc361079ee3504cf694eea",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.009997474322276477,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261103
+      },
+      "scenario_id": "S5",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "8e2c1a4d52cd9991dd3b1026912aabf437000401f2b27f5879dc3faea76b48e0",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.009997474322276477,
+        "labels_used": false,
+        "missing_ball_fraction": 0.0,
+        "missing_player_fraction": 0.45,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 0,
+            "period_id": 1,
+            "target_missing_frames": 0
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 0,
+            "period_id": 2,
+            "target_missing_frames": 0
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S5",
+        "seed": 20261104
+      },
+      "scenario_id": "S5",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 323,
+        "max": 29.88,
+        "mean": 7.237151702786377,
+        "median": 6.92,
+        "p90": 12.28,
+        "p99": 21.991999999999987
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "7efef9bcc4a8143f9bbacf60678c49bb678dab8a34d56bb65b73d91b87c9bc00",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005745916821013638,
+        "labels_used": false,
+        "missing_ball_fraction": 0.410001683785149,
+        "missing_player_fraction": 0.5039025228714149,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 28336,
+            "period_id": 1,
+            "target_missing_frames": 28336
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 30104,
+            "period_id": 2,
+            "target_missing_frames": 30104
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261102
+      },
+      "scenario_id": "S6",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 333,
+        "max": 30.04,
+        "mean": 7.019819819819818,
+        "median": 6.48,
+        "p90": 12.336,
+        "p99": 20.153600000000004
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "80634c47c2c985fc8c7ace1d63d61f5703b081d28c74d2cc89c12d486654ad72",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005865184935735533,
+        "labels_used": false,
+        "missing_ball_fraction": 0.410001683785149,
+        "missing_player_fraction": 0.504878767469271,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 28336,
+            "period_id": 1,
+            "target_missing_frames": 28336
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 30104,
+            "period_id": 2,
+            "target_missing_frames": 30104
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261103
+      },
+      "scenario_id": "S6",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 308,
+        "max": 23.92,
+        "mean": 7.589610389610391,
+        "median": 6.9399999999999995,
+        "p90": 13.620000000000003,
+        "p99": 20.7172
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "266cc8dcccbea3bbc5c1601d160d963b1d550e9b9a0955c81be8bad0c57aa1a7",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.005851153392827075,
+        "labels_used": false,
+        "missing_ball_fraction": 0.410001683785149,
+        "missing_player_fraction": 0.5037387046079587,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 28336,
+            "period_id": 1,
+            "target_missing_frames": 28336
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 30104,
+            "period_id": 2,
+            "target_missing_frames": 30104
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S6",
+        "seed": 20261104
+      },
+      "scenario_id": "S6",
+      "seed": 20261104
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 373,
+        "max": 69.8,
+        "mean": 9.171260053619303,
+        "median": 8.16,
+        "p90": 15.696000000000003,
+        "p99": 37.44959999999988
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "3a932e25805251f4068101fc31a4513614a89cc9269957cedbbbc9f36466962c",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0037043273278329686,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028063085817,
+        "missing_player_fraction": 0.5039025228714149,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 41467,
+            "period_id": 1,
+            "target_missing_frames": 41467
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 44055,
+            "period_id": 2,
+            "target_missing_frames": 44055
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261102
+      },
+      "scenario_id": "S7",
+      "seed": 20261102
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 388,
+        "max": 70.52,
+        "mean": 8.816701030927835,
+        "median": 7.380000000000001,
+        "p90": 17.44,
+        "p99": 29.953599999999987
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "702d9bbb067d28739f0ca0f52b15419f0c249cfba0bb0ba15b5f0cab48cc8b52",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.004020037043273278,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028063085817,
+        "missing_player_fraction": 0.504878767469271,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 41467,
+            "period_id": 1,
+            "target_missing_frames": 41467
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 44055,
+            "period_id": 2,
+            "target_missing_frames": 44055
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261103
+      },
+      "scenario_id": "S7",
+      "seed": 20261103
+    },
+    {
+      "actual_ball_gap_duration_s": {
+        "count": 379,
+        "max": 46.64,
+        "mean": 9.026068601583114,
+        "median": 7.52,
+        "p90": 18.007999999999996,
+        "p99": 33.083999999999996
+      },
+      "match_id": "J03WOY",
+      "observations_sha256": "37da0c14c8eb50ed721570905093f7020d90a0bf99cd950a9e6c7900e0d98520",
+      "quality": {
+        "audit_masks_exposed_to_model": false,
+        "delivered_ball_outlier_fraction": 0.0035289330414772406,
+        "labels_used": false,
+        "missing_ball_fraction": 0.6000028063085817,
+        "missing_player_fraction": 0.5037387046079587,
+        "per_period": [
+          {
+            "frames": 69111,
+            "missing_frames": 41467,
+            "period_id": 1,
+            "target_missing_frames": 41467
+          },
+          {
+            "frames": 73425,
+            "missing_frames": 44055,
+            "period_id": 2,
+            "target_missing_frames": 44055
+          }
+        ],
+        "raw_input_mutated": false,
+        "scenario_id": "S7",
+        "seed": 20261104
+      },
+      "scenario_id": "S7",
+      "seed": 20261104
+    }
+  ]
+}

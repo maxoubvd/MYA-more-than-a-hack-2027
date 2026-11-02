@@ -1,0 +1,371 @@
+{
+  "experiment_id": "bf3c839e3a2c2abaabb3d399aed62928bb318f69c688a6c701a9fbcbb567f9f8",
+  "profiles": [
+    {
+      "apparent_ball_step_speed_mps": {
+        "count": 145965,
+        "max": 1380.187744140625,
+        "mean": 4.755186968103438,
+        "median": 2.136033058166504,
+        "p90": 13.427952766418457,
+        "p99": 23.438476562499908
+      },
+      "apparent_player_step_speed_mps": {
+        "count": 3211220,
+        "max": 37.27254104614258,
+        "mean": 1.8317650210897132,
+        "median": 1.4577058553695679,
+        "p90": 3.816049814224243,
+        "p99": 6.264995574951172
+      },
+      "ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "ball_gap_left_censored": 0,
+      "ball_gap_right_censored": 0,
+      "ball_missing_fraction": 0.0,
+      "ball_missing_frames": 0,
+      "ball_step_above_100mps_fraction": 0.0004864179769122735,
+      "ball_visible_outside_field_fraction": 0.3088643323490926,
+      "delivered_slots": 40,
+      "fps": 25.0,
+      "frames": 145967,
+      "interpretation": "delivered-coordinate availability and apparent motion; not visual visibility or true physical speed; player fractions depend on roster slot count",
+      "labels_read": false,
+      "observed_player_count_by_team": {
+        "A": {
+          "count": 145967,
+          "max": 11.0,
+          "mean": 11.0,
+          "median": 11.0,
+          "p90": 11.0,
+          "p99": 11.0
+        },
+        "H": {
+          "count": 145967,
+          "max": 11.0,
+          "mean": 11.0,
+          "median": 11.0,
+          "p90": 11.0,
+          "p99": 11.0
+        }
+      },
+      "periods": [
+        {
+          "ball_missing_fraction": 0.0,
+          "ball_missing_frames": 0,
+          "frames": 70708,
+          "period_id": 1
+        },
+        {
+          "ball_missing_fraction": 0.0,
+          "ball_missing_frames": 0,
+          "frames": 75259,
+          "period_id": 2
+        }
+      ],
+      "player_step_above_20mps_fraction": 3.114081252608043e-07,
+      "positions_imputed": false,
+      "role": "train_observations_only",
+      "source": "J03WMX"
+    },
+    {
+      "apparent_ball_step_speed_mps": {
+        "count": 141559,
+        "max": 1359.6171875,
+        "mean": 3.956586480069106,
+        "median": 0.0,
+        "p90": 12.554903030395508,
+        "p99": 23.84590377807617
+      },
+      "apparent_player_step_speed_mps": {
+        "count": 2983347,
+        "max": 35.66948699951172,
+        "mean": 1.6620390915957879,
+        "median": 1.2747466564178467,
+        "p90": 3.5795328617095947,
+        "p99": 6.209915637969971
+      },
+      "ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "ball_gap_left_censored": 0,
+      "ball_gap_right_censored": 0,
+      "ball_missing_fraction": 0.0,
+      "ball_missing_frames": 0,
+      "ball_step_above_100mps_fraction": 0.00047330088514329716,
+      "ball_visible_outside_field_fraction": 0.3298366075402123,
+      "delivered_slots": 40,
+      "fps": 25.0,
+      "frames": 141561,
+      "interpretation": "delivered-coordinate availability and apparent motion; not visual visibility or true physical speed; player fractions depend on roster slot count",
+      "labels_read": false,
+      "observed_player_count_by_team": {
+        "A": {
+          "count": 141561,
+          "max": 11.0,
+          "mean": 10.07499240610055,
+          "median": 10.0,
+          "p90": 10.0,
+          "p99": 11.0
+        },
+        "H": {
+          "count": 141561,
+          "max": 11.0,
+          "mean": 11.0,
+          "median": 11.0,
+          "p90": 11.0,
+          "p99": 11.0
+        }
+      },
+      "periods": [
+        {
+          "ball_missing_fraction": 0.0,
+          "ball_missing_frames": 0,
+          "frames": 69288,
+          "period_id": 1
+        },
+        {
+          "ball_missing_fraction": 0.0,
+          "ball_missing_frames": 0,
+          "frames": 72273,
+          "period_id": 2
+        }
+      ],
+      "player_step_above_20mps_fraction": 1.4748535788830464e-05,
+      "positions_imputed": false,
+      "role": "train_observations_only",
+      "source": "J03WN1"
+    },
+    {
+      "apparent_ball_step_speed_mps": {
+        "count": 137212,
+        "max": 1346.716064453125,
+        "mean": 4.244327679378984,
+        "median": 0.7905573844909668,
+        "p90": 13.100564670562745,
+        "p99": 22.94694667816162
+      },
+      "apparent_player_step_speed_mps": {
+        "count": 3018654,
+        "max": 1131.4453125,
+        "mean": 1.8573138623864807,
+        "median": 1.4577058553695679,
+        "p90": 3.9527792930603027,
+        "p99": 6.294776439666748
+      },
+      "ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "ball_gap_left_censored": 0,
+      "ball_gap_right_censored": 0,
+      "ball_missing_fraction": 0.0,
+      "ball_missing_frames": 0,
+      "ball_step_above_100mps_fraction": 0.0004882954843599685,
+      "ball_visible_outside_field_fraction": 0.29665340271400875,
+      "delivered_slots": 39,
+      "fps": 25.0,
+      "frames": 137214,
+      "interpretation": "delivered-coordinate availability and apparent motion; not visual visibility or true physical speed; player fractions depend on roster slot count",
+      "labels_read": false,
+      "observed_player_count_by_team": {
+        "A": {
+          "count": 137214,
+          "max": 11.0,
+          "mean": 11.0,
+          "median": 11.0,
+          "p90": 11.0,
+          "p99": 11.0
+        },
+        "H": {
+          "count": 137214,
+          "max": 11.0,
+          "mean": 11.0,
+          "median": 11.0,
+          "p90": 11.0,
+          "p99": 11.0
+        }
+      },
+      "periods": [
+        {
+          "ball_missing_fraction": 0.0,
+          "ball_missing_frames": 0,
+          "frames": 69424,
+          "period_id": 1
+        },
+        {
+          "ball_missing_fraction": 0.0,
+          "ball_missing_frames": 0,
+          "frames": 67790,
+          "period_id": 2
+        }
+      ],
+      "player_step_above_20mps_fraction": 5.399757640325788e-05,
+      "positions_imputed": false,
+      "role": "train_observations_only",
+      "source": "J03WOH"
+    },
+    {
+      "apparent_ball_step_speed_mps": {
+        "count": 142534,
+        "max": 1329.831787109375,
+        "mean": 4.395640476259946,
+        "median": 1.2747373580932617,
+        "p90": 12.869561767578125,
+        "p99": 22.77334846496582
+      },
+      "apparent_player_step_speed_mps": {
+        "count": 3135739,
+        "max": 1247.749755859375,
+        "mean": 1.8700808876575772,
+        "median": 1.4577876329421997,
+        "p90": 3.8892436027526855,
+        "p99": 6.269968509674072
+      },
+      "ball_gap_duration_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "p90": null,
+        "p99": null
+      },
+      "ball_gap_left_censored": 0,
+      "ball_gap_right_censored": 0,
+      "ball_missing_fraction": 0.0,
+      "ball_missing_frames": 0,
+      "ball_step_above_100mps_fraction": 0.0005542537219189808,
+      "ball_visible_outside_field_fraction": 0.2755514396363024,
+      "delivered_slots": 40,
+      "fps": 25.0,
+      "frames": 142536,
+      "interpretation": "delivered-coordinate availability and apparent motion; not visual visibility or true physical speed; player fractions depend on roster slot count",
+      "labels_read": false,
+      "observed_player_count_by_team": {
+        "A": {
+          "count": 142536,
+          "max": 11.0,
+          "mean": 11.0,
+          "median": 11.0,
+          "p90": 11.0,
+          "p99": 11.0
+        },
+        "H": {
+          "count": 142536,
+          "max": 11.0,
+          "mean": 11.0,
+          "median": 11.0,
+          "p90": 11.0,
+          "p99": 11.0
+        }
+      },
+      "periods": [
+        {
+          "ball_missing_fraction": 0.0,
+          "ball_missing_frames": 0,
+          "frames": 69111,
+          "period_id": 1
+        },
+        {
+          "ball_missing_fraction": 0.0,
+          "ball_missing_frames": 0,
+          "frames": 73425,
+          "period_id": 2
+        }
+      ],
+      "player_step_above_20mps_fraction": 3.7311778818326395e-05,
+      "positions_imputed": false,
+      "role": "train_observations_only",
+      "source": "J03WOY"
+    },
+    {
+      "apparent_ball_step_speed_mps": {
+        "count": 94065,
+        "max": 109.59786224365234,
+        "mean": 6.67675774836677,
+        "median": 5.081780433654785,
+        "p90": 14.310086441040045,
+        "p99": 24.60363563537599
+      },
+      "apparent_player_step_speed_mps": {
+        "count": 3253351,
+        "max": 103.47413635253906,
+        "mean": 1.749190796679935,
+        "median": 1.3602887392044067,
+        "p90": 3.82379412651062,
+        "p99": 6.579631090164185
+      },
+      "ball_gap_duration_s": {
+        "count": 150,
+        "max": 221.48,
+        "mean": 17.238133333333334,
+        "median": 10.72,
+        "p90": 33.811999999999976,
+        "p99": 104.75159999999937
+      },
+      "ball_gap_left_censored": 1,
+      "ball_gap_right_censored": 2,
+      "ball_missing_fraction": 0.40692572565263097,
+      "ball_missing_frames": 64643,
+      "ball_step_above_100mps_fraction": 7.441662680061659e-05,
+      "ball_visible_outside_field_fraction": 0.04191521429936103,
+      "delivered_slots": 46,
+      "fps": 25.0,
+      "frames": 158857,
+      "interpretation": "delivered-coordinate availability and apparent motion; not visual visibility or true physical speed; player fractions depend on roster slot count",
+      "labels_read": false,
+      "observed_player_count_by_team": {
+        "A": {
+          "count": 158857,
+          "max": 15.0,
+          "mean": 10.285948998155574,
+          "median": 11.0,
+          "p90": 11.0,
+          "p99": 12.0
+        },
+        "H": {
+          "count": 158857,
+          "max": 19.0,
+          "mean": 10.201470504919518,
+          "median": 11.0,
+          "p90": 11.0,
+          "p99": 12.0
+        }
+      },
+      "periods": [
+        {
+          "ball_missing_fraction": 0.406508361961569,
+          "ball_missing_frames": 32304,
+          "frames": 79467,
+          "period_id": 1
+        },
+        {
+          "ball_missing_fraction": 0.40734349414283916,
+          "ball_missing_frames": 32339,
+          "frames": 79390,
+          "period_id": 2
+        }
+      ],
+      "player_step_above_20mps_fraction": 0.00015922044685617997,
+      "positions_imputed": false,
+      "role": "unlabelled_sensor_profile_only",
+      "source": "BAR-ATH"
+    }
+  ],
+  "target_archives_opened": false
+}

@@ -1,0 +1,30 @@
+{
+  "class_order": [
+    "H",
+    "A",
+    "D"
+  ],
+  "inference_receives": "delivered observations and observable masks only; no synthetic audit truth",
+  "positions": {
+    "imputed_xy": "separate same shape, only where raw xy absent",
+    "observed_xy": "normalized (N,2) or (N,S,2), finite or NaN",
+    "raw_positions_overwritten": false,
+    "uncertainty_m": "nonnegative metre uncertainty on imputed positions, NaN otherwise"
+  },
+  "provenance_required": [
+    "candidate_id",
+    "fit_matches",
+    "context_matches",
+    "preprocessing_matches",
+    "prior_matches",
+    "calibration_matches",
+    "code_sha256",
+    "configuration_sha256"
+  ],
+  "scores": {
+    "frame_ids": "contiguous integers within each period",
+    "period_ids": "nonnegative integers; no period may reappear",
+    "probabilities": "(N,3), normalized on active frames, NaN outside"
+  },
+  "version": "bonus-artifacts-v1"
+}

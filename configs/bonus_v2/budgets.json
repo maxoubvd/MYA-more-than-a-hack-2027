@@ -1,0 +1,21 @@
+{
+  "charge_setup_and_preprocessing": true,
+  "gate": "configuration must be registered before its first run; actual overruns recorded and block subsequent jobs",
+  "max_configurations_by_stage": {
+    "J10": 8,
+    "J11": 6,
+    "J12": 6,
+    "J13": 6,
+    "J14": 2,
+    "J15": 4,
+    "J16": 4,
+    "J17": 4,
+    "J9": 8
+  },
+  "max_cpu_seconds": 172800.0,
+  "max_final_shortlist": 4,
+  "max_gpu_job_wall_seconds": 86400.0,
+  "max_stochastic_seeds": 2,
+  "max_total_configurations": 48,
+  "version": "bonus-budget-v2"
+}

@@ -1,0 +1,39 @@
+{
+  "consumed_J03WR9_record_sha256": "a7773f7e3961d802d082734591a01f457aee4174461026a780773dd082272594",
+  "experiment_id": "bf3c839e3a2c2abaabb3d399aed62928bb318f69c688a6c701a9fbcbb567f9f8",
+  "fingerprints": {
+    "J8_code": {
+      "src/bonus/__init__.py": "2d20f8121a70f6589e0f9cc499982f71ecc1dabb288b3f1884a1cb59cdb6440e",
+      "src/bonus/budget.py": "7dc939d0c10af7c825ba9492d8feaa47d8ef70b1dd589944a83d24589c7be057",
+      "src/bonus/contracts.py": "eb590748083b00409730a4edf3517ce46cfa2f3a6abc983ce31a98f8ad544b76",
+      "src/bonus/degradation.py": "42c36202e7fb7b886d7edb8dce818eb801ec924ce0e2cefd5ab6cd4dbe075376",
+      "src/bonus/preflight.py": "df81bd2c870b8f919c94277d9c916e741ed09950454d9c9abd0d807c99ae5ccd",
+      "src/bonus/profiling.py": "25329db2ad45c570877f29d2facf5dbfac3b39e65cfc917fcf223c5a38eea557",
+      "src/bonus/protocol.py": "4fa28599e6d3f31bd8828d31bb027e7766c9baf63c2c9f476e5fffeed02efbd4"
+    },
+    "configurations": {
+      "artifact_schema.json": "2a3e80edfc4cfe1f19fdfe03c78fd79430ab113891e148cd4dbab40398e3a212",
+      "budgets.json": "585a95945d743336e850ff06d723ad4b2c004a0810fd73517bdf61af45e0e9e0",
+      "j9_grid.json": "c64f97821c3bc461306543facf372e80ba77e7a28ef20df62771087a4c4907ab",
+      "protocol.json": "de411bbda5544d61623d230b53a9b0ad5a494dc0096d8f9b32724ad49b0694ef",
+      "sources.json": "dc5de291d26aff6fb0f872e14c9e94f4863561fd60a7f1b79aa44d5582089811"
+    },
+    "development_inputs": {
+      "J03WMX": "82c13ceeaababa61bd7c135ed74bdc80269a20932f4c6461d6530678a8acad8f",
+      "J03WN1": "ad8631c1fcf71fe266887c1a1c5c7bad18f9be2a58e95212291c1a55419aa659",
+      "J03WOH": "862dbf31217c6b79badfefb22a02524e5c5c931aa42ef3bb3dcc55a67c8695fb",
+      "J03WOY": "d82771b98eff3220fc2f01e3b7f5bdfea4ec2cade87b2243bc0b23103774e6c8"
+    },
+    "expected_C0_csv_sha256": "8b1e2c851cd64f840b6aae8ff932e3aaa599507446fe4fa4a6fbbedbfad4c8f7",
+    "model_sha256": "6ccb2be478590bcd3a6d032d22411b500825471979137c72b735d1ba95781e3f",
+    "release_sha256": "de3b48c2b6879e1565f3d498652f44d2c8fe2be1d4ea058f23621183c0d78dfd"
+  },
+  "new_blind_test_admitted": false,
+  "public_labels_read": false,
+  "reference_commit": "e5d40baa352ef70feacb7125e5ca667629da58ca",
+  "reference_tag": "delivery-v1",
+  "registered_utc": "2026-11-02T21:04:21.327549+00:00",
+  "target_archives_opened": false,
+  "training_or_selection_performed": false,
+  "version": "bonus-v2-j8"
+}

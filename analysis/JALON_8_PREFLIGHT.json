@@ -1,0 +1,34 @@
+{
+  "C0_unchanged": true,
+  "J9_grid_sealed": true,
+  "bonus_configurations_started": 0,
+  "completed_utc": "2026-11-02T21:05:02.278158+00:00",
+  "experiment_id": "bf3c839e3a2c2abaabb3d399aed62928bb318f69c688a6c701a9fbcbb567f9f8",
+  "hardware": {
+    "cpu": {
+      "Name": "13th Gen Intel(R) Core(TM) i7-1355U",
+      "NumberOfCores": 10,
+      "NumberOfLogicalProcessors": 12
+    },
+    "cuda_gpu_verified": false,
+    "cuda_note": "only Intel Iris Xe detected; nvidia-smi unavailable; GPU trials conditional",
+    "display": {
+      "Name": "Intel(R) Iris(R) Xe Graphics"
+    },
+    "extra_dependencies_installed": false,
+    "memory": {
+      "TotalPhysicalMemory": 16866971648
+    },
+    "packages": {
+      "numpy": "2.5.4",
+      "pandas": "3.1.0"
+    },
+    "python": "3.12.6"
+  },
+  "labels_read": false,
+  "model_fits": 0,
+  "new_blind_test_admitted": false,
+  "next_stage": "J9; new stage code/configuration must be registered before fitting",
+  "setup_cpu_seconds": 40.109375,
+  "setup_wall_seconds": 41.15931749995798
+}
