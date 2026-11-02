@@ -1,5 +1,8 @@
 # Plan d'implémentation — équipe MYA
 
+> **Suite du projet :** voir le [plan de phase 2 — bonus et nouvelle livraison](Implementation_Plan_Phase_2_Bonus.md), daté du 2 novembre 2026. Il définit les jalons 8–19 ; J18/J19 sont les nouveaux équivalents des jalons 6/7. Le présent fichier conserve l'historique du socle réalisé.
+
+
 > **Révision : 29 octobre 2026.** Jalons 0, 1 et 2 réalisés le 25 octobre ; jalon 3 réalisé le 26 octobre ; jalons 4 et 5 réalisés le 27 octobre. Jalons 6 et 7 réalisés le 29 octobre ; bonus non réalisés. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
 >
 > **Équipe :** Ali ABOUHACHIM-ALAMI, Youssef BENADDI, Maxime BENDAVID. **Match :** FC Barcelona (`H`) — Athletic Club (`A`). **Référence de sortie :** vidéo tactique, 199 319 images à 25 images/s. **Classement :** `spellF1` ; départage par `macroF1`. **Échéance annoncée :** 17 novembre 2026 ; vérifier l'heure limite dans le courriel des organisateurs.

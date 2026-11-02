@@ -1,6 +1,13 @@
 # ⚽ More than a Hack 2027 — Team MYA
 ### Phase 1: Dense Sequential Prediction of Ball Possession (FC Barcelona vs Athletic Club)
 
+## Suite expérimentale — plan de la phase 2
+
+Le [nouveau plan des bonus, jalons 8 à 19](analysis/Implementation_Plan_Phase_2_Bonus.md)
+prévoit des essais séparés, un benchmark renouvelé, puis **J18 : comparaison et
+gel** et **J19 : nouvelle livraison reproductible**. C'est un plan à exécuter ;
+la candidate J7 ci-dessous reste inchangée.
+
 ## Livraison finale — jalon 7
 
 **À envoyer : `submissions/final/MYA.csv` et `MYA.md`.**
