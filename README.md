@@ -8,14 +8,16 @@ prévoit des essais séparés, un benchmark renouvelé, puis **J18 : comparaison
 gel** et **J19 : nouvelle livraison reproductible**. C'est un plan à exécuter ;
 la candidate J7 ci-dessous reste inchangée.
 
-**Jalon 8 réalisé sur la branche locale `bonus-phase2`** : protocole de 22 conditions,
-88 validations d'observations, budgets et huit futurs essais J9 figés. Aucun nouveau
-modèle entraîné. [Guide phase 2](docs/BONUS_V2.md) · [Rapport J8](analysis/JALON_8_VALIDATION.md).
+**Jalon 8 réalisé sur la branche `bonus-phase2` publiée sur GitHub** : protocole de 22 conditions,
+88 validations d'observations, budgets et grille J9 préenregistrée. Cette étape
+de préparation n'a pas entraîné de modèle. [Guide phase 2](docs/BONUS_V2.md) · [Rapport J8](analysis/JALON_8_VALIDATION.md).
 
 ```powershell
 .venv\Scripts\python.exe -m src.bonus.preflight --all
 ```
 
+
+**Jalon 9 réalisé en sélection interne** : huit variantes, calibration par sous-plis, référence C0 réapprise et 792 comparaisons. Aucune variante ne passe les critères d’adoption ; la soumission J7 reste conservée. [Rapport J9](analysis/JALON_9_VALIDATION.md) · [Guide et commande](docs/JALON_9.md).
 
 ## Livraison finale — jalon 7
 

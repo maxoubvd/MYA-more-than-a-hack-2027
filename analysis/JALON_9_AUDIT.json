@@ -1,0 +1,1137 @@
+{
+  "budget_cpu_seconds_total_phase": 4454.75,
+  "budget_gpu_job_wall_seconds_total_phase": 0.0,
+  "cache_equivalence": {
+    "conditions": [
+      {
+        "all_arrays_identical": true,
+        "fresh_rows": 141561,
+        "scenario": "clean"
+      },
+      {
+        "all_arrays_identical": true,
+        "fresh_rows": 141561,
+        "scenario": "long_gaps"
+      },
+      {
+        "all_arrays_identical": true,
+        "fresh_rows": 141561,
+        "scenario": "combined"
+      }
+    ],
+    "labels_used": false,
+    "match_id": "J03WN1"
+  },
+  "code_and_data_fingerprints_checked": true,
+  "comparison_rows": 792,
+  "configurations_started_J9": 8,
+  "consumed_test_marker_unchanged": true,
+  "decoded_strata_diagnostic_code_sha256": "f44752eabc29cdbcb7ddd4069a29f23c5be3235296551308d173ed04e4cdcf36",
+  "diagnostic_rows": 1944,
+  "fit_audit": {
+    "all_converged": true,
+    "inner_model_packs": 12,
+    "maximum_gradient": 9.90472315716244e-07,
+    "outer_model_packs": 20,
+    "total_unique_logistic_heads": 60,
+    "unique_model_packs": 32,
+    "unique_state_heads": 32,
+    "unique_team_heads": 28,
+    "weighted_state_mean_weight_one": true
+  },
+  "folds": [
+    {
+      "C0_original_three_match_coefficients_max_abs_difference": {
+        "collective_team": 2.6645352591003757e-15,
+        "state": 3.9968028886505635e-15,
+        "visible_team": 1.3322676295501878e-15
+      },
+      "calibrators": {
+        "J9_AUG_D_PLATT": {
+          "dead_intercept": 0.02518341623340254,
+          "dead_slope": 1.4262098864313872,
+          "mode": "platt_dead",
+          "state_rows": 108000,
+          "team_rows": 55527,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_TEMP": {
+          "dead_intercept": 0.0,
+          "dead_slope": 1.4254450083502963,
+          "mode": "temperature_dead",
+          "state_rows": 108000,
+          "team_rows": 55527,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_HIER_TEMP": {
+          "dead_intercept": 0.0,
+          "dead_slope": 1.4254450083502963,
+          "mode": "temperature_dead_and_shared_team",
+          "state_rows": 108000,
+          "team_rows": 55527,
+          "team_slope": 1.0574609903378387,
+          "training_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY_D_PLATT": {
+          "dead_intercept": -0.037839731935506105,
+          "dead_slope": 1.3710018373738766,
+          "mode": "platt_dead",
+          "state_rows": 108000,
+          "team_rows": 55527,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        }
+      },
+      "fit_provenance": {
+        "C0-OOF": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WN1"
+          ],
+          "fit_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WN1"
+          ],
+          "fit_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_BAL": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WN1"
+          ],
+          "fit_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_PLATT": {
+          "calibration_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WN1"
+          ],
+          "fit_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_TEMP": {
+          "calibration_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WN1"
+          ],
+          "fit_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_HIER_TEMP": {
+          "calibration_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WN1"
+          ],
+          "fit_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WN1"
+          ],
+          "fit_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY_D_BAL": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WN1"
+          ],
+          "fit_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY_D_PLATT": {
+          "calibration_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WN1"
+          ],
+          "fit_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WN1",
+            "J03WOH",
+            "J03WOY"
+          ]
+        }
+      },
+      "held_out": "J03WMX",
+      "models_sha256": "5eb0f3d6066fae5b05b0614d8ff1b7537396fe26b8773d35a8fa86aaaf7258b1",
+      "snapshot_sha256": "33a82f8fc019d89d2f3979084119b0e741a06d2ac15d62c9c20462fe65790098"
+    },
+    {
+      "C0_original_three_match_coefficients_max_abs_difference": {
+        "collective_team": 2.7755575615628914e-15,
+        "state": 1.0658141036401503e-14,
+        "visible_team": 2.6645352591003757e-15
+      },
+      "calibrators": {
+        "J9_AUG_D_PLATT": {
+          "dead_intercept": 0.042718277986891,
+          "dead_slope": 1.396085872134861,
+          "mode": "platt_dead",
+          "state_rows": 108000,
+          "team_rows": 59208,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_TEMP": {
+          "dead_intercept": 0.0,
+          "dead_slope": 1.3939220752277866,
+          "mode": "temperature_dead",
+          "state_rows": 108000,
+          "team_rows": 59208,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_HIER_TEMP": {
+          "dead_intercept": 0.0,
+          "dead_slope": 1.3939220752277866,
+          "mode": "temperature_dead_and_shared_team",
+          "state_rows": 108000,
+          "team_rows": 59208,
+          "team_slope": 1.0904774297325686,
+          "training_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY_D_PLATT": {
+          "dead_intercept": 0.04557733780625984,
+          "dead_slope": 1.391433391880377,
+          "mode": "platt_dead",
+          "state_rows": 108000,
+          "team_rows": 59208,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        }
+      },
+      "fit_provenance": {
+        "C0-OOF": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_BAL": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_PLATT": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_TEMP": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_HIER_TEMP": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY_D_BAL": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY_D_PLATT": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WOH",
+            "J03WOY"
+          ]
+        }
+      },
+      "held_out": "J03WN1",
+      "models_sha256": "65645880632e98e4161bf5d18ae5556e500c5d18603c0739f4e2051f8d7e7a38",
+      "snapshot_sha256": "e33a4d21f7ed79dfc76c50294f416ed0e4b1dc780983a2d6b9bf156a4a0025b7"
+    },
+    {
+      "C0_original_three_match_coefficients_max_abs_difference": {
+        "collective_team": 1.904726376622534e-15,
+        "state": 4.496403249731884e-15,
+        "visible_team": 1.915134717478395e-15
+      },
+      "calibrators": {
+        "J9_AUG_D_PLATT": {
+          "dead_intercept": 0.05564230300138964,
+          "dead_slope": 1.4131773946214778,
+          "mode": "platt_dead",
+          "state_rows": 108000,
+          "team_rows": 57708,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_TEMP": {
+          "dead_intercept": 0.0,
+          "dead_slope": 1.4094453990776539,
+          "mode": "temperature_dead",
+          "state_rows": 108000,
+          "team_rows": 57708,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_HIER_TEMP": {
+          "dead_intercept": 0.0,
+          "dead_slope": 1.4094453990776539,
+          "mode": "temperature_dead_and_shared_team",
+          "state_rows": 108000,
+          "team_rows": 57708,
+          "team_slope": 1.0617265434062553,
+          "training_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY_D_PLATT": {
+          "dead_intercept": -0.003425881243092742,
+          "dead_slope": 1.3986435434288504,
+          "mode": "platt_dead",
+          "state_rows": 108000,
+          "team_rows": 57708,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        }
+      },
+      "fit_provenance": {
+        "C0-OOF": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_BAL": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_PLATT": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_D_TEMP": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        },
+        "J9_AUG_HIER_TEMP": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY_D_BAL": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        },
+        "J9_QUALITY_D_PLATT": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOY"
+          ]
+        }
+      },
+      "held_out": "J03WOH",
+      "models_sha256": "45fe71b5cd48e2a2ba64c69bc574af3c1f8f16d62d9c027dd5fbc003b6fb4067",
+      "snapshot_sha256": "fe2ab836c537caf8864246aa8c267092cd60fcd5f2bc7d555a0d4a8a8c99566d"
+    },
+    {
+      "C0_original_three_match_coefficients_max_abs_difference": {
+        "collective_team": 1.790234627208065e-15,
+        "state": 1.6209256159527285e-14,
+        "visible_team": 1.6653345369377348e-15
+      },
+      "calibrators": {
+        "J9_AUG_D_PLATT": {
+          "dead_intercept": 0.04364223459764398,
+          "dead_slope": 1.4153997715398443,
+          "mode": "platt_dead",
+          "state_rows": 108000,
+          "team_rows": 57300,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        },
+        "J9_AUG_D_TEMP": {
+          "dead_intercept": 0.0,
+          "dead_slope": 1.4133075397860053,
+          "mode": "temperature_dead",
+          "state_rows": 108000,
+          "team_rows": 57300,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        },
+        "J9_AUG_HIER_TEMP": {
+          "dead_intercept": 0.0,
+          "dead_slope": 1.4133075397860053,
+          "mode": "temperature_dead_and_shared_team",
+          "state_rows": 108000,
+          "team_rows": 57300,
+          "team_slope": 1.0533681761101783,
+          "training_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        },
+        "J9_QUALITY_D_PLATT": {
+          "dead_intercept": 0.02195629043233749,
+          "dead_slope": 1.3879371589765883,
+          "mode": "platt_dead",
+          "state_rows": 108000,
+          "team_rows": 57300,
+          "team_slope": 1.0,
+          "training_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        }
+      },
+      "fit_provenance": {
+        "C0-OOF": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        },
+        "J9_AUG": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        },
+        "J9_AUG_D_BAL": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        },
+        "J9_AUG_D_PLATT": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        },
+        "J9_AUG_D_TEMP": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        },
+        "J9_AUG_HIER_TEMP": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        },
+        "J9_QUALITY": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        },
+        "J9_QUALITY_D_BAL": {
+          "calibration_matches": [],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        },
+        "J9_QUALITY_D_PLATT": {
+          "calibration_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "context_matches": [
+            "J03WMX"
+          ],
+          "fit_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "preprocessing_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ],
+          "prior_matches": [
+            "J03WMX",
+            "J03WN1",
+            "J03WOH"
+          ]
+        }
+      },
+      "held_out": "J03WOY",
+      "models_sha256": "804d4849dd97587ebc359dfed2159aea5b7dbf5f9d35a9b0f34f06bf076d9771",
+      "snapshot_sha256": "537af2985781eb83dfa769eafa9292341eccc9d156c43ba9fb1ebe07e83814bf"
+    }
+  ],
+  "new_blind_test": false,
+  "new_notebook_code_cells_executed": 2,
+  "prior_49_notebook_cells_preserved": true,
+  "shared_notebook_has_no_outputs": true,
+  "tests_passed": 222,
+  "total_new_configurations_started_phase": 8,
+  "unchanged_C0_and_J2_CSV": true,
+  "unique_comparison_keys": 792,
+  "version": "j9-audit-v1"
+}

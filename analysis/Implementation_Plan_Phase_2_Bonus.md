@@ -1,6 +1,6 @@
 # Plan d’implémentation — phase 2 : bonus, comparaison et nouvelle livraison
 
-> **Mise à jour du 2 novembre 2026.** Jalons 0–8 réalisés ; jalons 9–19 à commencer. J8 a figé le protocole et validé les observations, sans entraîner ni sélectionner de nouveau modèle. Voir [les preuves J8](JALON_8_VALIDATION.md). Il complète [le plan du socle](Implementation_Plan.md).
+> **Mise à jour du 2 novembre 2026.** Jalons 0–9 réalisés ; jalons 10–19 à commencer. J8 a figé le protocole et validé les observations, sans entraîner ni sélectionner de nouveau modèle. Voir [les preuves J8](JALON_8_VALIDATION.md). Il complète [le plan du socle](Implementation_Plan.md).
 >
 > **Objectif :** tester les bonus, conserver les apports externes mesurés, puis comparer les candidats et repréparer une soumission reproductible. **J18 = nouvel équivalent du jalon 6. J19 = nouvel équivalent du jalon 7.** Si aucun bonus ne convainc, conserver la livraison actuelle.
 
@@ -132,6 +132,8 @@ Méthodes déterministes : une graine fixe ; stochastiques : deux au plus. Plafo
 **Livrables J8 :** protocole V2, registre sources/recouvrements, matériel, référence C0 vérifiée et budgets. **Sortie :** aucun score public ni résultat de J03WR9 dans les fonctions de sélection.
 
 ## 5. J9 — D plus robuste et calibration hors du concours
+
+**Réalisé en sélection interne :** huit variantes entraînées, 792 comparaisons sur quatre matchs et 22 conditions. Aucune variante J9 retenue seule : gain S41 insuffisant et régression trop forte sur un match. C0 conservé ; confirmation réservée au J18. Voir [le rapport J9](JALON_9_VALIDATION.md).
 
 **Hypothèse :** des indices physiques accompagnés de leur qualité et une estimation mieux calibrée transfèrent mieux entre capteurs. Le diagnostic public motive une question ; il ne fixe aucun seuil ou correctif.
 

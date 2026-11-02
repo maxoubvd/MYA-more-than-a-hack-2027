@@ -1,0 +1,22 @@
+{
+  "version": "j9-execution-v1",
+  "stage": "J9",
+  "grid": "j9_grid.json (unchanged eight registered variants)",
+  "outer_folds": "leave one of four training matches out; refit three, including C0 recipe",
+  "inner_folds": "leave one of three outer training matches out; refit two; pool 12000 known rows per inner heldout/scenario",
+  "context": "unsupervised fit on first lexicographic clean training match only, for every outer and inner fold",
+  "C0_training": "original V1 clean/long_gaps/combined seed 20261026, 12000 rows per match/scenario, fixed logistic recipe",
+  "team_heads": "identical training design for all J9 variants; exact fitted heads shared by state-only ablations",
+  "weighted_state": "copy of C0 Newton solver with inverse-frequency weights in loss/gradient/Hessian, same L2 and convergence",
+  "temperature": "convex fit of positive inverse temperature in [0.05,20], golden section 80 steps",
+  "platt": "positive slope [0.05,20], intercept [-10,10], Newton 100 iterations, ridge 1e-8 numerical stability, projected backtracking",
+  "calibration_samples": "only supported known inner OOF rows; D binary all known states, shared team conditional H/A with team support",
+  "neutral_fallback": "D=1/3 when no physical support, conditional H=0.5 when no two teams, enforced after calibration",
+  "temporal_decoder": "C0 static Viterbi, team scale 1 and D scale 2, prior refit on outer training labels",
+  "quantization": "float32 probabilities before exact batch decoder, identical C0 archive contract",
+  "diagnostic_strata": "observed/invisible ball, coordinate speed <0.5m/s or >=1m/s, visible ball without valid continuity link; descriptive only",
+  "label_convention": "reuse original verified external BallStatus alive/dead plus controlling team H/A mapping; X excluded, no remapping or event supplementation",
+  "freeze": "all 22 nine-way outer predictions hashed before opening held-out targets for scoring",
+  "adoption": "internal screening only; no replacement or automatic submission; confirmation reserved J18",
+  "compute": "CPU only; all preprocessing, outer/inner fits, inference and scoring charged to phase ledger"
+}
