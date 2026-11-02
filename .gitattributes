@@ -1,0 +1,3 @@
+# Preserve frozen release JSON bytes; Python source hashes also normalize CRLF.
+release/*.json text eol=lf
+requirements-inference.txt text eol=lf

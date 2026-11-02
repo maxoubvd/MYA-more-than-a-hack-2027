@@ -1,0 +1,57 @@
+{
+  "dataset_hardlinks_used_for_two_raw_files": true,
+  "fresh_environment_packages": {
+    "packages": {
+      "numpy": "2.5.4",
+      "pandas": "3.1.0",
+      "python-dateutil": "3.0.0",
+      "six": "1.17.0",
+      "tzdata": "2026.5"
+    },
+    "python": "3.12.6"
+  },
+  "input_files_only": [
+    "tactical/BAR-ATH_tactical_atd.txt",
+    "tactical/BAR-ATH_tactical_atd.xml"
+  ],
+  "isolated_copy_has_git": false,
+  "isolated_copy_has_official_repository": false,
+  "isolated_copy_has_training_cache_or_labels": false,
+  "model_canonical_sha256": "6ccb2be478590bcd3a6d032d22411b500825471979137c72b735d1ba95781e3f",
+  "release_sha256": "de3b48c2b6879e1565f3d498652f44d2c8fe2be1d4ea058f23621183c0d78dfd",
+  "runs": [
+    {
+      "case": "fresh environment, original raw inputs",
+      "csv_sha256": "8b1e2c851cd64f840b6aae8ff932e3aaa599507446fe4fa4a6fbbedbfad4c8f7",
+      "fresh_parse": true,
+      "rows": 199319,
+      "seconds": 120.57390190000297,
+      "tracking_cache_hit": false
+    },
+    {
+      "case": "isolated source copy, empty cache",
+      "csv_sha256": "8b1e2c851cd64f840b6aae8ff932e3aaa599507446fe4fa4a6fbbedbfad4c8f7",
+      "fresh_parse": true,
+      "rows": 199319,
+      "seconds": 24.61271119999583,
+      "tracking_cache_hit": false
+    },
+    {
+      "case": "isolated source copy, reused tracking cache",
+      "csv_sha256": "8b1e2c851cd64f840b6aae8ff932e3aaa599507446fe4fa4a6fbbedbfad4c8f7",
+      "fresh_parse": false,
+      "rows": 199319,
+      "seconds": 10.182553999999072,
+      "tracking_cache_hit": true
+    }
+  ],
+  "same_machine_not_a_new_OS": true,
+  "version": "delivery-reproduction-v1",
+  "wheel_sha256": {
+    "numpy-2.5.4-cp312-cp312-win_amd64.whl": "a7b1b6353e36a7e50de2973a38d705c88ee93adcf120673cee7f45a4a3fa223a",
+    "pandas-3.1.0-cp312-cp312-win_amd64.whl": "b8c75dbb27c7d170b25c13dd35515da4bb92d40fe8bb3bd2c69a95de2218889b",
+    "python_dateutil-3.0.0-py2.py3-none-any.whl": "3c79630202e4152c6add678446984236efe4f57e84d8e892aab0637bab82e9fd",
+    "six-1.17.0-py2.py3-none-any.whl": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+    "tzdata-2026.5-py2.py3-none-any.whl": "b683bd1b6659ddcd810ff02ad09ba821d4bf1065072805063eb35c49617905ac"
+  }
+}

@@ -1,6 +1,28 @@
 # ⚽ More than a Hack 2027 — Team MYA
 ### Phase 1: Dense Sequential Prediction of Ball Possession (FC Barcelona vs Athletic Club)
 
+## Livraison finale — jalon 7
+
+**À envoyer : `submissions/final/MYA.csv` et `MYA.md`.**
+`submissions/MYA.csv` reste la baseline historique. Le CSV final demeure local et
+ignoré par Git ; les poids et paramètres publics sont dans `release/`.
+
+La reproduction finale utilise seulement Python 3.12.6, les dépendances de
+`requirements-inference.txt` et les deux fichiers ATD tactiques fournis.
+**Aucun dépôt officiel, label, téléchargement DFL ou cache d'entraînement n'est
+nécessaire pour prédire.** Les deux dépôts voisins décrits plus bas concernent
+l'environnement de recherche et d'évaluation historique.
+
+```powershell
+py -3.12 -m venv .venv-inference
+.venv-inference\Scripts\python.exe -m pip install -r requirements-inference.txt
+.venv-inference\Scripts\python.exe mya.py --verify
+.venv-inference\Scripts\python.exe mya.py --data-dir "C:\chemin\Projet foot" --fresh
+```
+
+[Guide de livraison](docs/DELIVERY.md) · [Document technique MYA](MYA.md) ·
+[Preuves de reproduction et test final](analysis/JALON_7_VALIDATION.md).
+
 Official repository of team **MYA** for the international competition **[More than a Hack 2027](https://landing.mobileworldcapital.com/more-than-a-hack-2027)**, organized jointly by **[Metrica Sports](https://metrica-sports.com)**, **[Barça Innovation Hub (FC Barcelona)](https://www.fcbarcelona.com)**, and the **[Mobile World Capital Barcelona](https://www.mwcbarcelona.com)**.
 
 ---
@@ -421,6 +443,9 @@ Voir [le protocole et la reproduction](docs/EXPERIMENTS.md),
 ## Architecture et état réel
 
 ```text
+MYA.md                     Document technique à remettre
+mya.py                     Commande finale sans labels ni dépôt officiel
+release/                   Poids et manifeste de gel publics
 analysis/                  Notebook, plan et rapports de validation
 configs/                   Réglages, signatures et protocole externe figé
 docs/                      Règles, sources, conventions et dictionnaire
@@ -435,6 +460,8 @@ src/
 ├── sequential_pipeline.py Priors, validation et CSV distinct du jalon 5
 ├── sequential/            Viterbi exact, coûts physiques et profils de frontières
 ├── experiment_pipeline.py Recherche interne, confirmation et export gelé du jalon 6
+├── delivery.py            Inférence finale autonome, poids publics et empreinte exacte
+├── final_test.py          Évaluation unique de J03WR9 après le gel définitif
 ├── experiments/           Familles, sélection et Viterbi groupé exact
 ├── preprocessing/         Parseur, cache, fragments et Smart Tagging
 ├── features/              Géométrie, mouvement, contexte et constructeur
@@ -445,9 +472,10 @@ src/
 tests/                     Fixtures synthétiques et régressions
 ```
 
-Les scores du jalon 4, le décodage du jalon 5 et les comparaisons avec gel d'une
-candidate du jalon 6 sont réalisés. La livraison du jalon 7, la reconstruction du
-ballon, le pitch control et la fusion TV restent prévus par le plan. Leur
+Les jalons 0 à 7 sont réalisés, avec un paquet d'inférence autonome, un CSV
+reproduit à l'identique dans une installation isolée et un document technique.
+L'envoi au formulaire reste une action distincte. La reconstruction du ballon,
+le pitch control et la fusion TV restent des bonus non réalisés. Leur
 présence éventuelle comme fichier vide ne signifie pas qu'ils sont implémentés.
 Les états des jalons et bonus font autorité dans le plan ci-dessous.
 

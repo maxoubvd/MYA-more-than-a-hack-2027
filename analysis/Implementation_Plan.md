@@ -1,10 +1,10 @@
 # Plan d'implémentation — équipe MYA
 
-> **Révision : 29 octobre 2026.** Jalons 0, 1 et 2 réalisés le 25 octobre ; jalon 3 réalisé le 26 octobre ; jalons 4 et 5 réalisés le 27 octobre. Jalon 6 réalisé le 29 octobre ; jalon 7 et bonus à réaliser. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
+> **Révision : 29 octobre 2026.** Jalons 0, 1 et 2 réalisés le 25 octobre ; jalon 3 réalisé le 26 octobre ; jalons 4 et 5 réalisés le 27 octobre. Jalons 6 et 7 réalisés le 29 octobre ; bonus non réalisés. Aucun gain de prédiction MYA n’est présenté comme acquis. Il remplace la première feuille de route à partir de l'[analyse de l'implémentation et du benchmark](ANALYSE_IMPLEMENTATION_ET_BENCHMARK.md).
 >
 > **Équipe :** Ali ABOUHACHIM-ALAMI, Youssef BENADDI, Maxime BENDAVID. **Match :** FC Barcelona (`H`) — Athletic Club (`A`). **Référence de sortie :** vidéo tactique, 199 319 images à 25 images/s. **Classement :** `spellF1` ; départage par `macroF1`. **Échéance annoncée :** 17 novembre 2026 ; vérifier l'heure limite dans le courriel des organisateurs.
 >
-> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Pour le jalon 7 et les bonus, les composants supplémentaires restent à réaliser. Voir [la validation des jalons 0 et 1](JALONS_0_1_VALIDATION.md) et [celle du jalon 3](JALON_3_VALIDATION.md) pour les preuves déjà obtenues.
+> Les jalons 0 à 7 constituent le socle à livrer. Les étapes bonus, placées à la fin, sont des expériences indépendantes : aucune n'est une condition pour obtenir une première soumission complète. Les bonus restent optionnels et non réalisés ; l’envoi au formulaire est distinct de la préparation du jalon 7. Voir [la validation des jalons 0 et 1](JALONS_0_1_VALIDATION.md) et [celle du jalon 3](JALON_3_VALIDATION.md) pour les preuves déjà obtenues.
 
 ## 1. Objectif et décisions de conception
 
@@ -46,7 +46,7 @@ flowchart TD
 | 4 — Réalisé : vivant / mort et contrôle | Règles, maintien candidat et modèle logistique externe factorisé | Deux matchs de validation réservés, scores complets, incertitude et séparation d’état/équipe vérifiées |
 | 5 — Réalisé : continuité et frontières | Viterbi exact statique/dynamique, marges et CSV distinct | Optimalité exhaustive, séquences courtes et périodes vérifiées ; comparaison externe figée |
 | 6 — Réalisé : comparaisons et robustesse | Recherche interne entre matchs, registre et candidate gelée | 156 comparaisons internes, 342 confirmations, choix justifié hors des cinq minutes publiques |
-| 7 — Livraison | `MYA.csv`, dépôt et document technique | Reproduction exacte depuis une installation propre |
+| 7 — Réalisé : livraison préparée | `submissions/final/MYA.csv`, poids publics, commande autonome et `MYA.md` | Trois reproductions identiques dont une copie isolée avec environnement neuf ; validation officielle et test final externe sans nouveau réglage |
 
 ## 3. Jalon 0 — Fixer les règles et le protocole avant les modèles
 
@@ -415,6 +415,35 @@ Les distributions prédites du match entier servent à détecter des anomalies. 
 
 ## 10. Jalon 7 — Préparer la livraison sans attendre les bonus
 
+**Réalisation du 29 octobre :** lanceur `mya.py`, `src/delivery.py`, poids et
+manifeste publics `release/`, cinq dépendances d'inférence figées et `MYA.md`.
+La commande n'a besoin que du TXT et du XML ATD tactiques. Elle vérifie les
+sources, versions, paramètres et l'empreinte attendue du CSV sans Git, labels,
+données DFL ni dépôt officiel. La frontière numérique float32 J4/J6 est conservée.
+
+Trois reconstructions produisent les mêmes octets : environnement neuf sur les
+entrées brutes, copie isolée sans Git/ancien cache/annotations/dépôt officiel,
+puis réutilisation du nouveau cache de tracking. L'installation isolée est sur
+la même machine Windows : ce n'est pas une preuve d'identité sur toute architecture.
+Le fichier final est **`submissions/final/MYA.csv`** ; le choix du sous-dossier
+préserve la baseline historique `submissions/MYA.csv` et les expériences antérieures.
+Le nom du fichier à envoyer reste bien `MYA.csv`.
+
+Le test final J03WR9 est réservé à `src.final_test` après gel, sur les 19 conditions
+initiales, avec seulement la candidate et la baseline. Les chargeurs de recherche
+restent verrouillés. Le résultat n'entraîne aucune sélection, modification ou
+solution de repli ; une évaluation déjà terminée ne peut pas être relancée.
+Les annotations publiques BAR-ATH ne sont pas ouvertes. Les archives J6 du
+notebook sont désormais vérifiées par leurs empreintes historiques, sans exiger
+que le code actuel soit celui du jalon 6.
+
+Le dossier final local contient le CSV et `MYA.md`. Aucun formulaire n'est rempli,
+aucun fichier n'est envoyé et aucun commit/push n'est implicite dans cette étape.
+Le lien et l'heure de dépôt doivent être vérifiés dans les messages des organisateurs.
+Voir [la reproduction](../docs/DELIVERY.md), [le document technique](../MYA.md)
+et [les mesures et preuves](JALON_7_VALIDATION.md).
+
+
 ### Étape 7.1 — Reproduction propre
 
 Sur une nouvelle installation, reconstruire le CSV depuis les seules entrées autorisées avec une commande documentée. Vérifier son empreinte, y compris pour les caches reconstruits. Figer graines, dépendances et options nécessaires ; documenter le matériel et les limites éventuelles de déterminisme.
@@ -423,7 +452,7 @@ Préserver un chemin d'exécution CPU pour la référence. Le socle ne dépend p
 
 ### Étape 7.2 — Vérification des livrables
 
-- `submissions/MYA.csv` : fichier final, format vérifié par le validateur officiel sur ses octets exacts.
+- `submissions/final/MYA.csv` : fichier final, format vérifié par le validateur officiel sur ses octets exacts ; baseline conservée dans `submissions/MYA.csv`.
 - Dépôt public : sources, configuration finale, dépendances, accès aux poids utilisés et instructions ; aucune donnée privée ni sortie reconstructible.
 - `MYA.md` ou `MYA.pdf` : méthode, sources d'entraînement, conventions, gestion des absences, limites, composants essayés et reproduction.
 

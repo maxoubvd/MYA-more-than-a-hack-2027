@@ -1,0 +1,432 @@
+{
+  "context": {
+    "activity_log_speed_means": [
+      0.7843110069538101,
+      1.386885465745413
+    ],
+    "activity_log_speed_variances": [
+      0.07206962587250623,
+      0.030187330894834892
+    ],
+    "activity_weights": [
+      0.788057063261664,
+      0.21194293673833584
+    ],
+    "contact_acceleration_threshold_mps2": 145.08746612548825,
+    "contact_quantile": 0.98,
+    "labels_used": false,
+    "training_match": "J03WMX",
+    "version": "observation-context-v1"
+  },
+  "dead_scale": 2.0,
+  "decoder": {
+    "boundary_near_optimal_log_gap": 1.0,
+    "boundary_profile_radius_s": 1.0,
+    "emission_weight": 1.0,
+    "probability_floor": 1e-12
+  },
+  "features": {
+    "ball_link_speed_gate_mps": 100.0,
+    "boundary_band_m": 5.0,
+    "contact_half_window_frames": 2,
+    "contact_quantile": 0.98,
+    "control_offset_m": 0.5,
+    "control_sigma_m": 1.5,
+    "duplicate_radius_m": 0.15,
+    "low_motion_scale_mps": 0.5,
+    "player_link_speed_gate_mps": 20.0,
+    "relative_velocity_sigma_mps": 5.0,
+    "temporal_window_s": 1.0
+  },
+  "game": {
+    "dead_zone": [
+      110808,
+      113742
+    ],
+    "fps": 25.0,
+    "frames": 199319,
+    "intervals": [
+      [
+        11185,
+        90652
+      ],
+      [
+        110808,
+        190198
+      ]
+    ],
+    "pitch_dims": [
+      105.3,
+      68.0
+    ]
+  },
+  "model": {
+    "calibration": "none; uncalibrated logistic estimates",
+    "heads": {
+      "collective_team": {
+        "calibrated": false,
+        "clip": 8.0,
+        "coefficients": [
+          0.02959303160599683,
+          0.08895172501045526,
+          0.5322905685086927,
+          0.800479100995278,
+          -0.7797092401160268,
+          0.7667859818934569,
+          0.032055688457384476,
+          -0.0007425236099975558,
+          0.026085254501408823,
+          0.022258982261438565,
+          0.036871913613824435
+        ],
+        "converged": true,
+        "feature_names": [
+          "H_minus_A_centroid_x_m",
+          "H_minus_A_centroid_y_m",
+          "H_minus_A_spread_x_m",
+          "H_minus_A_spread_y_m",
+          "H_minus_A_extent_x_m",
+          "H_minus_A_extent_y_m",
+          "H_minus_A_mean_vx_mps",
+          "H_minus_A_mean_vy_mps",
+          "H_minus_A_observed_n",
+          "H_minus_A_effective_n",
+          "H_minus_A_velocity_observed_n"
+        ],
+        "gradient_max": 3.465663759201487e-07,
+        "iterations": 5,
+        "l2": 0.01,
+        "location": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "positive_rows": 38724,
+        "rows": 76581,
+        "scale": [
+          12.309081648362145,
+          2.376930608368655,
+          5.0202310227180655,
+          3.507682761582029,
+          18.4826351837338,
+          13.510325501465067,
+          0.902189269674373,
+          0.9044883604833417,
+          0.9180878558057061,
+          0.9181803013994361,
+          1.2214539288558168
+        ],
+        "symmetric_team": true,
+        "training_log_loss": 0.46993338950589014
+      },
+      "state": {
+        "calibrated": false,
+        "clip": 8.0,
+        "coefficients": [
+          -1.9595046960630194,
+          -0.784451537334182,
+          0.8689128682650391,
+          0.5605680600206677,
+          -0.41078105479779026,
+          -1.0754517148797733,
+          -1.034394436674464,
+          -0.3308670281608687,
+          -0.33393859916534246,
+          0.32696234406436325,
+          -0.34772238419982804,
+          -0.18630156076298895,
+          -0.15365701281965413,
+          -0.10919666959806096,
+          -0.11220339721137766,
+          -0.7255030198506852,
+          0.39306734331791626,
+          0.5507490929113463,
+          0.1840936372235483,
+          0.20418017024247204,
+          0.07159233276738702,
+          0.006281313526456482,
+          0.1370465628151146,
+          0.1370465628151146,
+          0.11820835294410939,
+          0.018927353276661743,
+          -0.010270150565888992,
+          -0.07830847979507254,
+          0.0026911509632886414,
+          0.005215054888727798,
+          0.1370465628151146,
+          0.018927353276661743,
+          0.0026911509632886414,
+          0.005215054888727798,
+          0.0026911509632886414,
+          0.005215054888727798,
+          0.12096428246079044,
+          0.12096428246079044,
+          0.1370465628151146,
+          0.14263651618057263,
+          -0.5753901606662939,
+          0.1259225909519314,
+          0.00790620585201644
+        ],
+        "converged": true,
+        "feature_names": [
+          "log1p_ball_speed_mps",
+          "log1p_ball_acceleration_mps2",
+          "log1p_ball_backward_speed_mps",
+          "log1p_collective_median_speed_mps",
+          "log1p_ball_speed_past_mean_mps",
+          "log1p_ball_speed_future_mean_mps",
+          "log1p_collective_speed_past_mean_mps",
+          "log1p_collective_speed_future_mean_mps",
+          "ball_low_motion_score",
+          "collective_low_activity_score",
+          "ball_speed_past_support",
+          "ball_speed_future_support",
+          "collective_speed_past_support",
+          "collective_speed_future_support",
+          "boundary_signed_tanh",
+          "boundary_outside_beyond_margin_m",
+          "low_motion_duration_capped_s",
+          "stationary_and_slow_collective",
+          "recent_exit_then_gap",
+          "ball_speed_change_mps",
+          "collective_speed_change_mps"
+        ],
+        "gradient_max": 5.144557915890031e-07,
+        "iterations": 7,
+        "l2": 0.01,
+        "location": [
+          1.288667803239667,
+          1.9295240412678767,
+          1.681432674796749,
+          1.1101709168850658,
+          1.3930474528813295,
+          1.3926240583729315,
+          1.1517068413741527,
+          1.1529410585578763,
+          1.00327144991752e-06,
+          0.8037233352661133,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.8632880116233703,
+          0.0,
+          0.0,
+          8.330476196773495e-08,
+          0.0,
+          0.0,
+          -0.011225285939872265
+        ],
+        "positive_rows": 67419,
+        "rows": 144000,
+        "scale": [
+          0.879329196863343,
+          1.6851068953901605,
+          1.005207472876549,
+          0.38688368231535947,
+          0.8656888451900322,
+          0.865395544270527,
+          0.3796771505929138,
+          0.3796289157829465,
+          0.4315667443102764,
+          0.4001778612355844,
+          0.43622592959350537,
+          0.43631589342227767,
+          0.014201327696591345,
+          0.014212190452427767,
+          0.46017118305369664,
+          0.3075183165835626,
+          1.9782741309338978,
+          0.1998638739276267,
+          0.07918264217375127,
+          3.5500196263839285,
+          0.3467383754979653
+        ],
+        "symmetric_team": false,
+        "training_log_loss": 0.22747622375490306
+      },
+      "visible_team": {
+        "calibrated": false,
+        "clip": 8.0,
+        "coefficients": [
+          -0.005569719982147071,
+          0.05769237867575982,
+          0.30858868291820685,
+          0.6078100961660263,
+          -0.49307348669580237,
+          0.6335506775178705,
+          0.031129548475908108,
+          0.003105322407545331,
+          0.00856404243909433,
+          0.003209249789709501,
+          0.02223340075427755,
+          0.2984119003076193,
+          -0.08227462293744903,
+          -0.03826991485178396,
+          0.21351980206367036,
+          0.6587049889440946,
+          -0.15227652534718233,
+          -0.25774381989223494,
+          0.38379237599087684,
+          0.1285728169090284,
+          0.031698017764730656,
+          0.21253067146190843
+        ],
+        "converged": true,
+        "feature_names": [
+          "H_minus_A_centroid_x_m",
+          "H_minus_A_centroid_y_m",
+          "H_minus_A_spread_x_m",
+          "H_minus_A_spread_y_m",
+          "H_minus_A_extent_x_m",
+          "H_minus_A_extent_y_m",
+          "H_minus_A_mean_vx_mps",
+          "H_minus_A_mean_vy_mps",
+          "H_minus_A_observed_n",
+          "H_minus_A_effective_n",
+          "H_minus_A_velocity_observed_n",
+          "log_distance_A_minus_H_1",
+          "log_distance_A_minus_H_2",
+          "log_distance_A_minus_H_3",
+          "H_minus_A_distance_kernel",
+          "H_minus_A_motion_distance_kernel",
+          "H_minus_A_nearest_closing_speed_mps",
+          "H_minus_A_velocity_coherence",
+          "H_minus_A_within_1m_effective_n",
+          "H_minus_A_within_2m_effective_n",
+          "H_minus_A_within_5m_effective_n",
+          "log_relative_speed_A_minus_H"
+        ],
+        "gradient_max": 8.448645977786329e-08,
+        "iterations": 6,
+        "l2": 0.01,
+        "location": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "positive_rows": 28542,
+        "rows": 56023,
+        "scale": [
+          12.293001328527811,
+          2.3263988713430166,
+          4.997993624084696,
+          3.4801251082052955,
+          18.39499048853683,
+          13.437352448759142,
+          0.8415244720778638,
+          0.8438319664966126,
+          0.8549038188131511,
+          0.8550290855646508,
+          1.1206034543117052,
+          1.0900458594434477,
+          0.4622070720668148,
+          0.3554632190443361,
+          0.6042952736399146,
+          0.4815080229268155,
+          9.114983392948464,
+          0.21160068766794238,
+          0.5966395850291186,
+          0.7299186113249613,
+          0.893834280605718,
+          0.5222895652980336
+        ],
+        "symmetric_team": true,
+        "training_log_loss": 0.37319493756508626
+      }
+    },
+    "training_matches": [
+      "J03WMX",
+      "J03WN1",
+      "J03WOH",
+      "J03WOY"
+    ],
+    "training_scenarios": [
+      "clean",
+      "combined",
+      "long_gaps"
+    ],
+    "version": "factorized-logistic-v1"
+  },
+  "numeric_contract": "quantize observation probabilities and scalar score metadata to float32 before logarithms, as frozen J4/J6 archives",
+  "origin": {
+    "bundle_sha256": "6cdd02a70103b9bad25240d79dd545863e7a4b37f4b6dda5c455d0fdd1774db1",
+    "expected_csv_sha256": "8b1e2c851cd64f840b6aae8ff932e3aaa599507446fe4fa4a6fbbedbfad4c8f7",
+    "experiment_id": "3c067a898e248543b6cd90caed29997cfe50ada7010bdfdcb617310400703fc1",
+    "external_training": "DFL IDSSE, Bassek et al. 2025, Figshare 28196177 v1, CC BY 4.0; provider BallStatus/BallPossession; four training matches only",
+    "public_labels_used": false,
+    "selection_commit": "3ddc1a7c8ec9743e6b1a91c2bf4e18425deea2a0",
+    "test_used_for_fit_or_selection": false
+  },
+  "prior": {
+    "class_order": [
+      "H",
+      "A",
+      "D"
+    ],
+    "minimum_duration_frames": null,
+    "training_matches": [
+      "J03WMX",
+      "J03WN1",
+      "J03WOH",
+      "J03WOY"
+    ],
+    "transition_probability": [
+      [
+        0.9938042254453937,
+        0.00479501953771773,
+        0.0014007550168885358
+      ],
+      [
+        0.00479501953771773,
+        0.9938042254453937,
+        0.0014007550168885358
+      ],
+      [
+        0.0007878037426331869,
+        0.0007878037426331869,
+        0.9984243925147336
+      ]
+    ],
+    "version": "symmetric-markov-v1"
+  },
+  "runtime": {
+    "packages": {
+      "numpy": "2.5.4",
+      "pandas": "3.1.0",
+      "python-dateutil": "3.0.0",
+      "six": "1.17.0",
+      "tzdata": "2026.5"
+    },
+    "python": "3.12.6"
+  },
+  "team_scale": 1.0,
+  "version": "mya-delivery-v1"
+}

@@ -127,6 +127,8 @@ locale à ces archives pour l'audit ; le chemin de livraison J7 devra séparer
 cette vérification du registre de l'inférence depuis le paquet de poids gelé.
 Aucun fichier d'annotations BAR-ATH n'entre dans ce contrôle.
 
-Le jalon 7 reste nécessaire pour une reproduction depuis une installation neuve,
-l'accès aux poids et le document de soumission. L'export J6 ne prouve pas encore
-cette reproduction propre ni un score sur le match privé du concours.
+Le jalon 7 fournit désormais cette séparation : `python mya.py` utilise le paquet
+public `release/`, sans archives externes ni labels. Les résultats historiques J6
+restent figés ; le notebook lit leurs empreintes publiées plutôt que de demander
+au code actuel d'être celui du jalon 6. Voir `docs/DELIVERY.md` et le rapport J7.
+La reproduction propre n'établit toujours pas un score privé du concours.

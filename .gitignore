@@ -52,3 +52,8 @@ submissions/*.csv
 # External tracking and generated array predictions stay local
 DFL_*.xml
 *.npy
+
+# Final private upload package
+/submissions/final/
+
+.venv-inference/
