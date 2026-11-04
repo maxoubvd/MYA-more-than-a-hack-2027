@@ -1,0 +1,145 @@
+{
+  "C0_observation_and_priors_reused_exclude_outer_holdout": true,
+  "CPU_seconds_total_phase": 5899.25,
+  "GPU_job_wall_seconds_total_phase": 0.0,
+  "all_88_C0_replays_exact": true,
+  "all_D_observations_identical_to_C0": true,
+  "comparison_rows": 792,
+  "configurations_started_J10": 8,
+  "configurations_started_phase": 16,
+  "confirmation_or_consumed_test_or_public_targets_read": false,
+  "consumed_test_record_unchanged": true,
+  "control_features": 23,
+  "control_heads_fitted": 4,
+  "experiment_id": "081a7dcff94b13a859ba3925e630d3cfc0d6e3e9ed5ac69bc564c9eecfc7efd9",
+  "folds": [
+    {
+      "control_gradient_max": 4.805751743514747e-08,
+      "control_head_rows": 40648,
+      "control_model_sha256": "4625e919199f2d4093a7be6922c36577d76e92b849388091dc5fea9d02d3e24b",
+      "held_out": "J03WMX",
+      "prediction_snapshot_sha256": "3a4bb8a90a51089cc865cbfa4bd260670b214c0983d12a04b9c0eb4852a3d12c",
+      "provenance": {
+        "calibration_matches": [],
+        "context_matches": [
+          "J03WN1"
+        ],
+        "fit_matches": [
+          "J03WN1",
+          "J03WOH",
+          "J03WOY"
+        ],
+        "preprocessing_matches": [
+          "J03WN1",
+          "J03WOH",
+          "J03WOY"
+        ],
+        "prior_matches": [
+          "J03WN1",
+          "J03WOH",
+          "J03WOY"
+        ]
+      },
+      "reused_C0_model_sha256": "5eb0f3d6066fae5b05b0614d8ff1b7537396fe26b8773d35a8fa86aaaf7258b1",
+      "reused_C0_snapshot_sha256": "33a82f8fc019d89d2f3979084119b0e741a06d2ac15d62c9c20462fe65790098"
+    },
+    {
+      "control_gradient_max": 1.8519284079518417e-07,
+      "control_head_rows": 43272,
+      "control_model_sha256": "ba009cfdc228957ad7d4421eb32099a96bfd6841328378609f37cb284a3edc23",
+      "held_out": "J03WN1",
+      "prediction_snapshot_sha256": "4de6a266d150f873c794156c7ab0f8f6475dbaae9bcb085739e74bbaf6b4f366",
+      "provenance": {
+        "calibration_matches": [],
+        "context_matches": [
+          "J03WMX"
+        ],
+        "fit_matches": [
+          "J03WMX",
+          "J03WOH",
+          "J03WOY"
+        ],
+        "preprocessing_matches": [
+          "J03WMX",
+          "J03WOH",
+          "J03WOY"
+        ],
+        "prior_matches": [
+          "J03WMX",
+          "J03WOH",
+          "J03WOY"
+        ]
+      },
+      "reused_C0_model_sha256": "65645880632e98e4161bf5d18ae5556e500c5d18603c0739f4e2051f8d7e7a38",
+      "reused_C0_snapshot_sha256": "e33a4d21f7ed79dfc76c50294f416ed0e4b1dc780983a2d6b9bf156a4a0025b7"
+    },
+    {
+      "control_gradient_max": 5.988562234646166e-08,
+      "control_head_rows": 41871,
+      "control_model_sha256": "360312710d759030e88472fef1cb808b794b3214c9d370b0d95b3e98a9f3e5ef",
+      "held_out": "J03WOH",
+      "prediction_snapshot_sha256": "1701f98f3faa4975e5d5455830bc50db2584d9d62a6074cb3a1c755e3587e5ad",
+      "provenance": {
+        "calibration_matches": [],
+        "context_matches": [
+          "J03WMX"
+        ],
+        "fit_matches": [
+          "J03WMX",
+          "J03WN1",
+          "J03WOY"
+        ],
+        "preprocessing_matches": [
+          "J03WMX",
+          "J03WN1",
+          "J03WOY"
+        ],
+        "prior_matches": [
+          "J03WMX",
+          "J03WN1",
+          "J03WOY"
+        ]
+      },
+      "reused_C0_model_sha256": "45fe71b5cd48e2a2ba64c69bc574af3c1f8f16d62d9c027dd5fbc003b6fb4067",
+      "reused_C0_snapshot_sha256": "fe2ab836c537caf8864246aa8c267092cd60fcd5f2bc7d555a0d4a8a8c99566d"
+    },
+    {
+      "control_gradient_max": 1.2922244188064147e-07,
+      "control_head_rows": 42278,
+      "control_model_sha256": "f997e756bdfd4ba66210d568264df1daa26b0ebec8ed63c3493601642fe8b4fa",
+      "held_out": "J03WOY",
+      "prediction_snapshot_sha256": "2d2f16a253e055dcea0beee99db41e01ca905425399980a1d2eadb13fbe12162",
+      "provenance": {
+        "calibration_matches": [],
+        "context_matches": [
+          "J03WMX"
+        ],
+        "fit_matches": [
+          "J03WMX",
+          "J03WN1",
+          "J03WOH"
+        ],
+        "preprocessing_matches": [
+          "J03WMX",
+          "J03WN1",
+          "J03WOH"
+        ],
+        "prior_matches": [
+          "J03WMX",
+          "J03WN1",
+          "J03WOH"
+        ]
+      },
+      "reused_C0_model_sha256": "804d4849dd97587ebc359dfed2159aea5b7dbf5f9d35a9b0f34f06bf076d9771",
+      "reused_C0_snapshot_sha256": "537af2985781eb83dfa769eafa9292341eccc9d156c43ba9fb1ebe07e83814bf"
+    }
+  ],
+  "new_notebook_code_cells_executed": 2,
+  "original_52_notebook_cells_preserved": true,
+  "position_layers_checked": 528,
+  "shared_notebook_has_no_outputs": true,
+  "tests_passed": 239,
+  "total_unique_decodes_including_C0": 382,
+  "unchanged_C0_and_J2_CSV": true,
+  "version": "j10-audit-v1"
+}

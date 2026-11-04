@@ -1,0 +1,228 @@
+{
+  "registered_before_first_fit": true,
+  "variants": [
+    {
+      "control": false,
+      "dead_scale": 2.0,
+      "id": "J10_LINEAR_5",
+      "maximum_frames": 5,
+      "method": "linear",
+      "options": {
+        "bridge": {
+          "acceleration_sigma_mps2": 10.0,
+          "maximum_ball_speed_mps": 100.0,
+          "maximum_bridge_acceleration_mps2": 100.0,
+          "maximum_uncertainty_m": 3.0,
+          "measurement_sigma_m": 0.5
+        },
+        "control": {
+          "arrival_temperature_s": 0.5,
+          "player_speed_mps": 7.0,
+          "reaction_time_s": 0.2
+        },
+        "imputed_team_sigma_m": 1.5
+      },
+      "state_head": "exact frozen C0-OOF observation, no imputed feature",
+      "team_head": "C0-OOF visible head, uncertainty-weighted with original collective fallback",
+      "team_scale": 1.0
+    },
+    {
+      "control": false,
+      "dead_scale": 2.0,
+      "id": "J10_LINEAR_10",
+      "maximum_frames": 10,
+      "method": "linear",
+      "options": {
+        "bridge": {
+          "acceleration_sigma_mps2": 10.0,
+          "maximum_ball_speed_mps": 100.0,
+          "maximum_bridge_acceleration_mps2": 100.0,
+          "maximum_uncertainty_m": 3.0,
+          "measurement_sigma_m": 0.5
+        },
+        "control": {
+          "arrival_temperature_s": 0.5,
+          "player_speed_mps": 7.0,
+          "reaction_time_s": 0.2
+        },
+        "imputed_team_sigma_m": 1.5
+      },
+      "state_head": "exact frozen C0-OOF observation, no imputed feature",
+      "team_head": "C0-OOF visible head, uncertainty-weighted with original collective fallback",
+      "team_scale": 1.0
+    },
+    {
+      "control": false,
+      "dead_scale": 2.0,
+      "id": "J10_LINEAR_25",
+      "maximum_frames": 25,
+      "method": "linear",
+      "options": {
+        "bridge": {
+          "acceleration_sigma_mps2": 10.0,
+          "maximum_ball_speed_mps": 100.0,
+          "maximum_bridge_acceleration_mps2": 100.0,
+          "maximum_uncertainty_m": 3.0,
+          "measurement_sigma_m": 0.5
+        },
+        "control": {
+          "arrival_temperature_s": 0.5,
+          "player_speed_mps": 7.0,
+          "reaction_time_s": 0.2
+        },
+        "imputed_team_sigma_m": 1.5
+      },
+      "state_head": "exact frozen C0-OOF observation, no imputed feature",
+      "team_head": "C0-OOF visible head, uncertainty-weighted with original collective fallback",
+      "team_scale": 1.0
+    },
+    {
+      "control": false,
+      "dead_scale": 2.0,
+      "id": "J10_KALMAN_5",
+      "maximum_frames": 5,
+      "method": "kalman_rts",
+      "options": {
+        "bridge": {
+          "acceleration_sigma_mps2": 10.0,
+          "maximum_ball_speed_mps": 100.0,
+          "maximum_bridge_acceleration_mps2": 100.0,
+          "maximum_uncertainty_m": 3.0,
+          "measurement_sigma_m": 0.5
+        },
+        "control": {
+          "arrival_temperature_s": 0.5,
+          "player_speed_mps": 7.0,
+          "reaction_time_s": 0.2
+        },
+        "imputed_team_sigma_m": 1.5
+      },
+      "state_head": "exact frozen C0-OOF observation, no imputed feature",
+      "team_head": "C0-OOF visible head, uncertainty-weighted with original collective fallback",
+      "team_scale": 1.0
+    },
+    {
+      "control": false,
+      "dead_scale": 2.0,
+      "id": "J10_KALMAN_10",
+      "maximum_frames": 10,
+      "method": "kalman_rts",
+      "options": {
+        "bridge": {
+          "acceleration_sigma_mps2": 10.0,
+          "maximum_ball_speed_mps": 100.0,
+          "maximum_bridge_acceleration_mps2": 100.0,
+          "maximum_uncertainty_m": 3.0,
+          "measurement_sigma_m": 0.5
+        },
+        "control": {
+          "arrival_temperature_s": 0.5,
+          "player_speed_mps": 7.0,
+          "reaction_time_s": 0.2
+        },
+        "imputed_team_sigma_m": 1.5
+      },
+      "state_head": "exact frozen C0-OOF observation, no imputed feature",
+      "team_head": "C0-OOF visible head, uncertainty-weighted with original collective fallback",
+      "team_scale": 1.0
+    },
+    {
+      "control": false,
+      "dead_scale": 2.0,
+      "id": "J10_KALMAN_25",
+      "maximum_frames": 25,
+      "method": "kalman_rts",
+      "options": {
+        "bridge": {
+          "acceleration_sigma_mps2": 10.0,
+          "maximum_ball_speed_mps": 100.0,
+          "maximum_bridge_acceleration_mps2": 100.0,
+          "maximum_uncertainty_m": 3.0,
+          "measurement_sigma_m": 0.5
+        },
+        "control": {
+          "arrival_temperature_s": 0.5,
+          "player_speed_mps": 7.0,
+          "reaction_time_s": 0.2
+        },
+        "imputed_team_sigma_m": 1.5
+      },
+      "state_head": "exact frozen C0-OOF observation, no imputed feature",
+      "team_head": "C0-OOF visible head, uncertainty-weighted with original collective fallback",
+      "team_scale": 1.0
+    },
+    {
+      "control": true,
+      "dead_scale": 2.0,
+      "gradient_tolerance": 1e-06,
+      "id": "J10_CONTROL",
+      "l2": 0.01,
+      "max_iterations": 50,
+      "maximum_frames": 0,
+      "method": null,
+      "options": {
+        "bridge": {
+          "acceleration_sigma_mps2": 10.0,
+          "maximum_ball_speed_mps": 100.0,
+          "maximum_bridge_acceleration_mps2": 100.0,
+          "maximum_uncertainty_m": 3.0,
+          "measurement_sigma_m": 0.5
+        },
+        "control": {
+          "arrival_temperature_s": 0.5,
+          "player_speed_mps": 7.0,
+          "reaction_time_s": 0.2
+        },
+        "imputed_team_sigma_m": 1.5
+      },
+      "rows_per_match_scenario": 12000,
+      "standardized_clip": 8.0,
+      "state_head": "exact frozen C0-OOF observation, no imputed feature",
+      "team_head": "refit C0 visible design plus one odd local-arrival feature; collective head unchanged",
+      "team_scale": 1.0,
+      "training_scenarios": [
+        "clean",
+        "long_gaps",
+        "combined"
+      ],
+      "training_seed": 20261026
+    },
+    {
+      "control": true,
+      "dead_scale": 2.0,
+      "gradient_tolerance": 1e-06,
+      "id": "J10_LINEAR_25_CONTROL",
+      "l2": 0.01,
+      "max_iterations": 50,
+      "maximum_frames": 25,
+      "method": "linear",
+      "options": {
+        "bridge": {
+          "acceleration_sigma_mps2": 10.0,
+          "maximum_ball_speed_mps": 100.0,
+          "maximum_bridge_acceleration_mps2": 100.0,
+          "maximum_uncertainty_m": 3.0,
+          "measurement_sigma_m": 0.5
+        },
+        "control": {
+          "arrival_temperature_s": 0.5,
+          "player_speed_mps": 7.0,
+          "reaction_time_s": 0.2
+        },
+        "imputed_team_sigma_m": 1.5
+      },
+      "rows_per_match_scenario": 12000,
+      "standardized_clip": 8.0,
+      "state_head": "exact frozen C0-OOF observation, no imputed feature",
+      "team_head": "refit C0 visible design plus one odd local-arrival feature; collective head unchanged",
+      "team_scale": 1.0,
+      "training_scenarios": [
+        "clean",
+        "long_gaps",
+        "combined"
+      ],
+      "training_seed": 20261026
+    }
+  ],
+  "version": "j10-grid-v1"
+}

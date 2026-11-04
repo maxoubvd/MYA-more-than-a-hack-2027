@@ -1,6 +1,6 @@
 # Plan d’implémentation — phase 2 : bonus, comparaison et nouvelle livraison
 
-> **Mise à jour du 2 novembre 2026.** Jalons 0–9 réalisés ; jalons 10–19 à commencer. J8 a figé le protocole et validé les observations, sans entraîner ni sélectionner de nouveau modèle. Voir [les preuves J8](JALON_8_VALIDATION.md). Il complète [le plan du socle](Implementation_Plan.md).
+> **Mise à jour du 3 novembre 2026.** Jalons 0–10 réalisés ; jalons 11–19 à commencer. J8 a figé le protocole et validé les observations, sans entraîner ni sélectionner de nouveau modèle. Voir [les preuves J8](JALON_8_VALIDATION.md). Il complète [le plan du socle](Implementation_Plan.md).
 >
 > **Objectif :** tester les bonus, conserver les apports externes mesurés, puis comparer les candidats et repréparer une soumission reproductible. **J18 = nouvel équivalent du jalon 6. J19 = nouvel équivalent du jalon 7.** Si aucun bonus ne convainc, conserver la livraison actuelle.
 
@@ -149,6 +149,8 @@ Mesurer log-loss/Brier et calibration externe, mais adopter sur les métriques d
 **Tests :** balle immobile en jeu, balle mobile après arrêt, reprise près d’un joueur, absence de balle, tous capteurs indisponibles, échange H/A et périodes séparées. **Livrable :** tête d’observation facultative et rapport par qualité/visibilité.
 
 ## 6. J10 — B1 : imputation courte et contrôle géométrique
+
+**Réalisé en sélection interne :** huit ablations, 792 comparaisons et mesures de reconstruction. Gain ciblé sur les trous courts, mais aucune variante retenue seule : gain S41 insuffisant. C0 conservé ; toute adoption reste soumise au J18. Voir [le rapport J10](JALON_10_VALIDATION.md).
 
 **Hypothèse :** une géométrie locale prudente améliore des transitions sans fabriquer de contrôle pendant les longs trous.
 

@@ -1,0 +1,18 @@
+{
+  "all_variants": "six pure imputation ablations plus raw control and fixed linear25+control, no post-result method selection",
+  "bridge": "ball only, bounded holes with two observed anchors each side in one contiguous period, speed/acceleration/uncertainty gates fixed in grid; no player or long-gap reconstruction",
+  "compute": "CPU only; preprocessing, four control fits, inference and evaluation charged to phase ledger",
+  "control_fit": "matched C0 V1 observations and deterministic known-row sampler; add one local-arrival feature to the visible head only; no imputed training labels or positions",
+  "control_interpretation": "bounded potential at current ball location from minimum anonymous arrival times, not a whole-pitch control model or observed possession",
+  "feature_rounding": "original builder physical columns cast float32 before named team design; all non-updated score rows bit-identical to C0",
+  "freeze": "all 22 nine-way predictions per outer holdout hashed before opening its targets for scoring; synthetic position accuracy evaluated afterwards",
+  "kalman": "constant-velocity two-state-per-axis Gaussian filter, observed left position and adjacent velocity, right position and next position updates; RTS backwards smoother; raw endpoints never overwritten",
+  "position_accuracy": "native DFL ball coordinates removed by the stress generator, audit mask used only for evaluation, never features; report RMSE/p90/2-sigma coverage and filled fraction by duration",
+  "reference": "reuse and hash-check the exact J9 C0-OOF three-match fits, priors and predictions; no J9 variant promoted",
+  "score_update": "only supported H/A conditional probabilities change; D probabilities and state support bit-identical to C0; imputed team source code 4, raw observation mask remains separate",
+  "scoring": "same 22 V2 conditions, S41 and R4/gates from J8; official spellF1, macroF1, D, boundaries, fragmentation, recall under 1/2/5 seconds",
+  "selection": "internal screen only; C0 remains delivery pending J18/J19",
+  "training": "only four original training matches in outer leave-one-match-out folds; no confirmation, J03WR9 or competition labels",
+  "uncertainty": "engineering proxy in metres, lower bound from measurement/acceleration bridge proxy; not learned or statistically calibrated",
+  "version": "j10-execution-v1"
+}

@@ -19,6 +19,8 @@ de préparation n'a pas entraîné de modèle. [Guide phase 2](docs/BONUS_V2.md)
 
 **Jalon 9 réalisé en sélection interne** : huit variantes, calibration par sous-plis, référence C0 réapprise et 792 comparaisons. Aucune variante ne passe les critères d’adoption ; la soumission J7 reste conservée. [Rapport J9](analysis/JALON_9_VALIDATION.md) · [Guide et commande](docs/JALON_9.md).
 
+**Jalon 10 réalisé en sélection interne** : interpolation et Kalman courts, contrôle potentiel local, 792 comparaisons et erreurs de position. Aucune variante ne passe le seuil de gain S41 ; C0 reste la livraison actuelle. [Rapport J10](analysis/JALON_10_VALIDATION.md) · [Guide](docs/JALON_10.md).
+
 ## Livraison finale — jalon 7
 
 **À envoyer : `submissions/final/MYA.csv` et `MYA.md`.**
